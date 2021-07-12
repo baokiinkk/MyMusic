@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewmodel"
+            type="com.baokiin.mymusic.ui.login.LoginViewModel" />
+    </data>
+
+   <androidx.constraintlayout.widget.ConstraintLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       >
+
+       <ImageView
+           android:id="@+id/imageView"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:loadImage="@{viewmodel.img}"
+           android:scaleType="centerCrop"
+           app:layout_constraintBottom_toBottomOf="parent"
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintTop_toTopOf="parent" />
+       <View
+           android:id="@+id/view"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:background="@drawable/br_login"
+           app:layout_constraintBottom_toBottomOf="parent"
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintTop_toTopOf="parent"
+            />
+
+       <EditText
+           android:id="@+id/edtEmail"
+           android:layout_width="0dp"
+           android:layout_height="wrap_content"
+           android:layout_marginStart="30dp"
+           android:layout_marginEnd="30dp"
+           android:layout_marginBottom="20dp"
+           android:drawableStart="@drawable/ic_user"
+           android:drawablePadding="20dp"
+           android:hint="UserName"
+           android:paddingVertical="20dp"
+           android:text="@={viewmodel.email}"
+           android:textColor="#fff"
+           android:textColorHint="#D3D1D1"
+           app:layout_constraintBottom_toTopOf="@+id/edtPassword"
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintStart_toStartOf="@+id/view" />
+
+       <EditText
+           android:id="@+id/edtPassword"
+           android:layout_width="0dp"
+           android:layout_height="wrap_content"
+           android:layout_marginStart="30dp"
+           android:layout_marginEnd="30dp"
+           android:layout_marginBottom="30dp"
+           android:drawableStart="@drawable/ic_pass"
+           android:drawablePadding="20dp"
+           android:hint="Password"
+           android:inputType="textPassword"
+           android:paddingVertical="20dp"
+           android:text="@={viewmodel.password}"
+           android:textColor="#fff"
+           android:textColorHint="#D3D1D1"
+           app:layout_constraintBottom_toTopOf="@+id/btnLogin"
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintStart_toStartOf="@+id/view" />
+
+       <Button
+           android:id="@+id/btnLogin"
+           android:layout_width="0dp"
+           android:layout_height="wrap_content"
+           android:layout_marginStart="30dp"
+           android:layout_marginEnd="30dp"
+           android:layout_marginBottom="48dp"
+           android:background="@drawable/br_btn_login"
+           android:paddingVertical="20dp"
+           android:text="Sign in"
+           android:textAllCaps="false"
+           android:textColor="#fff"
+           android:textSize="20sp"
+           app:defaultColor="#FA3E7E"
+           app:layout_constraintBottom_toBottomOf="parent"
+           app:layout_constraintEnd_toEndOf="@+id/edtPassword"
+           app:layout_constraintHorizontal_bias="0.0"
+           app:layout_constraintStart_toStartOf="@+id/edtPassword"
+           app:loaderColor="#fff" />
+
+   </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
