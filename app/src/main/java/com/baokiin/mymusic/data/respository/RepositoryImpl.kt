@@ -1,17 +1,16 @@
 package com.baokiin.mymusic.data.respository
 
 import com.baokiin.mymusic.data.api.ApiService
-import com.baokiin.mymusic.data.model.LoginUser
-import com.baokiin.mymusic.data.model.Users
+import com.baokiin.mymusic.data.model.DataApi
 import retrofit2.HttpException
 import javax.inject.Inject
 
 class RepositoryImpl @Inject constructor(private val apiService: ApiService) : Repository {
-    override suspend fun login(): Users =
+    override suspend fun getTrending(): DataApi  =
         try {
-            apiService.login()
+            apiService.getTrending()
         } catch (cause: HttpException) {
-            Users(message = cause.response()?.errorBody()?.string())
+            DataApi(message = "lấy thông tin lỗi!!!")
         }
 
 }

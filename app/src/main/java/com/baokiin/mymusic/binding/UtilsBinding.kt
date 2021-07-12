@@ -8,11 +8,11 @@ import coil.load
 
 class UtilsBinding{
     companion object {
-        @BindingAdapter("android:loadImage")
+        @BindingAdapter("android:loadImageTitleHome")
         @JvmStatic
-        fun loadImage(view: ImageView, image: Int?) {
+        fun loadImageTitleHome(view: ImageView, image: String?) {
             image?.let {
-                view.load(it)
+                view.load(it.replace("w94","w360"))
             }
         }
     }
