@@ -7,4 +7,12 @@ interface ApiService {
     @GET("chart-realtime?songId=0&videoId=0&albumId=0&chart=song&time=-1")
     suspend fun getTrending(): DataApi
 
+    @GET("media/get-source?type=album&key=LmJHtkGNBJRmcWiymtDGZGyZhDQxsZQSa")
+    suspend fun getTopAmerica(): DataApi
+
+    @GET("media/get-source?type=album&key=LmxnyZHadxumRncynTDnkmyZgFWcsGCCp")
+    suspend fun getTopKpop(): DataApi
+
+    @GET("media/get-source?type=album&key=kncHyLmNdcRmczgtHyDmkGTLhvpcsHALs")
+    suspend fun getTopVpop(): DataApi
 }

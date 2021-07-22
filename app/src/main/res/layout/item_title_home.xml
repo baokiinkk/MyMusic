@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
@@ -8,9 +9,12 @@
             type="com.baokiin.mymusic.data.model.Song" />
     </data>
 
-    <FrameLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:cardElevation="5dp"
+        app:cardCornerRadius="20dp"
+        >
         <ImageView
             android:id="@+id/imgRecommended"
             android:layout_width="match_parent"
@@ -23,5 +27,5 @@
             android:background="#1D000000"
             />
 
-    </FrameLayout>
+    </androidx.cardview.widget.CardView>
 </layout>

@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'kotlin-android-extensions'
 }
 
 android {
@@ -11,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId "com.baokiin.mymusic"
-        minSdkVersion 25
+        minSdkVersion 26
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -62,6 +63,7 @@ private void lib(){
     dependencies.implementation "com.royrodriguez:transitionbutton:0.2.0"
     //load
     dependencies.implementation 'com.facebook.shimmer:shimmer:0.5.0'
+    // zoom view
 }
 private void retrofit(){
     dependencies.implementation "com.squareup.retrofit2:retrofit:$retrofit_version"

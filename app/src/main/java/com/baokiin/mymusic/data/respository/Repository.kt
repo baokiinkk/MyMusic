@@ -5,6 +5,9 @@ import javax.inject.Singleton
 
 
 @Singleton
-interface Repository{
-   suspend fun getTrending(): DataApi
+interface Repository {
+    suspend fun getTrending(): DataApi
+    suspend fun getTopAmerica(): DataApi
+    suspend fun getTopKpop(): DataApi
+    suspend fun getTopVpop(): DataApi
 }

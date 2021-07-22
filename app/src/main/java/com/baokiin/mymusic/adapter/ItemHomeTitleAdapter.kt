@@ -1,16 +1,18 @@
 package com.baokiin.mymusic.adapter
 
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.baokiin.mymusic.data.model.Song
 import com.baokiin.mymusic.databinding.ItemTitleHomeBinding
+import java.lang.Integer.MAX_VALUE
 
 
-class ItemTitleHomeAdapter(private val onClick: (Song) -> Unit) :
-    ListAdapter<Song, ItemTitleHomeAdapter.ViewHolder>(
+class ItemHomeTitleAdapter(private val onClick: (Song,Bitmap) -> Unit) :
+    ListAdapter<Song, ItemHomeTitleAdapter.ViewHolder>(
         TitleDIff()
     ) {
     class ViewHolder(private val binding: ItemTitleHomeBinding) :
@@ -29,13 +31,15 @@ class ItemTitleHomeAdapter(private val onClick: (Song) -> Unit) :
             }
         }
 
-        fun bind(item: Song, onClick: ((Song) -> Unit)? = null) {
+        fun bind(item: Song, onClick: ((Song,Bitmap) -> Unit)? = null) {
             binding.data = item
             itemView.setOnClickListener {
                 if (onClick != null) {
-                    onClick(item)
+                    val bm = (binding.imgRecommended.drawable as BitmapDrawable).bitmap
+                    onClick(item,bm)
                 }
             }
+
             binding.executePendingBindings()
 
         }
@@ -49,24 +53,7 @@ class ItemTitleHomeAdapter(private val onClick: (Song) -> Unit) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        getItem(position)?.let { holder.bind(it, onClick) }
-    }
-}
-
-class TitleDIff : DiffUtil.ItemCallback<Song>() {
-    // cung cấp thông tin về cách xác định phần
-    override fun areItemsTheSame(
-        oldItem: Song,
-        newItem: Song
-    ): Boolean { // cho máy biết 2 item_detail khi nào giống
-        return oldItem.id == newItem.id // dung
-    }
-
-    override fun areContentsTheSame(
-        oldItem: Song,
-        newItem: Song
-    ): Boolean { // cho biết item_detail khi nào cùng nội dung
-        return oldItem == newItem
+        getItem(position).let { holder.bind(it, onClick) }
     }
 
 }
