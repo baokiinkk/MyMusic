@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     app:layoutDescription="@xml/play_music_scene">
 
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnPrev"
         android:layout_width="30dp"
@@ -61,6 +62,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/containerPlay"
         tools:srcCompat="@tools:sample/avatars" />
+    <TextView
+        android:id="@+id/txtArtists"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="TextView"
+        android:textSize="20sp"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtNameMusic" />
+
+    <TextView
+        android:id="@+id/txtNameMusic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Ho Quan Hieu"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image" />
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"

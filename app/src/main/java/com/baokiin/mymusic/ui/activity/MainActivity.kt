@@ -7,6 +7,7 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import coil.load
 import com.baokiin.mymusic.R
 import com.baokiin.mymusic.adapter.ViewPageAdapter
 import com.baokiin.mymusic.data.model.Song
@@ -30,7 +31,8 @@ class MainActivity : AppCompatActivity() {
     private val viewModel by viewModels<MainViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val baseBinding: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        val baseBinding: ActivityMainBinding =
+            DataBindingUtil.setContentView(this, R.layout.activity_main)
         baseBinding.apply {
             lifecycleOwner = this@MainActivity
             viewmodel = viewModel
@@ -46,26 +48,32 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        val intent = Intent(this,MediaService::class.java)
+        val intent = Intent(this, MediaService::class.java)
         stopService(intent)
     }
 
 
-
-    private fun utilView(){
+    private fun utilView() {
         val fragmentHome = HomeFragment()
-        fragmentHome.clickCallBack(object :HomeCallBack{
-            override fun clickItem(song: Song,bitmap: Bitmap) {
-                playMusic.visibility = View.VISIBLE
+        fragmentHome.clickCallBack(object : HomeCallBack {
+            override fun clickItem(song: Song, bitmap: Bitmap) {
+                playMusic.apply {
+                    visibility = View.VISIBLE
+                    image.load(bitmap)
+                    txtNameMusic.text = song.name
+                    txtArtists.text = song.artists_names
+                }
                 viewModel.check = View.VISIBLE
-               startMedia(song,bitmap)
+                startMedia(song, bitmap)
             }
 
         })
         playMusic.visibility = viewModel.check
-        viewModel.adapter = ViewPageAdapter(mutableListOf(fragmentHome,CategoryFragment(),InfoFragment()),this)
+        viewModel.adapter =
+            ViewPageAdapter(mutableListOf(fragmentHome, CategoryFragment(), InfoFragment()), this)
     }
-    private fun setupTablayout(){
+
+    private fun setupTablayout() {
         viewpager.isUserInputEnabled = false
         viewpager.adapter = viewModel.adapter
         TabLayoutMediator(
@@ -86,14 +94,16 @@ class MainActivity : AppCompatActivity() {
             }
         }.attach()
     }
-    private fun clickView(){
+
+    private fun clickView() {
 
 
     }
-    private fun startMedia(song: Song, bitmap: Bitmap){
-        val intent = Intent(this,MediaService::class.java)
-        intent.putExtra(SONG,song)
-        intent.putExtra(BITMAP,bitmap)
+
+    private fun startMedia(song: Song, bitmap: Bitmap) {
+        val intent = Intent(this, MediaService::class.java)
+        intent.putExtra(SONG, song)
+        intent.putExtra(BITMAP, bitmap)
         startForegroundService(intent)
 
     }
