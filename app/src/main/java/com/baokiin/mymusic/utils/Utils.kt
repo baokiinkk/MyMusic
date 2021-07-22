@@ -16,7 +16,9 @@ import com.google.android.material.textfield.TextInputLayout
 object Utils {
     const val TAG = "quocbao"
 
-
+    const val ACTION_PLAY = 1
+    const val ACTION_STOP = 2
+    const val ACTION = "action"
     const val CHANNEL_ID = "123457"
     const val SONG = "Song"
     const val BITMAP = "Bitmap"
