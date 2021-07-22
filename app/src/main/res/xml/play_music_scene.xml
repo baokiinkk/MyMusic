@@ -62,5 +62,22 @@
             android:id="@+id/linearLayout"
             motion:layout_constraintTop_toBottomOf="@+id/containerPlay"
             android:layout_marginTop="0dp" />
+        <Constraint
+            motion:layout_constraintEnd_toEndOf="@id/title"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            motion:layout_constraintTop_toTopOf="@id/title"
+            motion:layout_constraintStart_toStartOf="@id/title"
+            android:id="@+id/image"
+            motion:layout_constraintBottom_toBottomOf="@id/title" />
+        <Constraint
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            motion:layout_constraintTop_toTopOf="@+id/containerPlay"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintEnd_toStartOf="@id/btnPlay"
+            android:layout_marginEnd="10dp"
+            motion:layout_constraintBottom_toBottomOf="parent" />
     </ConstraintSet>
 </MotionScene>
