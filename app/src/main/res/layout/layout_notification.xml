@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:background="@color/background_main_color"
     android:layout_height="200dp">
 
     <ImageView
@@ -23,7 +24,7 @@
         android:layout_marginTop="16dp"
         android:layout_toEndOf="@+id/imageView"
         android:text="Loi xin loi vung ve"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold" />
 
@@ -34,11 +35,12 @@
         android:layout_below="@+id/txtName"
         android:layout_alignStart="@+id/txtName"
         android:layout_marginTop="16dp"
+        android:textColor="@color/white"
         android:text="Qyan A.P-loi xin loi vung ve"
         android:textSize="16sp" />
 
 
-    <TextView
+    <ImageView
         android:id="@+id/btnPlayPause"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -47,11 +49,11 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="34dp"
-        android:background="@drawable/ic_pause"
+        android:src="@drawable/ic_pause"
         android:backgroundTint="#000"
         android:gravity="center_vertical" />
 
-    <TextView
+    <ImageView
         android:id="@+id/btnPreMusic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -61,10 +63,10 @@
         android:layout_marginEnd="30dp"
         android:layout_marginBottom="-6dp"
         android:layout_toStartOf="@+id/btnPlayPause"
-        android:background="@drawable/ic__prev"
+        android:src="@drawable/ic__prev"
         android:backgroundTint="#000" />
 
-    <TextView
+    <ImageView
         android:id="@+id/btnNextMusic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -72,6 +74,6 @@
         android:layout_alignBottom="@+id/btnPlayPause"
         android:layout_marginStart="30dp"
         android:layout_toEndOf="@+id/btnPlayPause"
-        android:background="@drawable/ic_next"
+        android:src="@drawable/ic_next"
         android:backgroundTint="#000" />
 </RelativeLayout>
