@@ -63,7 +63,8 @@ private void lib(){
     dependencies.implementation "com.royrodriguez:transitionbutton:0.2.0"
     //load
     dependencies.implementation 'com.facebook.shimmer:shimmer:0.5.0'
-    // zoom view
+    // mediastyle
+    dependencies.implementation 'androidx.media:media:1.4.0'
 }
 private void retrofit(){
     dependencies.implementation "com.squareup.retrofit2:retrofit:$retrofit_version"

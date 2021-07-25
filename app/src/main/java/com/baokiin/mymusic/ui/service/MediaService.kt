@@ -6,23 +6,20 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.media.AudioAttributes
 import android.media.MediaPlayer
-import android.os.Build
 import android.os.IBinder
-import android.util.Log
-import android.widget.ImageView
-import android.widget.RemoteViews
+import android.support.v4.media.session.MediaSessionCompat
 import androidx.core.app.NotificationCompat
-import coil.load
+import androidx.media.app.NotificationCompat.MediaStyle
 import com.baokiin.mymusic.R
 import com.baokiin.mymusic.broadcast.MyBroadcastReceiver
 import com.baokiin.mymusic.data.model.Song
-import com.baokiin.mymusic.ui.activity.MainActivity
 import com.baokiin.mymusic.utils.Utils.ACTION
 import com.baokiin.mymusic.utils.Utils.ACTION_PLAY
 import com.baokiin.mymusic.utils.Utils.ACTION_STOP
 import com.baokiin.mymusic.utils.Utils.BITMAP
 import com.baokiin.mymusic.utils.Utils.CHANNEL_ID
 import com.baokiin.mymusic.utils.Utils.SONG
+import com.baokiin.mymusic.utils.Utils.TAG
 
 
 class MediaService : Service() {
@@ -40,7 +37,7 @@ class MediaService : Service() {
         if (action != null && action != -1) {
             handleActionMusic(action)
         }
-        bitmap?.let { bitmap->
+        bitmap?.let { bitmap ->
             mbitmap = bitmap
             song?.let {
                 msong = it
@@ -109,51 +106,28 @@ class MediaService : Service() {
     }
 
     private fun sendNotification(song: Song, bitmap: Bitmap) {
-        val action =
-            PendingIntent.getActivity(
-                this,
-                0,
-                Intent(this, MainActivity::class.java),
-                PendingIntent.FLAG_CANCEL_CURRENT
-            )
-        val v = ImageView(this)
-        v.load(song.thumbnail)
-//        val bm = (v.drawable as BitmapDrawable).bitmap
-        val remoteView = RemoteViews(packageName, R.layout.layout_notification)
-        remoteView.apply {
-            setTextViewText(R.id.txtName, song.name)
-            setTextViewText(R.id.txtTacGia, song.artists_names)
-            setImageViewBitmap(R.id.imageView, bitmap)
-            setImageViewResource(
-                R.id.btnPlayPause,
-                if (mediaPlayer?.isPlaying == true) R.drawable.ic_pause else R.drawable.ic_play
-            )
-            setOnClickPendingIntent(
-                R.id.btnPlayPause,
-                getPendingIntent(this@MediaService, ACTION_PLAY)
-            )
-        }
-        val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val builder: NotificationCompat.Builder
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                CHANNEL_ID,
-                "Channel service media",
-                NotificationManager.IMPORTANCE_HIGH
-            )
-            channel.description = "demo"
-            channel.setSound(null, null)
-            channel.setShowBadge(false)
-            manager.createNotificationChannel(channel)
-            builder = NotificationCompat.Builder(this, CHANNEL_ID)
-        } else {
-            builder = NotificationCompat.Builder(this)
-        }
-        builder
-            .setContentIntent(action)
-            .setContentTitle("Demo")
+        val media = MediaSessionCompat(this, TAG)
+        val notificationBuilder = NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_next)
-            .setCustomBigContentView(remoteView)
-        startForeground(101, builder.build())
+            .setContentTitle(song.name)
+            .setContentText(song.artists_names)
+            .setLargeIcon(bitmap)
+            .addAction(R.drawable.ic_prev, "Previous", null)
+            .addAction(
+                if (mediaPlayer?.isPlaying == true) R.drawable.ic_pause else R.drawable.ic_play,
+                "play",
+                getPendingIntent(
+                    this,
+                    ACTION_PLAY
+                )
+            )
+            .addAction(R.drawable.ic_next, "Next", null)
+            .setStyle(
+                MediaStyle()
+                    .setShowActionsInCompactView(1)
+                    .setMediaSession(media.sessionToken)
+            )
+
+        startForeground(101, notificationBuilder.build())
     }
 }

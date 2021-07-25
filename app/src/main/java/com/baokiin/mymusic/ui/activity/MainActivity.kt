@@ -3,6 +3,7 @@ package com.baokiin.mymusic.ui.activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -28,9 +29,11 @@ import kotlinx.android.synthetic.main.play_music.view.*
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
     private val viewModel by viewModels<MainViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         val baseBinding: ActivityMainBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_main)
         baseBinding.apply {
@@ -63,12 +66,11 @@ class MainActivity : AppCompatActivity() {
                     txtNameMusic.text = song.name
                     txtArtists.text = song.artists_names
                 }
-                viewModel.check = View.VISIBLE
                 startMedia(song, bitmap)
             }
 
         })
-        playMusic.visibility = viewModel.check
+
         viewModel.adapter =
             ViewPageAdapter(mutableListOf(fragmentHome, CategoryFragment(), InfoFragment()), this)
     }

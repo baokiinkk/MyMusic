@@ -14,16 +14,19 @@
         <service
             android:name=".ui.service.MediaService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
 
-        <activity android:name=".ui.activity.MainActivity">
+        <activity
+            android:name=".ui.activity.MainActivity"
+            android:launchMode="singleTop">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <receiver android:name=".broadcast.MyBroadcastReceiver"/>
+        <receiver android:name=".broadcast.MyBroadcastReceiver" />
     </application>
 
 </manifest>
