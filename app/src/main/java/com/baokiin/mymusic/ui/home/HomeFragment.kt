@@ -1,15 +1,23 @@
 package com.baokiin.mymusic.ui.home
 
+import android.content.Intent
+import android.graphics.Bitmap
 import android.util.Log
+import androidx.core.content.ContextCompat.startForegroundService
 import androidx.fragment.app.viewModels
 import androidx.viewpager.widget.PagerAdapter
 import com.baokiin.mymusic.R
 import com.baokiin.mymusic.adapter.ItemHomeAdapter
 import com.baokiin.mymusic.adapter.ItemHomeTitleAdapter
+import com.baokiin.mymusic.data.model.MediaInfo
+import com.baokiin.mymusic.data.model.Song
 import com.baokiin.mymusic.databinding.FragmentHomeBinding
+import com.baokiin.mymusic.ui.service.MediaService
 import com.baokiin.mymusic.utils.BaseFragment
+import com.baokiin.mymusic.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_home.*
+import org.greenrobot.eventbus.EventBus
 
 
 @AndroidEntryPoint
@@ -24,7 +32,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private lateinit var itemamericaHomeAdapter: ItemHomeAdapter
     private lateinit var itemkpopHomeAdapter: ItemHomeAdapter
     private lateinit var itemvpopHomeAdapter: ItemHomeAdapter
-    private lateinit var onClickItem: HomeCallBack
 
     //-------------------------------- createView ----------------------------------------
     override fun onCreateViews() {
@@ -47,10 +54,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     }
 
-    //-------------------------------- CallBack ----------------------------------------
-    fun clickCallBack(callBack: HomeCallBack) {
-        onClickItem = callBack
-    }
+
 
     //-------------------------------- Data ----------------------------------------
     private fun getData() {
@@ -76,26 +80,30 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun setUpAdapter() {
-        itemtrendHomeAdapter = ItemHomeTitleAdapter {it,bitmap->
+        itemtrendHomeAdapter = ItemHomeTitleAdapter {
             val url = "http://api.mp3.zing.vn/api/streaming/audio/${it.id}/320"
             it.song = url
-            onClickItem.clickItem(it,bitmap)
+            startMediaService(it)
         }
-        itemamericaHomeAdapter = ItemHomeAdapter {it,bitmap->
+        itemamericaHomeAdapter = ItemHomeAdapter {
             val url = "http://api.mp3.zing.vn/api/streaming/audio/${it.id}/320"
             it.song = url
-            onClickItem.clickItem(it,bitmap)
+            startMediaService(it)
         }
-        itemkpopHomeAdapter = ItemHomeAdapter {it,bitmap->
+        itemkpopHomeAdapter = ItemHomeAdapter {
             val url = "http://api.mp3.zing.vn/api/streaming/audio/${it.id}/320"
             it.song = url
-            onClickItem.clickItem(it,bitmap)
+            startMediaService(it)
         }
-        itemvpopHomeAdapter = ItemHomeAdapter {it,bitmap->
+        itemvpopHomeAdapter = ItemHomeAdapter {
             val url = "http://api.mp3.zing.vn/api/streaming/audio/${it.id}/320"
             it.song = url
-            onClickItem.clickItem(it,bitmap)
+            startMediaService(it)
         }
+    }
+
+    private fun startMediaService(song: Song) {
+        EventBus.getDefault().post(song)
     }
 
 }

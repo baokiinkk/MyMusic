@@ -8,10 +8,12 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.baokiin.mymusic.data.model.Song
 import com.baokiin.mymusic.databinding.ItemTitleHomeBinding
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.lang.Integer.MAX_VALUE
 
 
-class ItemHomeTitleAdapter(private val onClick: (Song,Bitmap) -> Unit) :
+class ItemHomeTitleAdapter(private val onClick: (Song) -> Unit) :
     ListAdapter<Song, ItemHomeTitleAdapter.ViewHolder>(
         TitleDIff()
     ) {
@@ -31,12 +33,12 @@ class ItemHomeTitleAdapter(private val onClick: (Song,Bitmap) -> Unit) :
             }
         }
 
-        fun bind(item: Song, onClick: ((Song,Bitmap) -> Unit)? = null) {
+        fun bind(item: Song, onClick: ((Song) -> Unit)? = null) {
             binding.data = item
+
             itemView.setOnClickListener {
                 if (onClick != null) {
-                    val bm = (binding.imgRecommended.drawable as BitmapDrawable).bitmap
-                    onClick(item,bm)
+                    onClick(item)
                 }
             }
 

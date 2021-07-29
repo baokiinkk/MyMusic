@@ -3,7 +3,6 @@ package com.baokiin.mymusic.broadcast
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import com.baokiin.mymusic.ui.service.MediaService
 import com.baokiin.mymusic.utils.Utils.ACTION
 

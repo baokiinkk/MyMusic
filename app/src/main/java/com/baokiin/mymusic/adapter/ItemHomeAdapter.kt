@@ -12,7 +12,7 @@ import com.baokiin.mymusic.databinding.ItemHomeBinding
 import com.baokiin.mymusic.databinding.ItemTitleHomeBinding
 
 
-class ItemHomeAdapter(private val onClick: (Song,Bitmap) -> Unit) :
+class ItemHomeAdapter(private val onClick: (Song) -> Unit) :
     ListAdapter<Song, ItemHomeAdapter.ViewHolder>(
         TitleDIff()
     ) {
@@ -32,12 +32,12 @@ class ItemHomeAdapter(private val onClick: (Song,Bitmap) -> Unit) :
             }
         }
 
-        fun bind(item: Song, onClick: ((Song,Bitmap) -> Unit)? = null) {
+        fun bind(item: Song, onClick: ((Song) -> Unit)? = null) {
             binding.data = item
             itemView.setOnClickListener {
                 if (onClick != null) {
-                    val bm = (binding.imgPopular.drawable as BitmapDrawable).bitmap
-                    onClick(item,bm)
+
+                    onClick(item)
                 }
             }
             binding.executePendingBindings()

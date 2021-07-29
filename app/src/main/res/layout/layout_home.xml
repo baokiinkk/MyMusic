@@ -42,8 +42,7 @@
             <androidx.viewpager2.widget.ViewPager2
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="10dp"
-                android:paddingEnd="140dp"
+                android:paddingEnd="200dp"
                 android:clipChildren="false"
                 android:clipToPadding="false"
                 android:overScrollMode="never"

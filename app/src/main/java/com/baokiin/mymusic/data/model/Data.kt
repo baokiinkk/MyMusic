@@ -1,6 +1,7 @@
 package com.baokiin.mymusic.data.model
 
 import android.graphics.Bitmap
+import android.media.MediaPlayer
 import java.io.Serializable
 
 data class DataApi(val message:String? = null,val data: Data?=null)
@@ -13,9 +14,10 @@ data class Song(
     val performer:String,
     val lyric:String,
     val thumbnail:String,
-    var song:String? = null,
-    var bitmap: Bitmap? = null
+    var song:String? = null
 ):Serializable
+
+data class MediaInfo(val song:Song,val mediaPlayer: MediaPlayer)
 
 
 

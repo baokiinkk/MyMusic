@@ -34,5 +34,12 @@ class RepositoryImpl @Inject constructor(private val apiService: ApiService) : R
             DataApi(message = "lấy thông tin lỗi!!!")
         }
 
+    override suspend fun getSongs(id: String): DataApi =
+        try {
+            apiService.getSongs(id)
+        } catch (cause: HttpException) {
+            DataApi(message = "lấy thông tin lỗi!!!")
+        }
+
 }
 

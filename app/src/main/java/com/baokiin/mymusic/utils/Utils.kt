@@ -19,7 +19,9 @@ object Utils {
     const val ACTION_PLAY = 1
     const val ACTION_STOP = 2
     const val ACTION = "action"
-    const val CHANNEL_ID = "123457"
+    const val ACTION_NEXT = 4
+    const val ACTION_PREV = 3
+    const val CHANNEL_ID = "123456"
     const val SONG = "Song"
     const val BITMAP = "Bitmap"
 

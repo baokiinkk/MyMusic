@@ -10,4 +10,5 @@ interface Repository {
     suspend fun getTopAmerica(): DataApi
     suspend fun getTopKpop(): DataApi
     suspend fun getTopVpop(): DataApi
+    suspend fun getSongs(id:String):DataApi
 }
