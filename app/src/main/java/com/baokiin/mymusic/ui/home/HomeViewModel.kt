@@ -3,6 +3,7 @@ package com.baokiin.mymusic.ui.home
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.baokiin.mymusic.R
 import com.baokiin.mymusic.data.model.Song
 import com.baokiin.mymusic.data.respository.Repository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,6 +20,7 @@ class HomeViewModel@Inject constructor(private val repo: Repository):ViewModel()
     val amedicaName = "Top 100 USUK"
     val kpopName = "Top 100 Kpop"
     val vpopName = "Top 100 VPop"
+    val imageTitle = R.drawable.title_image
     fun getData(){
         viewModelScope.launch(Dispatchers.IO){
             val dataTrend = repo.getTrending().data?.song?.subList(0, 6)

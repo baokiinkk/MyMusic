@@ -1,12 +1,14 @@
 package com.baokiin.mymusic.binding
 
 import androidx.databinding.BindingAdapter
+import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.baokiin.mymusic.adapter.ItemHomeAdapter
 import com.baokiin.mymusic.adapter.ItemHomeTitleAdapter
-import com.baokiin.mymusic.adapter.SliderTransformer
+import com.baokiin.mymusic.adapter.ViewPageAdapter
+import com.baokiin.mymusic.ui.music.MusicFragment
 import kotlin.math.abs
 
 
@@ -48,15 +50,12 @@ class ViewPagerBinding {
         fun viewpager(view: ViewPager2, adapter: ItemHomeAdapter) {
             view.apply {
                 this.adapter = adapter
-                offscreenPageLimit = 3
+                offscreenPageLimit = 2
                 val cpt = CompositePageTransformer()
                 cpt.addTransformer(MarginPageTransformer(20))
-                cpt.addTransformer(SliderTransformer(20))
                 setPageTransformer(cpt)
             }
         }
-
-
 
     }
 }

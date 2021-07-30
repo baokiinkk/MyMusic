@@ -31,6 +31,13 @@ class UtilsBinding{
                 }
             }
         }
+        @BindingAdapter("android:loadImage")
+        @JvmStatic
+        fun loadImage(view: ImageView, image: Int?) {
+            image?.let {
+                view.load(image)
+            }
+        }
 
         @BindingAdapter("android:adapter","android:tab_layout")
         @JvmStatic

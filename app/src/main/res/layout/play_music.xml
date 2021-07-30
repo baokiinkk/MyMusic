@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/motionLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layoutDescription="@xml/play_music_scene">
+    android:layout_height="match_parent">
 
 
     <androidx.appcompat.widget.AppCompatButton
@@ -52,39 +51,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/containerPlay" />
 
-    <ImageView
-        android:id="@+id/image"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="100dp"
-        android:scaleType="centerCrop"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/containerPlay"
-        tools:srcCompat="@tools:sample/avatars" />
-    <TextView
-        android:id="@+id/txtArtists"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="TextView"
-        android:textSize="20sp"
-        android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtNameMusic" />
 
-    <TextView
-        android:id="@+id/txtNameMusic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Ho Quan Hieu"
-        android:textColor="@color/white"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewpagerMusic"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnPlay"
+        app:layout_constraintEnd_toEndOf="@+id/containerPlay"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/image" />
+        app:layout_constraintTop_toTopOf="@+id/containerPlay" />
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
@@ -160,4 +135,4 @@
             android:layout_gravity="center"
             android:background="@drawable/ic_pause" />
     </FrameLayout>
-</androidx.constraintlayout.motion.widget.MotionLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -61,7 +61,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         viewModel.apply {
             viewModel.getData()
             trending.observe(viewLifecycleOwner, {
-                it?.let { itemtrendHomeAdapter.submitList(it) }
+                it?.let {
+                    itemtrendHomeAdapter.submitList(it)
+                    baseBinding.viewPagerTitle.currentItem = 1
+                }
             })
             america.observe(viewLifecycleOwner, {
                 it?.let { itemamericaHomeAdapter.submitList(it) }

@@ -6,7 +6,6 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import coil.load
 import com.baokiin.mymusic.R
 import com.baokiin.mymusic.adapter.ViewPageAdapter
 import com.baokiin.mymusic.data.model.MediaInfo
@@ -15,6 +14,7 @@ import com.baokiin.mymusic.databinding.ActivityMainBinding
 import com.baokiin.mymusic.ui.CategoryFragment
 import com.baokiin.mymusic.ui.InfoFragment
 import com.baokiin.mymusic.ui.home.HomeFragment
+import com.baokiin.mymusic.ui.music.MusicFragment
 import com.baokiin.mymusic.ui.service.MediaService
 import com.baokiin.mymusic.utils.Utils
 import com.baokiin.mymusic.utils.Utils.ACTION_NEXT
@@ -58,9 +58,7 @@ class MainActivity : AppCompatActivity() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(mediaInfo: MediaInfo) {
         playMusic.btnPlayPauseMainActivity.setBackgroundResource(if (mediaInfo.mediaPlayer.isPlaying) R.drawable.ic_pause else R.drawable.ic_play)
-        playMusic.image.load(mediaInfo.song.thumbnail)
-        playMusic.txtNameMusic.text = mediaInfo.song.name
-        playMusic.txtArtists.text = mediaInfo.song.artists_names
+        viewModel.mediaInfo.postValue(mediaInfo)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -83,6 +81,7 @@ class MainActivity : AppCompatActivity() {
     private fun utilView() {
         viewModel.adapter =
             ViewPageAdapter(mutableListOf(HomeFragment(), CategoryFragment(), InfoFragment()), this)
+        viewModel.adapterMusic = ViewPageAdapter(mutableListOf(MusicFragment()), this)
         viewModel.songs.observe(this, {
             it?.let {
                 EventBus.getDefault().post(it)
@@ -93,6 +92,7 @@ class MainActivity : AppCompatActivity() {
     private fun setupTablayout() {
         viewpager.isUserInputEnabled = false
         viewpager.adapter = viewModel.adapter
+        playMusic.viewpagerMusic.adapter = viewModel.adapterMusic
         TabLayoutMediator(
             tabLayout,
             viewpager
