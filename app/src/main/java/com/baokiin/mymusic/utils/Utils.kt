@@ -3,14 +3,12 @@ package com.baokiin.mymusic.utils
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
-import androidx.core.widget.doOnTextChanged
+import androidx.constraintlayout.motion.widget.MotionLayout
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.baokiin.mymusic.R
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.textfield.TextInputLayout
 
 
 object Utils {
@@ -23,7 +21,6 @@ object Utils {
     const val ACTION_PREV = 3
     const val CHANNEL_ID = "123456"
     const val SONG = "Song"
-    const val BITMAP = "Bitmap"
 
 
     fun gotoFragment(activity: FragmentActivity,fragment: Fragment) {
@@ -54,5 +51,12 @@ object Utils {
 
         sheetDialog.setContentView(viewDialog)
         return sheetDialog
+    }
+    fun setProgresMotion(motionLayout: MotionLayout, progress: Float) {
+        if (ViewCompat.isLaidOut(motionLayout)) {
+            motionLayout.progress = progress
+        } else {
+            motionLayout.post { motionLayout.progress = progress }
+        }
     }
 }

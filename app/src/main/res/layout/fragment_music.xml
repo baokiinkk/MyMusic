@@ -15,40 +15,57 @@
         android:layout_height="match_parent"
         tools:context=".ui.music.MusicFragment">
 
-        <ImageView
-            android:id="@+id/image"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_marginTop="100dp"
-            android:loadImageTitleHome="@{viewmodel.mediaInfo.song.thumbnail}"
-            android:scaleType="centerCrop"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <TextView
             android:id="@+id/txtArtists"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:text="@{viewmodel.mediaInfo.song.artists_names}"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:fontFamily="@font/playfairdisplay_medium"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtName" />
+        <TextView
+            android:id="@+id/txtName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/playfairdisplay_bold"
+            android:text="@{viewmodel.mediaInfo.song.name}"
             android:textColor="@color/white"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtNameMusic" />
+            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
-        <TextView
-            android:id="@+id/txtNameMusic"
-            android:layout_width="wrap_content"
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/seekBarMedia"
+            style="@style/MySeekBar"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="@{viewmodel.mediaInfo.song.name}"
-            android:textColor="@color/white"
-            android:textSize="24sp"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginBottom="50dp"
+            android:valueFrom="0.0"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.585"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:loadImageTitleHome="@{viewmodel.mediaInfo.song.thumbnail}"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toTopOf="@+id/seekBarMedia"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/image" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.25"
+      />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

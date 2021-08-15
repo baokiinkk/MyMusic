@@ -1,5 +1,6 @@
 package com.baokiin.mymusic.adapter
 
+import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.view.LayoutInflater
@@ -26,6 +27,7 @@ class ItemHomeAdapter(private val onClick: (Song) -> Unit) :
                         parent,
                         false
                     )
+
                 return ViewHolder(
                     binding
                 )

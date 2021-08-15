@@ -5,10 +5,16 @@ import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
+import com.baokiin.mymusic.R
 import com.baokiin.mymusic.adapter.ItemHomeAdapter
 import com.baokiin.mymusic.adapter.ItemHomeTitleAdapter
 import com.baokiin.mymusic.adapter.ViewPageAdapter
+import com.baokiin.mymusic.binding.ViewPagerBinding.Companion.tabLayout
+import com.baokiin.mymusic.binding.ViewPagerBinding.Companion.viewpager
 import com.baokiin.mymusic.ui.music.MusicFragment
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.math.abs
 
 
@@ -55,6 +61,30 @@ class ViewPagerBinding {
                 cpt.addTransformer(MarginPageTransformer(20))
                 setPageTransformer(cpt)
             }
+        }
+
+        @BindingAdapter("android:tab_layout","android:adapter_viewpager2")
+        @JvmStatic
+        fun viewpager(view: ViewPager2, tabLayout: TabLayout,adapter: ViewPageAdapter) {
+            view.adapter = adapter
+            view.isUserInputEnabled = false
+            TabLayoutMediator(
+                tabLayout,
+                view
+            ) { tab, pos ->
+                when (pos) {
+                    0 -> {
+                        tab.setIcon(R.drawable.ic_home)
+                    }
+                    1 -> {
+                        tab.setIcon(R.drawable.ic_trend)
+                    }
+
+                    2 -> {
+                        tab.setIcon(R.drawable.ic_account)
+                    }
+                }
+            }.attach()
         }
 
     }

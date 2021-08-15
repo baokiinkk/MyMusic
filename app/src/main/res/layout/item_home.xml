@@ -15,8 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="10dp"
-        app:cardCornerRadius="15dp"
-        app:cardElevation="5dp"
+        app:cardCornerRadius="10dp"
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -28,7 +27,7 @@
                 android:id="@+id/imgPopular"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/bg_item_home"
                 android:loadImageHome="@{data.thumbnail}"
                 android:scaleType="centerCrop"
@@ -49,7 +48,7 @@
                 android:text="@{data.name}"
                 android:textColor="@color/color_text_white"
                 android:textSize="15sp"
-                android:textStyle="bold"
+                android:fontFamily="@font/playfairdisplay_bold"
                 app:layout_constraintBottom_toTopOf="@+id/txt"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -62,6 +61,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
                 android:lines="1"
+                android:fontFamily="@font/playfairdisplay_medium"
                 android:text="@{data.artists_names}"
                 android:textColor="#7C7C7C"
                 app:layout_constraintBottom_toBottomOf="parent"

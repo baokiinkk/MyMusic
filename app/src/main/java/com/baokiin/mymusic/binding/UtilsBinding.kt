@@ -22,12 +22,22 @@ class UtilsBinding{
                 view.load(it.replace("w94","w360"))
             }
         }
+        @BindingAdapter("android:loadImagePlayMusic")
+        @JvmStatic
+        fun loadImagePlayMusic(view: ImageView, image: String?) {
+            image?.let {
+                view.load(it.replace("w94","w360")){
+                    transformations(BlurTransformation(view.context,25f,3f))
+                }
+
+            }
+        }
         @BindingAdapter("android:loadImageHome")
         @JvmStatic
         fun loadImageHome(view: ImageView, image: String?) {
             image?.let {
                 view.load(it.replace("w94","w360")){
-                    transformations(RoundedCornersTransformation(25f))
+                    transformations(RoundedCornersTransformation(15f))
                 }
             }
         }

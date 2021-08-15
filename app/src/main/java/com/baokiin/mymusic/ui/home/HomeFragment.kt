@@ -1,22 +1,14 @@
 package com.baokiin.mymusic.ui.home
 
-import android.content.Intent
-import android.graphics.Bitmap
-import android.util.Log
-import androidx.core.content.ContextCompat.startForegroundService
+
 import androidx.fragment.app.viewModels
-import androidx.viewpager.widget.PagerAdapter
 import com.baokiin.mymusic.R
 import com.baokiin.mymusic.adapter.ItemHomeAdapter
 import com.baokiin.mymusic.adapter.ItemHomeTitleAdapter
-import com.baokiin.mymusic.data.model.MediaInfo
 import com.baokiin.mymusic.data.model.Song
 import com.baokiin.mymusic.databinding.FragmentHomeBinding
-import com.baokiin.mymusic.ui.service.MediaService
 import com.baokiin.mymusic.utils.BaseFragment
-import com.baokiin.mymusic.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_home.*
 import org.greenrobot.eventbus.EventBus
 
 
