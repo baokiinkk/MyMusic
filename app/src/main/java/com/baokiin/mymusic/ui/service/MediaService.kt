@@ -1,9 +1,9 @@
 package com.baokiin.mymusic.ui.service
 
+import android.annotation.SuppressLint
 import android.app.*
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.media.AudioAttributes
 import android.media.MediaMetadata
@@ -11,10 +11,9 @@ import android.media.MediaPlayer
 import android.os.IBinder
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
-import android.support.v4.media.session.PlaybackStateCompat
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.media.app.NotificationCompat.MediaStyle
-import coil.Coil
 import coil.ImageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
@@ -22,26 +21,32 @@ import com.baokiin.mymusic.R
 import com.baokiin.mymusic.broadcast.MyBroadcastReceiver
 import com.baokiin.mymusic.data.model.MediaInfo
 import com.baokiin.mymusic.data.model.Song
+import com.baokiin.mymusic.data.model.Times
+import com.baokiin.mymusic.data.model.TimesLong
 import com.baokiin.mymusic.utils.Utils.ACTION
 import com.baokiin.mymusic.utils.Utils.ACTION_NEXT
 import com.baokiin.mymusic.utils.Utils.ACTION_PLAY
 import com.baokiin.mymusic.utils.Utils.ACTION_PREV
 import com.baokiin.mymusic.utils.Utils.ACTION_STOP
-import com.baokiin.mymusic.utils.Utils.BITMAP
 import com.baokiin.mymusic.utils.Utils.CHANNEL_ID
 import com.baokiin.mymusic.utils.Utils.SONG
 import com.baokiin.mymusic.utils.Utils.TAG
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.lang.String
+import java.util.concurrent.TimeUnit
 
 
 class MediaService : Service() {
     var mediaPlayer: MediaPlayer? = null
     private lateinit var msong: MutableList<Song>
     private var indexMedia = 0
+    var job: Job? = null
 
     override fun onBind(intent: Intent): IBinder? {
         return null
@@ -66,6 +71,7 @@ class MediaService : Service() {
             mediaPlayer = startMedia(msong[indexMedia])
             sendNotification(msong[indexMedia])
             mediaPlayer?.let { mediaPlayer ->
+                timeSend(mediaPlayer)
                 EventBus.getDefault().post(MediaInfo(msong[indexMedia], mediaPlayer))
             }
 
@@ -87,7 +93,30 @@ class MediaService : Service() {
     fun onMessageEvent(song: MutableList<Song>) {
         msong.addAll(song)
     }
-
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    fun onMessagePosition(currentPosition: TimesLong) {
+       if(mediaPlayer?.isPlaying == true)
+           mediaPlayer?.start()
+        mediaPlayer?.seekTo(currentPosition.time.toInt())
+    }
+    private fun timeSend(mediaPlayer: MediaPlayer){
+        if(job?.isActive == true)
+            job?.cancel()
+        job = GlobalScope.launch {
+            while (true){
+               try {
+                   if(mediaPlayer.currentPosition >= mediaPlayer.duration) {
+                       nextMusic(true)
+                       break
+                   }
+                   EventBus.getDefault().post(Times(mediaPlayer.currentPosition))
+                   delay(500)
+               }catch (e:Exception){
+                   break
+               }
+            }
+        }
+    }
     private fun handleActionMusic(action: Int) {
         when (action) {
             ACTION_PLAY -> {
@@ -116,6 +145,7 @@ class MediaService : Service() {
         mediaPlayer = startMedia(msong[indexMedia])
         mediaPlayer?.let {
             sendNotification(msong[indexMedia])
+            timeSend(it)
             EventBus.getDefault().post(MediaInfo(msong[indexMedia], it))
         }
 

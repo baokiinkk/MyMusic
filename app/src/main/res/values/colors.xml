@@ -8,8 +8,10 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="color_text_white">#fff</color>
-    <color name="background_main_color">#20202E</color>
-    <color name="red_color">#FF1B4C</color>
+    <color name="background_main_color">#181923</color>
+    <color name="background_actionbar">#0E0E13</color>
+    <color name="red_color">#FE1B49</color>
     <color name="color_item">#2E303F</color>
     <color name="color_icon">#80FFFFFF</color>
+    <color name="color_select_icon">@color/selected_tab_color</color>
 </resources>
