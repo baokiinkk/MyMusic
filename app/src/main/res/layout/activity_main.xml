@@ -36,19 +36,27 @@
                 style="@style/AppTabLayout"
                 android:layout_width="0dp"
                 android:layout_height="70dp"
-                android:orientation="horizontal"
-                app:tabPaddingTop="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tabIndicatorGravity="bottom">
+                app:tabPaddingTop="20dp">
+
                 <com.google.android.material.tabs.TabItem
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:icon="@drawable/ic_menu"
-                    />
+                    android:icon="@drawable/ic_menu" />
             </com.google.android.material.tabs.TabLayout>
-
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/containerFramgnet"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:visibility="gone"
+                android:name="com.baokiin.mymusic.ui.playlist.PlayListFragment"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/playMusic"
                 android:layout_width="0dp"
@@ -59,6 +67,9 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
+
+
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

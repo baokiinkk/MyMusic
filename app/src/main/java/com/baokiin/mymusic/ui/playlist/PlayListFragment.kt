@@ -1,60 +1,76 @@
 package com.baokiin.mymusic.ui.playlist
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.util.Log
+import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import com.baokiin.mymusic.R
+import com.baokiin.mymusic.adapter.ItemPlayListAdapter
+import com.baokiin.mymusic.data.model.DataApi
+import com.baokiin.mymusic.data.model.EventBusModel
+import com.baokiin.mymusic.data.model.Song
+import com.baokiin.mymusic.databinding.FragmentPlayListBinding
+import com.baokiin.mymusic.ui.home.HomeViewModel
+import com.baokiin.mymusic.utils.BaseFragment
+import com.baokiin.mymusic.utils.Utils.CATEGORY
+import com.baokiin.mymusic.utils.Utils.KPOP
+import com.baokiin.mymusic.utils.Utils.USUK
+import com.baokiin.mymusic.utils.Utils.VPOP
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class PlayListFragment : BaseFragment<FragmentPlayListBinding>() {
+    override fun getLayoutRes(): Int {
+        return R.layout.fragment_play_list
+    }
 
-/**
- * A simple [Fragment] subclass.
- * Use the [PlayListFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class PlayListFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    //-------------------------------- Variable ----------------------------------------
+    private lateinit var adapterItem: ItemPlayListAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    //-------------------------------- createView ----------------------------------------
+    override fun onCreateViews() {
+        setup()
+        clickView()
+    }
+
+    //-------------------------------------- recive data ------------------------------------------
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageSecond(song: DataApi) {
+        baseBinding.data = song
+        adapterItem.submitList(song.data?.song ?: song.data?.items)
+        baseBinding.btnPlay.setOnClickListener {
+            EventBus.getDefault().post(
+                EventBusModel.SongSingle(
+                    adapterItem.currentList[0],
+                    adapterItem.currentList.subList(1,adapterItem.itemCount)
+                )
+            )
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_play_list, container, false)
+    //-------------------------------- Func ----------------------------------------
+    private fun setup() {
+        EventBus.getDefault().register(this)
+        adapterItem = ItemPlayListAdapter {
+            val url = "http://api.mp3.zing.vn/api/streaming/audio/${it.id}/320"
+            it.song = url
+            startMediaService(it)
+        }
+        baseBinding.apply {
+            adapter = adapterItem
+        }
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment PlayListFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            PlayListFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    private fun startMediaService(song: Song) {
+        EventBus.getDefault().post(EventBusModel.SongSingle(song))
     }
+
+    private fun clickView() {
+        baseBinding.btnBack.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
+
+    }
+
 }

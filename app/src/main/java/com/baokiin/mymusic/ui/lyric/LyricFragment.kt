@@ -7,7 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.baokiin.mymusic.R
-import com.baokiin.mymusic.data.model.TimesLong
+import com.baokiin.mymusic.data.model.EventBusModel
+import com.baokiin.mymusic.data.model.EventBusModel.*
 import com.baokiin.mymusic.ui.activity.MainViewModel
 import com.lauzy.freedom.library.LrcHelper
 import kotlinx.android.synthetic.main.fragment_lyric.view.*

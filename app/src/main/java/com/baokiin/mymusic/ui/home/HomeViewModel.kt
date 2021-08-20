@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.baokiin.mymusic.R
+import com.baokiin.mymusic.data.model.DataApi
 import com.baokiin.mymusic.data.model.Song
 import com.baokiin.mymusic.data.respository.Repository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,23 +14,24 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel@Inject constructor(private val repo: Repository):ViewModel() {
-    val trending:MutableLiveData<MutableList<Song>?> = MutableLiveData(null)
-    val kpop:MutableLiveData<MutableList<Song>?> = MutableLiveData(null)
-    val vpop:MutableLiveData<MutableList<Song>?> = MutableLiveData(null)
-    val america:MutableLiveData<MutableList<Song>?> = MutableLiveData(null)
-    val amedicaName = "Top 100 USUK"
-    val kpopName = "Top 100 Kpop"
-    val vpopName = "Top 100 VPop"
-    val imageTitle = R.drawable.title_image
+    val trending:MutableLiveData<DataApi?> = MutableLiveData(null)
+    val kpop:MutableLiveData<DataApi?> = MutableLiveData(null)
+    val vpop:MutableLiveData<DataApi?> = MutableLiveData(null)
+    val america:MutableLiveData<DataApi?> = MutableLiveData(null)
+    val amedicaName = "TOP 100 USUK"
+    val kpopName = "TOP 100 KPOP"
+    val vpopName = "TOP 100 VPOP"
+    val imageMain = R.drawable.background_main
+    val imageTrend = R.drawable.bg_chart_music
+    val imageMy = R.drawable.bg_my_like_music
+
     fun getData(){
         viewModelScope.launch(Dispatchers.IO){
-            val dataTrend = repo.getTrending().data?.song?.subList(0, 6)
-            dataTrend?.add(0, dataTrend[5])
-            dataTrend?.add(dataTrend[1])
+            val dataTrend = repo.getTrending()
             trending.postValue(dataTrend)
-            kpop.postValue(repo.getTopKpop().data?.items?.subList(0, 6))
-            vpop.postValue(repo.getTopVpop().data?.items?.subList(0, 6))
-            america.postValue(repo.getTopAmerica().data?.items?.subList(0, 6))
+            kpop.postValue(repo.getTopKpop())
+            vpop.postValue(repo.getTopVpop())
+            america.postValue(repo.getTopAmerica())
         }
     }
 }

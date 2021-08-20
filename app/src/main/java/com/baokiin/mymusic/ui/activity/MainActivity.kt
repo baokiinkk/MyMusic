@@ -4,13 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import com.baokiin.mymusic.R
 import com.baokiin.mymusic.adapter.ViewPageAdapter
-import com.baokiin.mymusic.data.model.Song
-import com.baokiin.mymusic.data.model.Times
+import com.baokiin.mymusic.data.model.EventBusModel.*
 import com.baokiin.mymusic.databinding.ActivityMainBinding
 import com.baokiin.mymusic.ui.CategoryFragment
 import com.baokiin.mymusic.ui.InfoFragment
@@ -19,8 +20,13 @@ import com.baokiin.mymusic.ui.lyric.LyricFragment
 import com.baokiin.mymusic.ui.music.MusicFragment
 import com.baokiin.mymusic.ui.service.MediaService
 import com.baokiin.mymusic.utils.Utils
+import com.google.android.material.slider.Slider
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.play_music.view.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -39,7 +45,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        moveTaskToBack(true)
+        if (containerFramgnet.isVisible) {
+            containerFramgnet.visibility = View.GONE
+        } else
+            moveTaskToBack(true)
     }
 
     override fun onDestroy() {
@@ -58,12 +67,30 @@ class MainActivity : AppCompatActivity() {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onMessageEvent(song: Song) {
-        playMusic.visibility = View.VISIBLE
-        val intent = Intent(this, MediaService::class.java)
-        intent.putExtra(Utils.SONG, song)
-        startForegroundService(intent)
-        viewModel.getSongs(song)
+    fun onMessageSecond(showFrament: ShowFrament) {
+        containerFramgnet.visibility = if (showFrament.boolean) View.VISIBLE else View.GONE
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(song: SongSingle) {
+        try {
+            playMusic.visibility = View.VISIBLE
+            val intent = Intent(this, MediaService::class.java)
+            intent.putExtra(Utils.SONG, song.song)
+            startForegroundService(intent)
+            if (song.isList == null) {
+                viewModel.getSongs(song.song)
+            } else {
+                GlobalScope.launch {
+                    delay(1000)
+                    viewModel.songs.postValue(song.isList)
+                }
+            }
+        } catch (e: Exception) {
+            Toast.makeText(this, "Xin thử lại!", Toast.LENGTH_SHORT).show()
+        }
+
+
     }
 
     //-------------------------------------- func ------------------------------------------
@@ -79,6 +106,7 @@ class MainActivity : AppCompatActivity() {
             lifecycleOwner = this@MainActivity
             viewmodel = viewModel
         }
+
     }
 
     private fun utilView() {

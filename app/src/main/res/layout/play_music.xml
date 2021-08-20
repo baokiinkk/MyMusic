@@ -43,16 +43,28 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <View
+            android:id="@+id/viewTmp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="#80000000"
+            app:layout_constraintBottom_toBottomOf="@id/image"
+            app:layout_constraintEnd_toEndOf="@id/image"
+            app:layout_constraintStart_toStartOf="@id/image"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewpagerMusic"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginVertical="16dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
             app:layout_constraintBottom_toTopOf="@+id/btnPlay"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtTitle" />
+            app:layout_constraintTop_toBottomOf="@+id/txtTitle">
+
+        </androidx.viewpager2.widget.ViewPager2>
 
 
         <TextView
@@ -70,6 +82,18 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/txtPositisionMusic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/playfairdisplay_medium"
+            android:text="0:00"
+            android:textColor="@color/color_icon"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/seekBarMedia"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
             android:id="@+id/btnShowListMusic"
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -78,6 +102,18 @@
             app:layout_constraintBottom_toBottomOf="@+id/txtTitle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/txtTitle" />
+
+        <TextView
+            android:id="@+id/txtDucation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:fontFamily="@font/playfairdisplay_medium"
+            android:text="0:00"
+            android:textColor="@color/color_icon"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/seekBarMedia"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
             android:id="@+id/textView"
@@ -113,33 +149,32 @@
 
         <View
             android:id="@+id/btnPrev"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginEnd="20dp"
             android:background="@drawable/ic_prev"
             app:layout_constraintBottom_toBottomOf="@+id/btnPlay"
             app:layout_constraintEnd_toStartOf="@id/btnPlay"
-            app:layout_constraintStart_toEndOf="@+id/btnLoopMusic"
             app:layout_constraintTop_toTopOf="@+id/btnPlay" />
 
         <View
             android:id="@+id/btnNext"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="20dp"
             android:background="@drawable/ic_next"
             app:layout_constraintBottom_toBottomOf="@+id/btnPlay"
-            app:layout_constraintEnd_toStartOf="@+id/btnShuffleMusic"
             app:layout_constraintStart_toEndOf="@+id/btnPlay"
             app:layout_constraintTop_toTopOf="@+id/btnPlay" />
 
         <View
             android:id="@+id/btnLoopMusic"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_gravity="center"
             android:layout_marginStart="30dp"
             android:background="@drawable/ic_loop"
-            android:backgroundTint="@color/red_color"
-            android:rotation="-10"
+            android:backgroundTint="@color/color_icon"
             app:layout_constraintBottom_toBottomOf="@+id/btnPlay"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/btnPlay" />
@@ -147,14 +182,29 @@
 
         <View
             android:id="@+id/btnShuffleMusic"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_gravity="center"
             android:layout_marginEnd="30dp"
             android:background="@drawable/ic_shuffle"
+            android:backgroundTint="@color/color_icon"
             app:layout_constraintBottom_toBottomOf="@+id/btnPlay"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/btnPlay" />
+
+        <SeekBar
+            android:id="@+id/seekBarMedia"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:paddingStart="0dp"
+            android:paddingEnd="0dp"
+            android:progressBackgroundTint="@color/blue_color"
+            android:progressTint="@color/blue_color"
+            android:thumbTint="@color/blue_color"
+            app:layout_constraintBottom_toTopOf="@+id/btnPlay"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <FrameLayout
             android:id="@+id/btnPlay"
@@ -163,8 +213,8 @@
             android:layout_marginBottom="30dp"
             android:background="@drawable/ic_circle"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/btnNext"
-            app:layout_constraintStart_toEndOf="@id/btnPrev">
+            app:layout_constraintEnd_toStartOf="@+id/btnShuffleMusic"
+            app:layout_constraintStart_toEndOf="@+id/btnLoopMusic">
 
             <TextView
                 android:id="@+id/btnPlayPauseMainActivity"

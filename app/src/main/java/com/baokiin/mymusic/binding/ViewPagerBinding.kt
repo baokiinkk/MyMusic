@@ -28,7 +28,7 @@ class ViewPagerBinding {
                 offscreenPageLimit = 1
                 val cpt = CompositePageTransformer()
                 cpt.addTransformer{ page, position ->
-                    val myOffset: Float = position * -(2 * 20f + 30f)
+                    val myOffset: Float = position * -(2 * 20f + 40f)
                     when {
                         position < -1 -> {
                             page.translationX = -myOffset
@@ -46,7 +46,7 @@ class ViewPagerBinding {
                         }
                     }
                 }
-                cpt.addTransformer(MarginPageTransformer(20))
+                cpt.addTransformer(MarginPageTransformer(80))
                 setPageTransformer(cpt)
             }
         }

@@ -19,53 +19,58 @@
             android:id="@+id/txtArtists"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{viewmodel.mediaInfo.song.artists_names}"
-            android:textColor="@color/white"
-            android:textSize="20sp"
+            android:layout_marginBottom="10dp"
             android:fontFamily="@font/playfairdisplay_medium"
+            android:text="@{viewmodel.mediaInfo.song.artists_names}"
+            android:textColor="?attr/colorButtonNormal"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/button"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtName" />
+            app:layout_constraintStart_toStartOf="parent" />
+
         <TextView
             android:id="@+id/txtName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/playfairdisplay_bold"
+            android:fontFamily="@font/playfairdisplay_semibold"
             android:text="@{viewmodel.mediaInfo.song.name}"
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/txtArtists"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
-
-
-        <com.google.android.material.slider.Slider
-            android:id="@+id/seekBarMedia"
-            style="@style/MySeekBar"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginHorizontal="50dp"
-            android:layout_marginBottom="50dp"
-            android:valueFrom="0.0"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.585"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="250dp"
-            android:layout_height="250dp"
-            android:loadImageTitleHome="@{viewmodel.mediaInfo.song.thumbnail}"
-            android:scaleType="centerCrop"
-            app:layout_constraintBottom_toTopOf="@+id/seekBarMedia"
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginBottom="10dp"
+            app:cardCornerRadius="7dp"
+            app:layout_constraintBottom_toTopOf="@+id/txtName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.25"
-      />
+            >
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:loadImageMusic="@{viewmodel.mediaInfo.song.thumbnail}"
+                android:scaleType="centerCrop"
+                />
+        </androidx.cardview.widget.CardView>
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:text="Button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

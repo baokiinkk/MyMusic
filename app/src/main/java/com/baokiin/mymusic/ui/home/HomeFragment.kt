@@ -1,13 +1,25 @@
 package com.baokiin.mymusic.ui.home
 
 
+import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.viewModels
 import com.baokiin.mymusic.R
 import com.baokiin.mymusic.adapter.ItemHomeAdapter
 import com.baokiin.mymusic.adapter.ItemHomeTitleAdapter
+import com.baokiin.mymusic.data.model.DataApi
+import com.baokiin.mymusic.data.model.EventBusModel
+import com.baokiin.mymusic.data.model.EventBusModel.*
 import com.baokiin.mymusic.data.model.Song
 import com.baokiin.mymusic.databinding.FragmentHomeBinding
+import com.baokiin.mymusic.ui.playlist.PlayListFragment
 import com.baokiin.mymusic.utils.BaseFragment
+import com.baokiin.mymusic.utils.Utils
+import com.baokiin.mymusic.utils.Utils.KPOP
+import com.baokiin.mymusic.utils.Utils.USUK
+import com.baokiin.mymusic.utils.Utils.VPOP
+import com.baokiin.mymusic.utils.Utils.diaLogBottom
+import com.google.android.material.slider.Slider
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 
@@ -47,33 +59,43 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
 
-
     //-------------------------------- Data ----------------------------------------
     private fun getData() {
         viewModel.apply {
             viewModel.getData()
             trending.observe(viewLifecycleOwner, {
-                it?.let {
-                    itemtrendHomeAdapter.submitList(it)
+                it?.data?.let {
+                    itemtrendHomeAdapter.submitList(it.song.subList(0, 6))
                     baseBinding.viewPagerTitle.currentItem = 1
                 }
             })
             america.observe(viewLifecycleOwner, {
-                it?.let { itemamericaHomeAdapter.submitList(it) }
+                it?.data?.let { itemamericaHomeAdapter.submitList(it.items.subList(0, 6)) }
             })
             kpop.observe(viewLifecycleOwner, {
-                it?.let { itemkpopHomeAdapter.submitList(it) }
+                it?.data?.let { itemkpopHomeAdapter.submitList(it.items.subList(0, 6)) }
             })
             vpop.observe(viewLifecycleOwner, {
-                it?.let { itemvpopHomeAdapter.submitList(it) }
+                it?.data?.let { itemvpopHomeAdapter.submitList(it.items.subList(0, 6)) }
             })
         }
     }
 
     private fun clickView() {
-
+        baseBinding.vpopLayout.btnMore.setOnClickListener {
+            gotoPlayList(viewModel.vpop.value)
+        }
+        baseBinding.kpopLayout.btnMore.setOnClickListener {
+            gotoPlayList(viewModel.kpop.value)
+        }
+        baseBinding.amedicaLayout.btnMore.setOnClickListener {
+            gotoPlayList(viewModel.america.value)
+        }
     }
-
+    private fun gotoPlayList(song:DataApi?){
+        EventBus.getDefault().post(song)
+        EventBus.getDefault().post(ShowFrament(true))
+    }
     private fun setUpAdapter() {
         itemtrendHomeAdapter = ItemHomeTitleAdapter {
             val url = "http://api.mp3.zing.vn/api/streaming/audio/${it.id}/320"
@@ -98,7 +120,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun startMediaService(song: Song) {
-        EventBus.getDefault().post(song)
+        EventBus.getDefault().post(SongSingle(song))
     }
 
 }

@@ -11,7 +11,6 @@ import android.media.MediaPlayer
 import android.os.IBinder
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.media.app.NotificationCompat.MediaStyle
 import coil.ImageLoader
@@ -19,10 +18,9 @@ import coil.request.ImageRequest
 import coil.request.SuccessResult
 import com.baokiin.mymusic.R
 import com.baokiin.mymusic.broadcast.MyBroadcastReceiver
-import com.baokiin.mymusic.data.model.MediaInfo
+import com.baokiin.mymusic.data.model.EventBusModel
+import com.baokiin.mymusic.data.model.EventBusModel.*
 import com.baokiin.mymusic.data.model.Song
-import com.baokiin.mymusic.data.model.Times
-import com.baokiin.mymusic.data.model.TimesLong
 import com.baokiin.mymusic.utils.Utils.ACTION
 import com.baokiin.mymusic.utils.Utils.ACTION_NEXT
 import com.baokiin.mymusic.utils.Utils.ACTION_PLAY
