@@ -12,6 +12,11 @@ class MyBroadcastReceiver: BroadcastReceiver() {
         val intentService = Intent(context,MediaService::class.java)
         intentService.putExtra(ACTION,actionMusic)
 
-        context?.startService(intentService)
+        try{
+            context?.startService(intentService)
+        }catch (e:Exception){
+
+        }
+
     }
 }

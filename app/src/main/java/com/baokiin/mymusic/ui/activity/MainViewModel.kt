@@ -4,7 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.baokiin.mymusic.adapter.ViewPageAdapter
-import com.baokiin.mymusic.data.model.MediaInfo
+import com.baokiin.mymusic.data.model.EventBusModel
+import com.baokiin.mymusic.data.model.EventBusModel.*
 import com.baokiin.mymusic.data.model.Song
 import com.baokiin.mymusic.data.respository.Repository
 import dagger.hilt.android.lifecycle.HiltViewModel

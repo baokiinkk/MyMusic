@@ -13,34 +13,48 @@ import com.baokiin.mymusic.adapter.ViewPageAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
-class UtilsBinding{
+class UtilsBinding {
     companion object {
         @BindingAdapter("android:loadImageTitleHome")
         @JvmStatic
         fun loadImageTitleHome(view: ImageView, image: String?) {
             image?.let {
-                view.load(it.replace("w94","w360"))
+                view.load(
+                    it.replace("w94", "w480").replace("w165","w480")
+                )
             }
         }
+        @BindingAdapter("android:loadImageMusic")
+        @JvmStatic
+        fun loadImageMusic(view: ImageView, image: String?) {
+            image?.let {
+                view.load(
+                    it.replace("w94", "w480")
+                )
+            }
+        }
+
         @BindingAdapter("android:loadImagePlayMusic")
         @JvmStatic
         fun loadImagePlayMusic(view: ImageView, image: String?) {
             image?.let {
-                view.load(it.replace("w94","w360")){
-                    transformations(BlurTransformation(view.context,25f,3f))
+                view.load(it.replace("w94", "w360")) {
+                    transformations(BlurTransformation(view.context, 15f, 3f))
                 }
 
             }
         }
+
         @BindingAdapter("android:loadImageHome")
         @JvmStatic
         fun loadImageHome(view: ImageView, image: String?) {
             image?.let {
-                view.load(it.replace("w94","w360")){
-                    transformations(RoundedCornersTransformation(15f))
+                view.load(it.replace("w94", "w360")) {
+                    transformations(RoundedCornersTransformation(40f))
                 }
             }
         }
+
         @BindingAdapter("android:loadImage")
         @JvmStatic
         fun loadImage(view: ImageView, image: Int?) {
@@ -49,7 +63,8 @@ class UtilsBinding{
             }
         }
 
-        @BindingAdapter("android:adapter","android:tab_layout")
+
+        @BindingAdapter("android:adapter", "android:tab_layout")
         @JvmStatic
         fun viewpagerr(view: ViewPager2, tabLayout: TabLayout, adapter: ViewPageAdapter) {
             view.adapter = adapter

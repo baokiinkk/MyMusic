@@ -59,7 +59,7 @@
             motion:layout_constraintBottom_toTopOf="@+id/btnPlay"
             motion:layout_constraintTop_toBottomOf="@+id/txtTitle"
             motion:layout_constraintStart_toStartOf="parent"
-            android:visibility="gone"
+            android:visibility="invisible"
             android:translationY="1000dp"
             android:translationX="0dp" />
         <Constraint
@@ -75,12 +75,14 @@
         <Constraint
             android:id="@+id/btnShowListMusic"
             motion:layout_constraintEnd_toEndOf="parent"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             motion:layout_constraintBottom_toBottomOf="@+id/txtTitle"
             android:layout_marginEnd="16dp"
             motion:layout_constraintTop_toTopOf="@+id/txtTitle"
-            android:visibility="gone" />
+            android:visibility="visible"
+            android:scaleX="0.0"
+            android:scaleY="0.0" />
         <Constraint
             android:id="@+id/btnShuffleMusic"
             motion:layout_constraintEnd_toEndOf="parent"
@@ -163,5 +165,38 @@
             motion:layout_constraintTop_toTopOf="@+id/frameLayout"
             motion:layout_constraintStart_toStartOf="@+id/frameLayout"
             android:visibility="visible" />
+        <Constraint
+            android:layout_height="wrap_content"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toTopOf="@+id/frameLayout"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="0dp"
+            android:id="@+id/seekBarMedia"
+            android:layout_marginBottom="0dp"
+            motion:layout_constraintBottom_toTopOf="@+id/frameLayout" />
+        <Constraint
+            android:id="@+id/txtPositisionMusic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            motion:layout_constraintBottom_toTopOf="@+id/seekBarMedia"
+            android:layout_marginStart="10dp"
+            motion:layout_constraintStart_toStartOf="parent"
+            android:visibility="invisible" />
+        <Constraint
+            android:id="@+id/txtDucation"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            motion:layout_constraintBottom_toTopOf="@+id/seekBarMedia"
+            android:layout_marginEnd="10dp"
+            android:visibility="invisible" />
+        <Constraint
+            android:layout_height="0dp"
+            motion:layout_constraintStart_toStartOf="@id/image"
+            motion:layout_constraintTop_toTopOf="@+id/frameLayout"
+            motion:layout_constraintBottom_toBottomOf="@id/image"
+            motion:layout_constraintEnd_toEndOf="@id/image"
+            android:layout_width="0dp"
+            android:id="@+id/viewTmp" />
     </ConstraintSet>
 </MotionScene>

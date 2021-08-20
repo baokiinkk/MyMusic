@@ -21,6 +21,11 @@ object Utils {
     const val ACTION_PREV = 3
     const val CHANNEL_ID = "123456"
     const val SONG = "Song"
+    const val VPOP = "vpop"
+    const val KPOP ="kpop"
+    const val USUK = "usuk"
+    const val TREND = "trend"
+    const val CATEGORY = "tagegory"
 
 
     fun gotoFragment(activity: FragmentActivity,fragment: Fragment) {
@@ -47,7 +52,7 @@ object Utils {
         layoutInflater: LayoutInflater,
     ): BottomSheetDialog {
         val sheetDialog = BottomSheetDialog(context, R.style.SheetDialog)
-        val viewDialog: View = layoutInflater.inflate(R.layout.play_music, null)
+        val viewDialog: View = layoutInflater.inflate(R.layout.fragment_play_list, null)
 
         sheetDialog.setContentView(viewDialog)
         return sheetDialog

@@ -23,7 +23,6 @@
         android:clickable="true"
         android:focusable="true"
         android:background="#B3151515"
-
         app:layoutDescription="@xml/fragment_play_list_xml_constraintlayout_scene">
 
 
@@ -76,21 +75,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             />
-        <TextView
-            android:id="@+id/btnBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="30dp"
-            android:drawablePadding="10dp"
-            android:fontFamily="@font/playfairdisplay_bold"
-            android:gravity="center"
-            android:text="PLAYLIST"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            app:drawableStartCompat="@drawable/ic_back"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewPlayList"
