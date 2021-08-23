@@ -98,7 +98,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginEnd="16dp"
-            android:drawableEnd="@drawable/ic_menu"
+            android:drawableEnd="@drawable/ic_clock"
             app:layout_constraintBottom_toBottomOf="@+id/txtTitle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/txtTitle" />

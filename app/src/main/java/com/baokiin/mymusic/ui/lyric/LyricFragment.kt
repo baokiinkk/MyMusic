@@ -11,10 +11,11 @@ import com.baokiin.mymusic.data.model.EventBusModel
 import com.baokiin.mymusic.data.model.EventBusModel.*
 import com.baokiin.mymusic.ui.activity.MainViewModel
 import com.lauzy.freedom.library.LrcHelper
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_lyric.view.*
 import org.greenrobot.eventbus.EventBus
 
-
+@AndroidEntryPoint
 class LyricFragment : Fragment() {
     private val viewModel by activityViewModels<MainViewModel>()
     override fun onCreateView(

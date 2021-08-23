@@ -9,8 +9,10 @@ import com.baokiin.mymusic.databinding.FragmentMusicBinding
 import com.baokiin.mymusic.ui.activity.MainViewModel
 import com.baokiin.mymusic.utils.BaseFragment
 import com.google.android.material.slider.Slider
+import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 
+@AndroidEntryPoint
 class MusicFragment : BaseFragment<FragmentMusicBinding>() {
     override fun getLayoutRes(): Int {
         return R.layout.fragment_music

@@ -1,11 +1,14 @@
 package com.baokiin.mymusic.data.respository
 
+import android.util.Log
 import com.baokiin.mymusic.data.api.ApiService
+import com.baokiin.mymusic.data.api.FindMusicService
 import com.baokiin.mymusic.data.model.DataApi
+import com.baokiin.mymusic.data.model.DataFind
 import retrofit2.HttpException
 import javax.inject.Inject
 
-class RepositoryImpl @Inject constructor(private val apiService: ApiService) : Repository {
+class RepositoryImpl @Inject constructor(private val apiService: ApiService,private val findMusicService: FindMusicService) : Repository {
     override suspend fun getTrending(): DataApi  =
         try {
             apiService.getTrending()
@@ -39,6 +42,14 @@ class RepositoryImpl @Inject constructor(private val apiService: ApiService) : R
             apiService.getSongs(id)
         } catch (cause: HttpException) {
             DataApi(message = "lấy thông tin lỗi!!!")
+        }
+
+    override suspend fun search(id: String): DataFind =
+        try {
+            Log.d("quocbao",id)
+            findMusicService.getSong(id)
+        } catch (cause: HttpException) {
+            DataFind(message = "lấy thông tin lỗi!!!")
         }
 
 }

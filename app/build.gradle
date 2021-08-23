@@ -69,6 +69,8 @@ private void lib(){
     dependencies.implementation 'com.github.Lauzy:LyricView:1.0.4'
     //lotie
     dependencies.implementation 'com.airbnb.android:lottie:3.6.1'
+    //clock
+    dependencies.implementation 'com.github.jaeryo2357:circleTimer:1.1.3'
 }
 private void retrofit(){
     dependencies.implementation "com.squareup.retrofit2:retrofit:$retrofit_version"

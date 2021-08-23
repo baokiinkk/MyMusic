@@ -13,14 +13,13 @@ import com.baokiin.mymusic.R
 import com.baokiin.mymusic.adapter.ViewPageAdapter
 import com.baokiin.mymusic.data.model.EventBusModel.*
 import com.baokiin.mymusic.databinding.ActivityMainBinding
-import com.baokiin.mymusic.ui.CategoryFragment
 import com.baokiin.mymusic.ui.InfoFragment
 import com.baokiin.mymusic.ui.home.HomeFragment
 import com.baokiin.mymusic.ui.lyric.LyricFragment
 import com.baokiin.mymusic.ui.music.MusicFragment
 import com.baokiin.mymusic.ui.service.MediaService
+import com.baokiin.mymusic.ui.trend.TrendingFragment
 import com.baokiin.mymusic.utils.Utils
-import com.google.android.material.slider.Slider
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.play_music.view.*
@@ -111,7 +110,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun utilView() {
         viewModel.adapter =
-            ViewPageAdapter(mutableListOf(HomeFragment(), CategoryFragment(), InfoFragment()), this)
+            ViewPageAdapter(mutableListOf(HomeFragment(), TrendingFragment(), InfoFragment()), this)
         viewModel.adapterMusic =
             ViewPageAdapter(mutableListOf(MusicFragment(), LyricFragment()), this)
         viewModel.songs.observe(this, {

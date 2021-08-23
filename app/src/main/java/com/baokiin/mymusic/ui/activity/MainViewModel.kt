@@ -32,9 +32,12 @@ class MainViewModel @Inject constructor(private val repo: Repository) : ViewMode
         }
     }
 
-    fun getLyric(url: String) {
+    fun getLyric(url: String?) {
         GlobalScope.launch {
-            lyricFile.postValue(getFileByUrl(url))
+            url?.let {
+                lyricFile.postValue(getFileByUrl(it))
+            }
+
         }
     }
 
