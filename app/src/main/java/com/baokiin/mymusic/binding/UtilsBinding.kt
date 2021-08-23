@@ -1,15 +1,21 @@
 package com.baokiin.mymusic.binding
 
 import android.widget.ImageView
+import android.widget.SearchView
+import androidx.core.widget.doOnTextChanged
 
 import androidx.databinding.BindingAdapter
+import androidx.lifecycle.MutableLiveData
 import androidx.viewpager2.widget.ViewPager2
 
 import coil.load
 import coil.transform.BlurTransformation
 import coil.transform.RoundedCornersTransformation
 import com.baokiin.mymusic.R
+import com.baokiin.mymusic.adapter.ItemPlayListAdapter
 import com.baokiin.mymusic.adapter.ViewPageAdapter
+import com.baokiin.mymusic.data.model.DataApi
+import com.baokiin.mymusic.data.model.Song
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 

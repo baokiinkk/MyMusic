@@ -80,6 +80,7 @@
                             />
                     </FrameLayout>
                     <TextView
+                        android:id="@+id/btnSearch"
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
                         android:background="@drawable/bg_search_button"

@@ -1,4 +1,4 @@
-package com.baokiin.mymusic.ui
+package com.baokiin.mymusic.ui.info
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

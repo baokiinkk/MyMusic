@@ -1,12 +1,16 @@
 package com.baokiin.mymusic.utils
 
+import android.app.Activity
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.recyclerview.widget.RecyclerView
 import com.baokiin.mymusic.R
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
@@ -63,5 +67,20 @@ object Utils {
         } else {
             motionLayout.post { motionLayout.progress = progress }
         }
+    }
+
+
+    //Keyboard
+    fun Fragment.hideKeyboard() {
+        view?.let { activity?.hideKeyboard(it) }
+    }
+
+    fun Activity.hideKeyboard() {
+        hideKeyboard(currentFocus ?: View(this))
+    }
+
+    fun Context.hideKeyboard(view: View) {
+        val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }

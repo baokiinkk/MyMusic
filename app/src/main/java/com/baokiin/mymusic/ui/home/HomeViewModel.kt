@@ -22,13 +22,12 @@ class HomeViewModel@Inject constructor(private val repo: Repository):ViewModel()
     val kpopName = "TOP 100 KPOP"
     val vpopName = "TOP 100 VPOP"
     val imageMain = R.drawable.background_main
-    val imageTrend = R.drawable.bg_chart_music
+    val imageTrend = R.drawable.trending
     val imageMy = R.drawable.bg_my_like_music
 
     fun getData(){
         viewModelScope.launch(Dispatchers.IO){
-            val dataTrend = repo.getTrending()
-            trending.postValue(dataTrend)
+            trending.postValue(repo.getTrending())
             kpop.postValue(repo.getTopKpop())
             vpop.postValue(repo.getTopVpop())
             america.postValue(repo.getTopAmerica())
