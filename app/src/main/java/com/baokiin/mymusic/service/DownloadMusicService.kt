@@ -1,11 +1,11 @@
 package com.baokiin.mymusic.service
 
-import android.app.Notification
 import android.app.Service
 import android.content.Intent
 import android.os.Build
 
 import android.os.IBinder
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.baokiin.mymusic.R
@@ -17,7 +17,6 @@ import com.baokiin.mymusic.utils.Utils.writeResponseBodyToDisk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import okhttp3.ResponseBody
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -64,14 +63,16 @@ class DownloadMusicService : Service() {
         GlobalScope.launch(Dispatchers.IO) {
             idNoti++
             val path = getExternalFilesDir(null).toString() + File.separator.toString() +responseBody.song.id+ ".mp3"
-            val tmp= writeResponseBodyToDisk(responseBody.reponseBody,path){
+            val isDownload= writeResponseBodyToDisk(responseBody.reponseBody,path){
                 map[idNoti - 1] = it
                 notification(idNoti,responseBody.song)
             }
-            stopForeground(true)
-            val song = responseBody.song
-            song.song = path
-            EventBus.getDefault().post(EventBusModel.DownloadMp3(song))
+            if(isDownload){
+                stopForeground(true)
+                val song = responseBody.song
+                song.song = path
+                EventBus.getDefault().post(EventBusModel.DownloadMp3(song))
+            }
         }
     }
 

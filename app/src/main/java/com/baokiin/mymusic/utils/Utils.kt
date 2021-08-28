@@ -104,7 +104,7 @@ object Utils {
             context.startService(intent)
     }
 
-    fun writeResponseBodyToDisk(responseBody: ResponseBody, path: String, action:(Int)->Unit): String? {
+    fun writeResponseBodyToDisk(responseBody: ResponseBody, path: String, action:(Int)->Unit): Boolean {
         return try {
             val body = responseBody
             val futureStudioIconFile =
@@ -112,7 +112,7 @@ object Utils {
             var inputStream: InputStream? = null
             var outputStream: OutputStream? = null
             try {
-                val fileReader = ByteArray(4096)
+                val fileReader = ByteArray( 7*1024)
                 val fileSize = body.contentLength()
                 var fileSizeDownloaded: Long = 0
                 inputStream = body.byteStream()
@@ -127,15 +127,15 @@ object Utils {
                     action(((fileSizeDownloaded / fileSize.toDouble()) * 100).toInt())
                 }
                 outputStream.flush()
-                path
+                true
             } catch (e: IOException) {
-                null
+                false
             } finally {
                 inputStream?.close()
                 outputStream?.close()
             }
         } catch (e: IOException) {
-            null
+            false
         }
     }
 

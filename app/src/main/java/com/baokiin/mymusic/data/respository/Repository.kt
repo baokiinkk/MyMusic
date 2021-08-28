@@ -16,4 +16,5 @@ interface Repository {
     suspend fun search(id:String): DataFind
     suspend fun downloadMusic(url:String):ResponseBody
     suspend fun downloadLyric(url:String):ResponseBody
+    suspend fun downloadImg(url:String):ResponseBody
 }

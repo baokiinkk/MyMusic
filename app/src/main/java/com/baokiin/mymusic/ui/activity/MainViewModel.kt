@@ -12,22 +12,24 @@ import com.baokiin.mymusic.data.respository.Repository
 import com.baokiin.mymusic.data.respository.RepositoryLocal
 import com.baokiin.mymusic.utils.Utils.writeResponseBodyToDisk
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
 import java.io.*
-import java.net.HttpURLConnection
-import java.net.URL
+
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(private val repo: Repository,private val database:RepositoryLocal) : ViewModel() {
+class MainViewModel @Inject constructor(
+    private val repo: Repository,
+    private val database: RepositoryLocal
+) : ViewModel() {
     var adapter: ViewPageAdapter? = null
     var adapterMusic: ViewPageAdapter? = null
     val songs: MutableLiveData<MutableList<Song>?> = MutableLiveData(null)
     val mediaInfo: MutableLiveData<MediaInfo?> = MutableLiveData(null)
     val lyricFile: MutableLiveData<File?> = MutableLiveData(null)
     val downloadMusic: MutableLiveData<ResponseBody?> = MutableLiveData(null)
+    val downloadImg: MutableLiveData<String?> = MutableLiveData(null)
     val positonMedia: MutableLiveData<Int?> = MutableLiveData(null)
     val isScroll: MutableLiveData<Boolean?> = MutableLiveData(null)
     fun getSongs(id: Song) {
@@ -39,63 +41,42 @@ class MainViewModel @Inject constructor(private val repo: Repository,private val
 
     fun downloadSong(url: String) {
         viewModelScope.launch {
-           downloadMusic.postValue(repo.downloadMusic(url))
+            downloadMusic.postValue(repo.downloadMusic(url))
         }
     }
 
-    fun getLyric(url: String,context: Context) {
+    fun downloadImg(url: String, context: Context, song: Song) {
         viewModelScope.launch {
-            val response = getFileByUrl(url)
-//            val path = context.getExternalFilesDir(null).toString() + File.separator.toString() +url
-//            val uri = writeResponseBodyToDisk(response,path){}
-            lyricFile.postValue(response)
+            val img = repo.downloadImg(url.replace("w94", "w360"))
+            val path = context.getExternalFilesDir(null)
+                .toString() + File.separator.toString() + song.id + ".jpg"
+            val isDownload = writeResponseBodyToDisk(img, path) {}
+            if (isDownload)
+                downloadImg.postValue(path)
         }
     }
 
+    fun getLyric(url: String, context: Context, song: Song) {
+        viewModelScope.launch {
+            if (url.substring(0, 4) != "http") {
+                lyricFile.postValue(File(url))
+            } else {
+                val response = repo.downloadLyric(url)
+                val path = context.getExternalFilesDir(null)
+                    .toString() + File.separator.toString() + song.id + ".lrc"
+                val isDownload = writeResponseBodyToDisk(response, path) {}
+                if (isDownload)
+                    lyricFile.postValue(File(path))
+            }
+        }
+    }
 
 
     // database
-    fun addSong(song:Song){
+    fun addSong(song: Song) {
         viewModelScope.launch {
             database.insertSong(song)
         }
     }
 
-    private fun getFileByUrl(fileUrl: String): File? {
-        val outStream = ByteArrayOutputStream()
-        var stream: BufferedOutputStream? = null
-        var inputStream: InputStream? = null
-        var file: File? = null
-        try {
-            val imageUrl = URL(fileUrl)
-            val conn: HttpURLConnection = imageUrl.openConnection() as HttpURLConnection
-            conn.setRequestProperty(
-                "User-Agent",
-                "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)"
-            )
-            inputStream = conn.inputStream
-            val buffer = ByteArray(1024)
-            var len: Int
-            while (inputStream.read(buffer).also { len = it } != -1) {
-                outStream.write(buffer, 0, len)
-            }
-            file = File.createTempFile(
-                "file",
-                fileUrl.substring(fileUrl.lastIndexOf("."), fileUrl.length)
-            )
-            val fileOutputStream = FileOutputStream(file)
-            stream = BufferedOutputStream(fileOutputStream)
-            stream.write(outStream.toByteArray())
-        } catch (e: Exception) {
-        } finally {
-            try {
-                inputStream?.close()
-                stream?.close()
-                outStream.close()
-            } catch (e: Exception) {
-            }
-        }
-        Log.d("quocbao",file.toString())
-        return file
-    }
 }

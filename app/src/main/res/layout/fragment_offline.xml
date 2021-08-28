@@ -12,8 +12,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#151515"
+        android:orientation="vertical"
         >
-
+    <ImageView
+        android:id="@+id/viewTest"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        />
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"

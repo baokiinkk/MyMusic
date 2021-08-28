@@ -3,6 +3,7 @@ package com.baokiin.mymusic.service
 import android.app.*
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.media.AudioAttributes
 import android.media.MediaMetadata
@@ -185,13 +186,17 @@ class MediaService : Service() {
 
     private fun sendNotification(song: Song) {
         GlobalScope.launch {
+            val bitmap:Bitmap
             val loader = ImageLoader(this@MediaService)
             val request = ImageRequest.Builder(this@MediaService)
                 .data(song.thumbnail)
                 .allowHardware(false) // Disable hardware bitmaps.
                 .build()
-            val result = (loader.execute(request) as SuccessResult).drawable
-            val bitmap = (result as BitmapDrawable).bitmap
+
+                val result = (loader.execute(request) as SuccessResult).drawable
+                bitmap = (result as BitmapDrawable).bitmap
+
+
             mediaPlayer?.let { mediaPlayer ->
                 val media = setUpMedia()
 

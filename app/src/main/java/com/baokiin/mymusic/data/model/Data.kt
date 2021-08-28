@@ -13,12 +13,12 @@ data class Info(val name:String,val thumbnail:String)
 data class Song(
     @PrimaryKey val id: String,
     val name: String,
-    val code: String,
+    val code: String?,
     val artists_names: String?,
-    val performer:String,
-    val lyric:String,
-    var thumbnail:String,
-    var thumb:String,
+    val performer:String?,
+    var lyric:String?,
+    var thumbnail:String?,
+    var thumb:String?,
     var song:String?,
     var isDownload:Boolean?
 ):Serializable

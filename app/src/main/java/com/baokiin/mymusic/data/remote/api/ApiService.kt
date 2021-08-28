@@ -30,6 +30,10 @@ interface ApiService {
     @GET
     suspend fun downloadLyric(@Url url:String):ResponseBody
 
+    @Streaming
+    @GET
+    suspend fun downloadImg(@Url url:String):ResponseBody
+
 
 }
 interface FindMusicService {

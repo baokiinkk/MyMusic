@@ -23,12 +23,7 @@ class LyricFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_lyric, container, false)
-        viewModel.mediaInfo.observe(viewLifecycleOwner, {
-            it?.let {
-                viewModel.getLyric(it.song.lyric,requireContext())
-            }
 
-        })
         viewModel.lyricFile.observe(viewLifecycleOwner, {
             it?.let {
                 val lrcs = LrcHelper.parseLrcFromFile(it)
@@ -45,5 +40,6 @@ class LyricFragment : Fragment() {
         }
         return view
     }
+
 
 }
