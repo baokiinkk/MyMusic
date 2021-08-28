@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="5"
+    android:background="#fff"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    tools:context=".ui.activity.LoginActivity">
+    <FrameLayout
+        android:layout_weight="2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="#fff"
+        >
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            />
+        <TextView
+            android:id="@+id/btnClose"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_back"
+            />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:orientation="vertical"
+        android:gravity="bottom"
+        >
+        <Button
+            android:id="@+id/button_loginGg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:layout_marginHorizontal="20dp"
+
+            android:textAllCaps="false"
+            android:textColor="@color/text_color_white"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:paddingVertical="20dp"
+            android:paddingStart="20dp"
+            />
+
+        <Button
+            android:id="@+id/button_loginFb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="100dp"
+            android:layout_marginHorizontal="20dp"
+            android:paddingStart="20dp"
+            android:textAllCaps="false"
+            android:paddingVertical="20dp"
+            android:textColor="@color/text_color_white"
+            android:textSize="20sp"
+            android:gravity="center"
+            />
+    </LinearLayout>
+
+
+</LinearLayout>

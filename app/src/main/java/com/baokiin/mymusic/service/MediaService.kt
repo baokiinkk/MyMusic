@@ -1,6 +1,5 @@
-package com.baokiin.mymusic.ui.service
+package com.baokiin.mymusic.service
 
-import android.annotation.SuppressLint
 import android.app.*
 import android.content.Context
 import android.content.Intent
@@ -8,17 +7,18 @@ import android.graphics.drawable.BitmapDrawable
 import android.media.AudioAttributes
 import android.media.MediaMetadata
 import android.media.MediaPlayer
+import android.os.Build
 import android.os.IBinder
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.media.app.NotificationCompat.MediaStyle
 import coil.ImageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
 import com.baokiin.mymusic.R
 import com.baokiin.mymusic.broadcast.MyBroadcastReceiver
-import com.baokiin.mymusic.data.model.EventBusModel
 import com.baokiin.mymusic.data.model.EventBusModel.*
 import com.baokiin.mymusic.data.model.Song
 import com.baokiin.mymusic.utils.Utils.ACTION
@@ -36,15 +36,13 @@ import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import java.lang.String
-import java.util.concurrent.TimeUnit
 
 
 class MediaService : Service() {
-    var mediaPlayer: MediaPlayer? = null
+    private var mediaPlayer: MediaPlayer? = null
     private lateinit var msong: MutableList<Song>
     private var indexMedia = 0
-    var job: Job? = null
+    private var job: Job? = null
 
     override fun onBind(intent: Intent): IBinder? {
         return null
@@ -192,7 +190,6 @@ class MediaService : Service() {
                 .data(song.thumbnail)
                 .allowHardware(false) // Disable hardware bitmaps.
                 .build()
-
             val result = (loader.execute(request) as SuccessResult).drawable
             val bitmap = (result as BitmapDrawable).bitmap
             mediaPlayer?.let { mediaPlayer ->
@@ -230,7 +227,16 @@ class MediaService : Service() {
                                 .setShowActionsInCompactView(0, 1, 2)
                                 .setMediaSession(media.sessionToken)
                         )
-                startForeground(123, notificationBuilder.build())
+                        .setProgress(mediaPlayer.duration,mediaPlayer.currentPosition,false)
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    startForeground(123, notificationBuilder.build())
+                }
+                else{
+                    with(NotificationManagerCompat.from(applicationContext)){
+                        notify(123, notificationBuilder.build())
+                    }
+                }
             }
         }
     }

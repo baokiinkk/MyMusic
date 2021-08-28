@@ -5,8 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.baokiin.mymusic.R
 import com.baokiin.mymusic.data.model.DataApi
-import com.baokiin.mymusic.data.model.Song
 import com.baokiin.mymusic.data.respository.Repository
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -14,6 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel@Inject constructor(private val repo: Repository):ViewModel() {
+    var auth = MutableLiveData(Firebase.auth)
     val trending:MutableLiveData<DataApi?> = MutableLiveData(null)
     val kpop:MutableLiveData<DataApi?> = MutableLiveData(null)
     val vpop:MutableLiveData<DataApi?> = MutableLiveData(null)

@@ -8,4 +8,6 @@
     <color name="text_color_white">#fff</color>
     <color name="background_color_white">#fff</color>
     <color name="green_color">#53B175</color>
+    <string name="facebook_app_id">839423733379701</string>
+    <string name="fb_login_protocol_scheme">fb839423733379701</string>
 </resources>

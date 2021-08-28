@@ -1,7 +1,7 @@
 package com.baokiin.mymusic.di
 
-import com.baokiin.mymusic.data.api.ApiService
-import com.baokiin.mymusic.data.api.FindMusicService
+import com.baokiin.mymusic.data.remote.api.ApiService
+import com.baokiin.mymusic.data.remote.api.FindMusicService
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -14,7 +14,6 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import javax.inject.Named
 import javax.inject.Singleton
 
 @Module

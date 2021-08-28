@@ -1,13 +1,13 @@
 package com.baokiin.mymusic.ui.lyric
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.baokiin.mymusic.R
-import com.baokiin.mymusic.data.model.EventBusModel
 import com.baokiin.mymusic.data.model.EventBusModel.*
 import com.baokiin.mymusic.ui.activity.MainViewModel
 import com.lauzy.freedom.library.LrcHelper
@@ -25,8 +25,9 @@ class LyricFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_lyric, container, false)
         viewModel.mediaInfo.observe(viewLifecycleOwner, {
             it?.let {
-                viewModel.getLyric(it.song.lyric)
+                viewModel.getLyric(it.song.lyric,requireContext())
             }
+
         })
         viewModel.lyricFile.observe(viewLifecycleOwner, {
             it?.let {

@@ -1,5 +1,6 @@
 package com.baokiin.mymusic.binding
 
+import android.net.Uri
 import android.widget.ImageView
 import android.widget.SearchView
 import androidx.core.widget.doOnTextChanged
@@ -64,6 +65,13 @@ class UtilsBinding {
         @BindingAdapter("android:loadImage")
         @JvmStatic
         fun loadImage(view: ImageView, image: Int?) {
+            image?.let {
+                view.load(image)
+            }
+        }
+        @BindingAdapter("android:loadImage")
+        @JvmStatic
+        fun loadImage(view: ImageView, image: Uri?) {
             image?.let {
                 view.load(image)
             }

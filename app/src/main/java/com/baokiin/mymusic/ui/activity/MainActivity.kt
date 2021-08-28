@@ -13,13 +13,14 @@ import com.baokiin.mymusic.R
 import com.baokiin.mymusic.adapter.ViewPageAdapter
 import com.baokiin.mymusic.data.model.EventBusModel.*
 import com.baokiin.mymusic.databinding.ActivityMainBinding
-import com.baokiin.mymusic.ui.InfoFragment
 import com.baokiin.mymusic.ui.home.HomeFragment
+import com.baokiin.mymusic.ui.info.InfoFragment
 import com.baokiin.mymusic.ui.lyric.LyricFragment
 import com.baokiin.mymusic.ui.music.MusicFragment
-import com.baokiin.mymusic.ui.service.MediaService
+import com.baokiin.mymusic.service.MediaService
 import com.baokiin.mymusic.ui.trend.TrendingFragment
 import com.baokiin.mymusic.utils.Utils
+import com.baokiin.mymusic.utils.Utils.startServiceMusic
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.play_music.view.*
@@ -61,6 +62,11 @@ class MainActivity : AppCompatActivity() {
     //-------------------------------------- recive data ------------------------------------------
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    fun onMessageSecond(mp3: DownloadMp3) {
+       viewModel.addSong(mp3.song)
+    }
+
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
     fun onMessageSecond(second: Times) {
         viewModel.positonMedia.postValue(second.time)
     }
@@ -76,7 +82,7 @@ class MainActivity : AppCompatActivity() {
             playMusic.visibility = View.VISIBLE
             val intent = Intent(this, MediaService::class.java)
             intent.putExtra(Utils.SONG, song.song)
-            startForegroundService(intent)
+            startServiceMusic(this,intent)
             if (song.isList == null) {
                 viewModel.getSongs(song.song)
             } else {

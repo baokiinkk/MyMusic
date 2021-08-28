@@ -1,7 +1,6 @@
 package com.baokiin.mymusic.ui.playlist
 
 
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import com.baokiin.mymusic.R
 import com.baokiin.mymusic.adapter.ItemPlayListAdapter
@@ -46,7 +45,6 @@ class PlayListFragment : BaseFragment<FragmentPlayListBinding>() {
     private fun setup() {
         EventBus.getDefault().register(this)
         val category = arguments?.get(CATEGORY)
-        Toast.makeText(context,category.toString(),Toast.LENGTH_SHORT).show()
         adapterItem = ItemPlayListAdapter {
             val url = "http://api.mp3.zing.vn/api/streaming/audio/${it.id}/320"
             it.song = url

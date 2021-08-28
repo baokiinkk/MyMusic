@@ -6,16 +6,15 @@ import android.content.res.Resources
 import android.util.Log
 import android.view.MotionEvent
 import android.widget.SeekBar
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import com.baokiin.mymusic.R
-import com.baokiin.mymusic.data.model.EventBusModel
 import com.baokiin.mymusic.data.model.EventBusModel.*
 import com.baokiin.mymusic.databinding.PlayMusicBinding
-import com.baokiin.mymusic.ui.service.MediaService
+import com.baokiin.mymusic.service.MediaService
 import com.baokiin.mymusic.utils.BaseFragment
 import com.baokiin.mymusic.utils.Utils
-import com.google.android.material.slider.Slider
-import kotlinx.android.synthetic.main.play_music.view.*
+import com.baokiin.mymusic.utils.Utils.startServiceMusic
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -111,6 +110,6 @@ class MotionFragment : BaseFragment<PlayMusicBinding>() {
     private fun sendActionService(action: Int) {
         val intentService = Intent(context, MediaService::class.java)
         intentService.putExtra(Utils.ACTION, action)
-        requireActivity().startForegroundService(intentService)
+        startServiceMusic(requireActivity(),intentService)
     }
 }
