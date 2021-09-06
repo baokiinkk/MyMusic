@@ -6,54 +6,46 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewmodel"
             type="com.baokiin.mymusic.ui.info.InfoViewModel" />
+
         <variable
             name="adapter"
             type="com.baokiin.mymusic.adapter.ViewPageAdapter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:background="#151515"
-        android:clickable="true"
-        android:focusable="true"
         android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_width="match_parent">
+        android:background="@color/colorTabLayout"
+        android:clickable="true"
+        android:focusable="true">
 
-
-        <View
-            android:id="@+id/imageView7"
-            android:layout_width="0dp"
-            android:layout_height="100dp"
-            android:background="@color/blue_color"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:layout_width="0dp"
             android:layout_height="0dp"
-
             android:adapter_viewpager="@{adapter}"
+            android:overScrollMode="never"
             android:tab_layout="@{tabLayout2}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tabLayout2"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/tabLayout2" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/btnPlay"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            app:cardCornerRadius="40dp"
-            app:cardElevation="5dp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView7"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            app:cardCornerRadius="30dp"
+            app:cardElevation="10dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imageView7">
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:id="@+id/image"
@@ -67,10 +59,14 @@
             android:id="@+id/tabLayout2"
             android:layout_width="0dp"
             android:layout_height="40dp"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView7">
+            app:layout_constraintTop_toBottomOf="@+id/btnPlay"
+            app:tabBackground="@color/colorTabLayout"
+            app:tabIndicatorColor="@color/blue_color"
+            app:tabSelectedTextColor="@color/blue_color"
+            app:tabTextColor="@color/white">
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
@@ -88,32 +84,26 @@
             android:id="@+id/btnLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:fontFamily="@font/playfairdisplay_medium"
             android:text="@{viewmodel.auth.currentUser.displayName ?? viewmodel.textNull }"
-            android:textColor="@color/color_icon"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/tabLayout2"
-            app:layout_constraintEnd_toEndOf="@+id/btnPlay"
-            app:layout_constraintStart_toStartOf="@+id/btnPlay"
-            app:layout_constraintTop_toBottomOf="@+id/btnPlay" />
+            android:textColor="@color/color_text_white"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/btnPlay"
+            app:layout_constraintStart_toEndOf="@+id/btnPlay"
+            app:layout_constraintTop_toTopOf="@+id/btnPlay" />
 
-        <androidx.cardview.widget.CardView
+
+        <ImageView
             android:id="@+id/btnLogOut"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:scaleType="center"
+            android:src="@drawable/ic_login"
             android:layout_marginEnd="20dp"
-            app:cardCornerRadius="25dp"
-            app:cardBackgroundColor="#151515"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView7"
+            app:layout_constraintBottom_toBottomOf="@+id/btnPlay"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="center"
-                android:src="@drawable/ic_login" />
-        </androidx.cardview.widget.CardView>
+            app:layout_constraintTop_toTopOf="@+id/btnPlay" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -2,18 +2,25 @@ package com.baokiin.mymusic.ui.music
 
 
 import android.content.Intent
-import android.util.Log
+import android.graphics.drawable.Drawable
+import android.view.View
+import android.widget.Button
+import android.widget.Toast
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.activityViewModels
 import com.baokiin.mymusic.R
 import com.baokiin.mymusic.data.model.EventBusModel
 import com.baokiin.mymusic.databinding.FragmentMusicBinding
 import com.baokiin.mymusic.service.DownloadMusicService
+import com.baokiin.mymusic.ui.activity.LoginActivity
 import com.baokiin.mymusic.ui.activity.MainViewModel
 import com.baokiin.mymusic.utils.BaseFragment
-import com.baokiin.mymusic.utils.Utils
 import com.baokiin.mymusic.utils.Utils.startServiceMusic
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
+
 
 @AndroidEntryPoint
 class MusicFragment : BaseFragment<FragmentMusicBinding>() {
@@ -22,47 +29,113 @@ class MusicFragment : BaseFragment<FragmentMusicBinding>() {
     }
 
     private val viewModel by activityViewModels<MainViewModel>()
+    private var isDownloaded: Boolean? = null
+    private var isLiked: Boolean? = null
+    private var auth = Firebase.auth
     override fun onCreateViews() {
+
+        setUp()
+        onViewCLick()
+
+    }
+
+    private fun setUp() {
+
         baseBinding.viewmodel = viewModel
-        baseBinding.btnDown.setOnClickListener {
-            val url =
-                "http://api.mp3.zing.vn/api/streaming/audio/${viewModel.mediaInfo.value?.song?.id}/320"
-            viewModel.downloadSong(url)
-            viewModel.mediaInfo.value?.let {
-                it.song.thumbnail?.let { it1 ->
-                    viewModel.downloadImg(
-                        it1,
-                        requireContext(),
-                        it.song
-                    )
-                }
-            }
-            val intent = Intent(context, DownloadMusicService::class.java)
-            intent.putExtra(Utils.SONG, viewModel.mediaInfo.value?.song)
-            startServiceMusic(requireActivity(), intent)
-        }
         viewModel.apply {
             mediaInfo.observe(viewLifecycleOwner, {
                 it?.let {
+                    baseBinding.btnLike.visibility = if (it.song.song?.substring(
+                            1,
+                            8
+                        ) == "storage"
+                    ) View.INVISIBLE else View.VISIBLE
                     it.song.lyric?.let { it1 -> getLyric(it1, requireContext(), it.song) }
                 }
 
             })
+            songFromDatabase.observe(viewLifecycleOwner, {
+                isDownloaded = it?.get(0)
+                isLiked = it?.get(1)
+                buttonType(baseBinding.btnDown, baseBinding.btnDown.background, it?.get(0))
+                buttonType(baseBinding.btnLike, baseBinding.btnLike.background, it?.get(1))
+            })
+            downloading.observe(viewLifecycleOwner, {
+                it?.let {
+                    isDownloaded = it
+                    buttonType(baseBinding.btnDown, baseBinding.btnDown.background, it)
+                }
+            })
             downloadMusic.observe(viewLifecycleOwner, { download ->
                 download?.let { response ->
                     mediaInfo.value?.song?.let { song ->
-                            downloadImg.value?.let {
-                                song.lyric = lyricFile.value?.path?:"aaaaaaaaaaa"
-                                song.thumbnail = "file://$it"
-                                song.isDownload = true
-                                EventBus.getDefault().post(EventBusModel.Reponse(response, song))
-                            }
-
-
+                        downloadImg.value?.let {
+                            EventBus.getDefault().post(
+                                EventBusModel.Response(
+                                    response,
+                                    song,
+                                    lyricFile.value?.path ?: "aaaaaaaaaaa",
+                                    "file://$it"
+                                )
+                            )
+                        }
                     }
-
                 }
             })
+        }
+    }
+
+    private fun buttonType(button: Button, drawable: Drawable, check: Boolean?) {
+        val buttonDownload = DrawableCompat.wrap(drawable)
+        DrawableCompat.setTint(
+            buttonDownload,
+            requireContext().getColor(if (check == true) R.color.blue_color else R.color.white)
+        )
+        button.background = buttonDownload
+    }
+
+
+    private fun onViewCLick() {
+        baseBinding.btnDown.setOnClickListener {
+            if (isDownloaded == true)
+                Toast.makeText(context, "Bạn đã tải bài hát này.", Toast.LENGTH_SHORT).show()
+            else {
+                val intent = Intent(context, DownloadMusicService::class.java)
+                startServiceMusic(requireActivity(), intent)
+                val url =
+                    "http://api.mp3.zing.vn/api/streaming/audio/${viewModel.mediaInfo.value?.song?.id}/320"
+                viewModel.downloadSong(url)
+                viewModel.mediaInfo.value?.let {
+                    it.song.thumbnail?.let { it1 ->
+                        viewModel.downloadImg(
+                            it1,
+                            requireContext(),
+                            it.song
+                        )
+                    }
+                }
+            }
+        }
+        baseBinding.btnLike.setOnClickListener {
+            if (auth.currentUser == null)
+                startActivity(Intent(requireContext(), LoginActivity::class.java))
+            else {
+                val song = viewModel.mediaInfo.value?.song
+                song?.let {
+                    if (isLiked != true) {
+                        isLiked = true
+                        buttonType(baseBinding.btnLike, baseBinding.btnLike.background, true)
+                        viewModel.addSongLike(it)
+                    } else {
+                        isLiked = false
+                        buttonType(baseBinding.btnLike, baseBinding.btnLike.background, false)
+                        viewModel.deleteSongLike(it)
+                    }
+
+
+                }
+
+            }
         }
     }
 }

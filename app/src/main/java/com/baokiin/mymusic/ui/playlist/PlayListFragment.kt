@@ -45,7 +45,7 @@ class PlayListFragment : BaseFragment<FragmentPlayListBinding>() {
     private fun setup() {
         EventBus.getDefault().register(this)
         val category = arguments?.get(CATEGORY)
-        adapterItem = ItemPlayListAdapter {
+        adapterItem = ItemPlayListAdapter {it,_->
             val url = "http://api.mp3.zing.vn/api/streaming/audio/${it.id}/320"
             it.song = url
             startMediaService(it)
@@ -54,7 +54,7 @@ class PlayListFragment : BaseFragment<FragmentPlayListBinding>() {
             adapter = adapterItem
 
         }
-        viewModel.getData()
+        viewModel.getData(requireContext())
         when(category){
             VPOP->{
                 viewModel.vpop.observe(viewLifecycleOwner,{
@@ -91,7 +91,8 @@ class PlayListFragment : BaseFragment<FragmentPlayListBinding>() {
             EventBus.getDefault().post(
                 EventBusModel.SongSingle(
                     adapterItem.currentList[0],
-                    adapterItem.currentList.subList(1,adapterItem.itemCount)
+                    adapterItem.currentList,
+                    0
                 )
             )
         }

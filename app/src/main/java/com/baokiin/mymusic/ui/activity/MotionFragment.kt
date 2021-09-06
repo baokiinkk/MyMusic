@@ -6,7 +6,6 @@ import android.content.res.Resources
 import android.util.Log
 import android.view.MotionEvent
 import android.widget.SeekBar
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import com.baokiin.mymusic.R
 import com.baokiin.mymusic.data.model.EventBusModel.*
@@ -36,6 +35,7 @@ class MotionFragment : BaseFragment<PlayMusicBinding>() {
     fun onMessageEvent(mediaInfo: MediaInfo) {
         baseBinding.btnPlayPauseMainActivity.setBackgroundResource(if (mediaInfo.mediaPlayer.isPlaying) R.drawable.ic_pause else R.drawable.ic_play)
         viewModel.mediaInfo.postValue(mediaInfo)
+        viewModel.getIdSong(mediaInfo.song)
     }
 
     //-------------------------------------- func -----------------------------------------------
@@ -89,8 +89,6 @@ class MotionFragment : BaseFragment<PlayMusicBinding>() {
                     it?.let {
                         val duration = it.mediaPlayer.duration
                         this.max = duration
-
-
                         baseBinding.txtDucation.text = timeToText(duration)
                     }
                 })
@@ -103,13 +101,14 @@ class MotionFragment : BaseFragment<PlayMusicBinding>() {
         }
     }
 
-    private fun timeToText(duration:Int):String{
+    private fun timeToText(duration: Int): String {
         val longSecond: Long = (duration / 1000).toLong()
         return String.format("%02d:%02d", (longSecond % 3600) / 60, longSecond % 60)
     }
+
     private fun sendActionService(action: Int) {
         val intentService = Intent(context, MediaService::class.java)
         intentService.putExtra(Utils.ACTION, action)
-        startServiceMusic(requireActivity(),intentService)
+        startServiceMusic(requireActivity(), intentService)
     }
 }

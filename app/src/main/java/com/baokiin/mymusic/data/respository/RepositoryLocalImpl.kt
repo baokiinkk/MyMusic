@@ -1,16 +1,15 @@
 package com.baokiin.mymusic.data.respository
 
+import android.util.Log
 import com.baokiin.mymusic.data.local.AppDao
 import com.baokiin.mymusic.data.model.Song
+import com.baokiin.mymusic.data.model.SongLike
 import javax.inject.Inject
 
 
 class RepositoryLocalImpl @Inject constructor(
     private val dao: AppDao
 ) : RepositoryLocal {
-    override suspend fun getDataSong(): MutableList<Song> {
-        return  dao.getDataSong()
-    }
 
     override suspend fun insertSong(song: Song): Boolean =
         try {
@@ -20,18 +19,24 @@ class RepositoryLocalImpl @Inject constructor(
             false
         }
 
-
-    override suspend fun deleteSong(song: Song): Boolean =
+    override suspend fun insertSongLike(song: SongLike): Boolean =
         try {
-            dao.deleteSong(song)
+            dao.addSongLike(song)
             true
         } catch (e: Exception) {
             false
         }
 
-    override suspend fun updateSong(song: Song) =
-        dao.updateSong(song)
 
-    override suspend fun isDownload(id: String): Boolean =
-        dao.isDownload(id) != null
+    override suspend fun deleteAllSong() = dao.deleteAllSong()
+    override suspend fun deleteAllSongLike() = dao.deleteAllSongLike()
+
+    override suspend fun deleteSongLikeById(song: SongLike) = dao.deleteSongLike(song)
+
+    override suspend fun getSongDownloaded(): MutableList<Song> = dao.getSongDownloaded()
+    override suspend fun getSongLiked(): MutableList<SongLike> = dao.getSongLiked()
+
+    override suspend fun getDataSongById(id: String): Song? = dao.getDataSong(id)
+    override suspend fun getDataSongLikeById(id: String): SongLike? = dao.getDataSongLike(id)
+
 }

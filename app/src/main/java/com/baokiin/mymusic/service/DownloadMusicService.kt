@@ -3,9 +3,7 @@ package com.baokiin.mymusic.service
 import android.app.Service
 import android.content.Intent
 import android.os.Build
-
 import android.os.IBinder
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.baokiin.mymusic.R
@@ -40,18 +38,7 @@ class DownloadMusicService : Service() {
     private var idNoti = 0
     private var map: HashMap<Int, Int> = hashMapOf()
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        val notification = notificationBuilder().apply {
-            setGroup(GROUP_KEY)
-            setGroupSummary(true)
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForeground(1234, notification.build())
-        }
-        else{
-            with(NotificationManagerCompat.from(applicationContext)){
-                notify(1234, notification.build())
-            }
-        }
+
         return START_STICKY
     }
 
@@ -59,33 +46,59 @@ class DownloadMusicService : Service() {
      * download file mp3 from url
      * */
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
-    fun onDownloadMusicFileMp3(responseBody: EventBusModel.Reponse) {
+    fun onDownloadMusicFileMp3(responseBody: EventBusModel.Response) {
         GlobalScope.launch(Dispatchers.IO) {
             idNoti++
-            val path = getExternalFilesDir(null).toString() + File.separator.toString() +responseBody.song.id+ ".mp3"
-            val isDownload= writeResponseBodyToDisk(responseBody.reponseBody,path){
+            val path =
+                getExternalFilesDir(null).toString() + File.separator.toString() + responseBody.song.id + ".mp3"
+            val isDownload = writeResponseBodyToDisk(responseBody.reponseBody, path) {
                 map[idNoti - 1] = it
-                notification(idNoti,responseBody.song)
+                notification(idNoti, responseBody.song)
             }
-            if(isDownload){
-                stopForeground(true)
-                val song = responseBody.song
-                song.song = path
-                EventBus.getDefault().post(EventBusModel.DownloadMp3(song))
+            if (isDownload) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    this@DownloadMusicService.stopForeground(true)
+                } else {
+                    NotificationManagerCompat.from(this@DownloadMusicService).cancel(1234)
+                }
+                val songs = responseBody.song
+
+                songs.apply {
+                    val tmpSong = Song(
+                        id,
+                        name,
+                        code,
+                        artists_names,
+                        responseBody.lyric,
+                        responseBody.img,
+                        thumb,
+                        path,
+                    )
+                    EventBus.getDefault().post(EventBusModel.DownloadMp3(tmpSong))
+                }
+
             }
+
         }
     }
 
-    private fun notification(id: Int,song: Song) {
+    private fun notification(id: Int, song: Song) {
         val notification = notificationBuilder().apply {
             setContentText(song.name + "  " + map[id - 1] + "%")
             setProgress(100, map[id - 1] ?: 0, false)
             setGroup(GROUP_KEY)
         }
-        startForeground(id, notification.build())
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForeground(1234, notification.build())
+        } else {
+            with(NotificationManagerCompat.from(this)) {
+                notify(1234, notification.build())
+            }
+        }
 
     }
-    private fun notificationBuilder():NotificationCompat.Builder{
+
+    private fun notificationBuilder(): NotificationCompat.Builder {
         return NotificationCompat.Builder(this, Utils.CHANNEL_DOWNLOAD)
             .setSmallIcon(R.drawable.ic_next)
             .setContentTitle("Downloading")

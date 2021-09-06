@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="adapter"
+            type="com.baokiin.mymusic.adapter.ItemSongLikeAdapter" />
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorTabLayout"
+        android:orientation="vertical"
+        >
+        <ImageView
+            android:id="@+id/viewTest"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycleviewLocal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adapter="@{adapter}"
+            android:overScrollMode="never"
+            android:background="@color/blue_color"
+            android:layout_marginBottom="50dp"
+            tools:listitem="@layout/item_song_liked_list"
+            />
+    </LinearLayout>
+</layout>

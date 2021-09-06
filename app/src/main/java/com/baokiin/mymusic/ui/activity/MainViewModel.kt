@@ -1,7 +1,6 @@
 package com.baokiin.mymusic.ui.activity
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,6 +13,7 @@ import com.baokiin.mymusic.utils.Utils.writeResponseBodyToDisk
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
+import org.greenrobot.eventbus.EventBus
 import java.io.*
 
 import javax.inject.Inject
@@ -32,12 +32,15 @@ class MainViewModel @Inject constructor(
     val downloadImg: MutableLiveData<String?> = MutableLiveData(null)
     val positonMedia: MutableLiveData<Int?> = MutableLiveData(null)
     val isScroll: MutableLiveData<Boolean?> = MutableLiveData(null)
+    val songFromDatabase: MutableLiveData<MutableList<Boolean>?> = MutableLiveData(null)
+    val downloading:MutableLiveData<Boolean?> = MutableLiveData(null)
     fun getSongs(id: Song) {
         viewModelScope.launch {
             val song = repo.getSongs(id.id).data?.items
             songs.postValue(song)
         }
     }
+
 
     fun downloadSong(url: String) {
         viewModelScope.launch {
@@ -71,11 +74,33 @@ class MainViewModel @Inject constructor(
         }
     }
 
-
     // database
-    fun addSong(song: Song) {
+    fun addSongDownload(song: Song) {
         viewModelScope.launch {
             database.insertSong(song)
+            downloading.postValue(true)
+            EventBus.getDefault().post(LoadLocal(true))
+        }
+    }
+    fun addSongLike(song: Song) {
+        viewModelScope.launch {
+            database.insertSongLike(song.toSongLike())
+            EventBus.getDefault().post(LoadLocal(true))
+        }
+    }
+    fun deleteSongLike(song: Song) {
+        viewModelScope.launch {
+            database.deleteSongLikeById(song.toSongLike())
+            EventBus.getDefault().post(LoadLocal(true))
+        }
+    }
+
+    fun getIdSong(song: Song) {
+        viewModelScope.launch {
+            val songDownload = database.getDataSongById(song.id)
+            val songLiked = database.getDataSongLikeById(song.id)
+            val listCheck = mutableListOf(songDownload != null,songLiked != null)
+            songFromDatabase.postValue(listCheck)
         }
     }
 

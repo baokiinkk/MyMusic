@@ -28,7 +28,9 @@ class UtilsBinding {
             image?.let {
                 view.load(
                     it.replace("w94", "w480").replace("w165","w480")
-                )
+                ){
+                    placeholder(R.color.background_main_color)
+                }
             }
         }
         @BindingAdapter("android:loadImageMusic")

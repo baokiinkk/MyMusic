@@ -1,6 +1,7 @@
 package com.baokiin.mymusic.adapter
 
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
@@ -11,7 +12,7 @@ import com.baokiin.mymusic.utils.Utils.hideKeyboard
 import kotlinx.android.synthetic.main.item_play_list.view.*
 
 
-class ItemPlayListAdapter(private val onClick: (Song) -> Unit) :
+class ItemPlayListAdapter(private val onClick: (Song,Int) -> Unit) :
     ListAdapter<Song, ItemPlayListAdapter.ViewHolder>(
         TitleDIff()
     ) {
@@ -20,7 +21,7 @@ class ItemPlayListAdapter(private val onClick: (Song) -> Unit) :
         RecyclerView.ViewHolder(binding.root) {
 
 
-        fun bind(item: Song, onClick: ((Song) -> Unit)? = null) {
+        fun bind(item: Song, onClick: ((Song,Int) -> Unit)? = null) {
             binding.data = item
 
             itemView.apply {
@@ -46,10 +47,10 @@ class ItemPlayListAdapter(private val onClick: (Song) -> Unit) :
                 setOnClickListener {
                     setBackgroundColor(Color.BLACK)
                     tmpItem = item
-                    notifyDataSetChanged()
                     if (onClick != null) {
-                        onClick(item)
+                        onClick(item,adapterPosition)
                     }
+                    notifyDataSetChanged()
                 }
             }
 

@@ -36,7 +36,7 @@ class HiltApplication : Application() {
             // Create the NotificationChannel
             val name = getString(R.string.channel_name)
             val descriptionText = getString(R.string.channel_description)
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val importance = NotificationManager.IMPORTANCE_LOW
             val mChannel = NotificationChannel(CHANNEL_DOWNLOAD, name, importance)
             mChannel.description = descriptionText
             // Register the channel with the system; you can't change the importance

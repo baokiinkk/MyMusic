@@ -196,20 +196,21 @@
             android:id="@+id/seekBarMedia"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="1dp"
             android:paddingStart="0dp"
             android:paddingEnd="0dp"
             android:progressBackgroundTint="@color/blue_color"
             android:progressTint="@color/blue_color"
             android:thumbTint="@color/blue_color"
-            app:layout_constraintBottom_toTopOf="@+id/btnPlay"
+            app:layout_constraintBottom_toBottomOf="@+id/viewpagerMusic"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/viewpagerMusic" />
 
         <FrameLayout
             android:id="@+id/btnPlay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:layout_marginBottom="30dp"
             android:background="@drawable/ic_circle"
             app:layout_constraintBottom_toBottomOf="parent"

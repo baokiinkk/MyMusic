@@ -37,19 +37,23 @@ class InfoFragment : BaseFragment<FragmentInfoBinding>() {
             adapter = ViewPageAdapter(mutableListOf(OnlineFragment(),OfflineFragment()),requireActivity())
 
             btnLogOut.setOnClickListener {
-                viewModel.auth.value?.signOut()
+                viewModel.upData()
                 googleSignInClient.signOut()
-                showView()
+                viewModel.auth.postValue(Firebase.auth.apply { signOut() })
+                showViewWhenNonLogin()
+
             }
             viewModel.auth.observe(viewLifecycleOwner,{
                 it.currentUser.let {
                     if (it == null) {
-                        showView()
+                        showViewWhenNonLogin()
                         btnLogin.setOnClickListener {
                             startActivity(Intent(requireContext(), LoginActivity::class.java))
                         }
-                    } else
+                    } else{
                         btnLogOut.visibility = View.VISIBLE
+                    }
+
                 }
             })
         }
@@ -57,7 +61,7 @@ class InfoFragment : BaseFragment<FragmentInfoBinding>() {
 
     }
 
-    private fun showView() {
+    private fun showViewWhenNonLogin() {
         baseBinding.apply {
             image.setImageResource(R.drawable.ic_account)
             btnLogOut.visibility = View.GONE

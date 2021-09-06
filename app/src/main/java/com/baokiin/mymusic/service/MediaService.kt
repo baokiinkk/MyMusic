@@ -62,6 +62,7 @@ class MediaService : Service() {
         }
         song?.let {
             msong = mutableListOf(it)
+
             if (indexMedia > msong.size - 1 || indexMedia < 0)
                 indexMedia = 0
             mediaPlayer?.stop()
@@ -87,33 +88,41 @@ class MediaService : Service() {
     }
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
-    fun onMessageEvent(song: MutableList<Song>) {
-        msong.addAll(song)
+    fun onMessageEvent(song: Songs) {
+        song.index?.let {
+            msong = mutableListOf()
+            indexMedia = it
+        }
+        msong.addAll(song.song)
+
     }
+
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     fun onMessagePosition(currentPosition: TimesLong) {
-       if(mediaPlayer?.isPlaying == true)
-           mediaPlayer?.start()
+        if (mediaPlayer?.isPlaying == true)
+            mediaPlayer?.start()
         mediaPlayer?.seekTo(currentPosition.time.toInt())
     }
-    private fun timeSend(mediaPlayer: MediaPlayer){
-        if(job?.isActive == true)
+
+    private fun timeSend(mediaPlayer: MediaPlayer) {
+        if (job?.isActive == true)
             job?.cancel()
         job = GlobalScope.launch {
-            while (true){
-               try {
-                   if(mediaPlayer.currentPosition >= mediaPlayer.duration) {
-                       nextMusic(true)
-                       break
-                   }
-                   EventBus.getDefault().post(Times(mediaPlayer.currentPosition))
-                   delay(500)
-               }catch (e:Exception){
-                   break
-               }
+            while (true) {
+                try {
+                    if (mediaPlayer.currentPosition >= mediaPlayer.duration) {
+                        nextMusic(true)
+                        break
+                    }
+                    EventBus.getDefault().post(Times(mediaPlayer.currentPosition))
+                    delay(500)
+                } catch (e: Exception) {
+                    break
+                }
             }
         }
     }
+
     private fun handleActionMusic(action: Int) {
         when (action) {
             ACTION_PLAY -> {
@@ -186,15 +195,15 @@ class MediaService : Service() {
 
     private fun sendNotification(song: Song) {
         GlobalScope.launch {
-            val bitmap:Bitmap
+            val bitmap: Bitmap
             val loader = ImageLoader(this@MediaService)
             val request = ImageRequest.Builder(this@MediaService)
                 .data(song.thumbnail)
                 .allowHardware(false) // Disable hardware bitmaps.
                 .build()
 
-                val result = (loader.execute(request) as SuccessResult).drawable
-                bitmap = (result as BitmapDrawable).bitmap
+            val result = (loader.execute(request) as SuccessResult).drawable
+            bitmap = (result as BitmapDrawable).bitmap
 
 
             mediaPlayer?.let { mediaPlayer ->
@@ -232,13 +241,12 @@ class MediaService : Service() {
                                 .setShowActionsInCompactView(0, 1, 2)
                                 .setMediaSession(media.sessionToken)
                         )
-                        .setProgress(mediaPlayer.duration,mediaPlayer.currentPosition,false)
+                        .setProgress(mediaPlayer.duration, mediaPlayer.currentPosition, false)
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     startForeground(123, notificationBuilder.build())
-                }
-                else{
-                    with(NotificationManagerCompat.from(applicationContext)){
+                } else {
+                    with(NotificationManagerCompat.from(applicationContext)) {
                         notify(123, notificationBuilder.build())
                     }
                 }
