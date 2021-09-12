@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.lauzy.freedom.library.LrcView android:id="@+id/lyricView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:currentIndicateLrcColor="@color/red_color"
+    app:indicatorTextColor="@color/white"
+    app:playIcon="@drawable/ic_play_music"
+    app:lrcNormalTextColor="#E3E2E2"
+    app:lrcCurrentTextColor="@color/white"
+    app:isLrcCurrentTextBold="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+</com.lauzy.freedom.library.LrcView>
