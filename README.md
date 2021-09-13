@@ -1,6 +1,5 @@
 # MyMusic
-![Watch the video](https://drive.google.com/file/d/1VMNUHUxCgtrM1Ve6mxuWrv8Cc0ZUEGOH/view?usp=sharing)
-
+![Watch the video](https://drive.google.com/file/d/1vkIePv-Ei3OqIf100ODze9kiBQO6u65o/view)
 
 ### Thực Hiện:
 - **Hồ Minh Quốc Bảo** 
