@@ -6,29 +6,28 @@
 
 ### Nội Dung
 #### I. Yêu cầu
-- **Đăng nhập:**
-    - Cho phép người dùng đăng nhập bằng tài khoản do nhà trường cung cấp.Lưu tài khoản cho lần sau mở app.
-- **Biểu đồ quá trình học tập:**
-    - Show biểu đồ điểm tích lũy của người dùng trong suốt các năm học.
-- **Lịch thi, thời khóa biểu, điểm thi:**
-    - Show cơ bản về lịch thi, thời khóa biểu, điểm thi ở màn hình chính, người dùng muốn xem chi tiết thì nhấn vào cardView tương ứng.
-
+- **Lưu trữ:**
+    - Lưu các bai hát đã nghe. 
+    - Lưu các bai hát user tải. 
+    - Lưu các bai hát yêu thích.
+- **Xem danh sách các bai hát theo các chủ đề va thể loại:**
+    - gọi api để lấy danh sách các bai hát theo từng chủ đề.
+- **Tìm kiếm:**
+    - tìm kiếm theo tên bai nhạc, tên ca sĩ, tên nhạc sĩ.
+- **Tải nhạc, thêm yêu thích:**
+    - thêm hoặc bỏ bai nhạc yêu thích vao thư mục.
+    - tải bai nhạc.
+- **đăng nhập:**
+    - google,facebook.
+    - tải bai nhạc.
 #### II. Một số kỹ thuật sử dụng
-- Android UI/UX Libraries:
-    - Sử dụng bộ thư viện từ trang: https://github.com/wasabeef/awesome-android-ui?fbclid=IwAR3pgu1yvdcgd3BCyfZTDMy2JkBVixGCc5o7OiEZ3oTCKLs9a_qTmGeuU6E
-- Mô hình MVVM:
-    - navigation điều hướng các fragment(viewModel).
-    - Koin để tiêm các class(DI).
-    - Room database.
-    - usercase để chia nhỏ dữ liệu từ repository.
-    - flow coroutine + livedata .
-    - databinding.
-- OKHTTP:
-    - request get,post thông tin từ trang uis(trường) để lấy về tập html, sử dụng Jquery để truy vấn lấy các thông tin cần thiết để đưa vào database.
-- Các thành phần sử dụng:
-    - RecycleView: sử dụng listAdapter để tối ưu, kĩ thuật recycleView lồng recyclView.
-    - ViewPage2+TabLayout để thực hiện vuốt các item, hoặc lựa chọn các tab phía dưới.
-    - Xử lí đa màn hình.
+- Android UI/UX Libraries: https://github.com/wasabeef/awesome-android-ui?fbclid=IwAR3pgu1yvdcgd3BCyfZTDMy2JkBVixGCc5o7OiEZ3oTCKLs9a_qTmGeuU6E
+- Data: API zing mp3, Firebase, SQLite 
+- Design Pattern: MVVM 
+- Android Jetpack: Databinding, Lifecycles, LiveData, Paging, Room, ViewModel,... 
+- Dependency Injection: Hilt 
+- Programming Language : Kotlin 
+- Services,Broadcast Receivers,Notification, Media
 
 #### III. Ảnh Demo
 ![2D](https://play-lh.googleusercontent.com/VHn6teF41mG1XzN_44UZgA5XRCURRi3_MizaHhJIBU_SPz2kKAEqhkgrYMng7I9-TrY-=w1366-h657-rw)
