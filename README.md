@@ -1,5 +1,4 @@
 # MyMusic
-![Watch the video](https://drive.google.com/file/d/1vkIePv-Ei3OqIf100ODze9kiBQO6u65o/view)
 
 ### Thực Hiện:
 - **Hồ Minh Quốc Bảo** 
@@ -30,16 +29,26 @@
 - Services,Broadcast Receivers,Notification, Media
 
 #### III. Ảnh Demo
-![2D](https://play-lh.googleusercontent.com/VHn6teF41mG1XzN_44UZgA5XRCURRi3_MizaHhJIBU_SPz2kKAEqhkgrYMng7I9-TrY-=w1366-h657-rw)
+- #### Home:
+![image](https://user-images.githubusercontent.com/44254528/133073154-c5433b61-6983-4533-b8e4-25f14b6eb3f3.png)![image](https://user-images.githubusercontent.com/44254528/133073110-f48dcdeb-6b37-49d3-8e91-0be386cbcdf2.png)
+- #### PlayMusic:
+ ![image](https://user-images.githubusercontent.com/44254528/133073357-8f069a14-9fa4-4659-a70e-02e29e0a61fd.png)![image](https://user-images.githubusercontent.com/44254528/133073379-d52505bc-af72-466d-9942-4711acc31f60.png)
+- #### notification and lyric:
+![image](https://user-images.githubusercontent.com/44254528/133073430-951b4970-a722-4bd3-8bf2-89c5663967a0.png)![image](https://user-images.githubusercontent.com/44254528/133073443-9c4419c6-30a7-4e2b-b1f1-4cf04aedc581.png)
+- #### chartZing:
+![image](https://user-images.githubusercontent.com/44254528/133073505-7712c495-4378-4aad-9429-ae75236c7c73.png)![image](https://user-images.githubusercontent.com/44254528/133073518-5927585d-4555-4ada-8acd-107d023c3645.png)
+- #### search:
+![image](https://user-images.githubusercontent.com/44254528/133073547-e1b859c5-5918-4d48-aaf7-c1e062fe40e4.png)
+- #### Info:
+![image](https://user-images.githubusercontent.com/44254528/133073609-19be6748-950f-4a4b-ad60-e0169153fd14.png)![image](https://user-images.githubusercontent.com/44254528/133073623-f93021d5-c942-4916-9d07-216c3d50cf80.png)
 
-![3D](https://play-lh.googleusercontent.com/EFFi2tB1gdtRo503KsFHMVtRd4x-L63LGrFmiqf-WuyKlxa1Dk9a6I14W_QnKsaYuA=w720-h310-rw)
 
-![4D](https://play-lh.googleusercontent.com/O5iFVPSq6az0oujSFbU9gwNtBo5k3kuKm5nHepSY6J2CfWx_O3sms5F4AW2Ml7HEe-Y=w720-h310-rw)
 
-![Impossible Triangle](https://play-lh.googleusercontent.com/1M4WQs0Dm-T2OolWRKSz1cn11Q_zP8o5m6MVeGfE6xA0OIaL5EtxFIC8Y2rqxz6zuA=w720-h310-rw)
 
-#### III. Link tải app
-https://play.google.com/store/apps/details?id=com.baokiin.uisptit&hl=vi&gl=US
+
+
+
+
 
 
 
