@@ -1,5 +1,5 @@
 # MyMusic
-![Authors](https://drive.google.com/file/d/1VMNUHUxCgtrM1Ve6mxuWrv8Cc0ZUEGOH/view?usp=sharing)
+![Watch the video](https://drive.google.com/file/d/1VMNUHUxCgtrM1Ve6mxuWrv8Cc0ZUEGOH/view?usp=sharing)
 
 
 ### Thực Hiện:
