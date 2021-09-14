@@ -31,6 +31,24 @@
             android:layout_marginStart="16dp"
             motion:layout_constraintTop_toTopOf="@+id/imageView3"
             android:visibility="invisible" />
+        <Constraint
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="20dp"
+            motion:layout_constraintBottom_toTopOf="@+id/btnPlay"
+            motion:layout_constraintTop_toBottomOf="@+id/txtTitle"
+            motion:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="20dp"
+            android:id="@+id/viewpagerMusic" />
+        <Constraint
+            motion:layout_constraintEnd_toStartOf="@+id/btnShuffleMusic"
+            motion:layout_constraintStart_toEndOf="@+id/btnLoopMusic"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="20dp"
+            android:id="@+id/btnPlay" />
     </ConstraintSet>
 
     <ConstraintSet android:id="@+id/end">

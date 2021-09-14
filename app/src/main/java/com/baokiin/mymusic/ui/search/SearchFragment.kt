@@ -34,7 +34,7 @@ class SearchFragment :BaseFragment<FragmentSearchBinding>(){
     }
     //-------------------------------- Func ----------------------------------------
     private fun setup() {
-        adapterItem = ItemPlayListAdapter {
+        adapterItem = ItemPlayListAdapter {it,_->
             hideKeyboard()
             val url = "http://api.mp3.zing.vn/api/streaming/audio/${it.id}/320"
             it.song = url

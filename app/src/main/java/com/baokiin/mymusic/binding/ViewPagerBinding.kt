@@ -27,7 +27,7 @@ class ViewPagerBinding {
                 this.adapter = adapter
                 offscreenPageLimit = 1
                 val cpt = CompositePageTransformer()
-                cpt.addTransformer{ page, position ->
+                cpt.addTransformer { page, position ->
                     val myOffset: Float = position * -(2 * 20f + 40f)
                     when {
                         position < -1 -> {
@@ -63,9 +63,9 @@ class ViewPagerBinding {
             }
         }
 
-        @BindingAdapter("android:tab_layout","android:adapter_viewpager2")
+        @BindingAdapter("android:tab_layout", "android:adapter_viewpager2")
         @JvmStatic
-        fun viewpager(view: ViewPager2, tabLayout: TabLayout,adapter: ViewPageAdapter) {
+        fun viewpager(view: ViewPager2, tabLayout: TabLayout, adapter: ViewPageAdapter) {
             view.adapter = adapter
             view.isUserInputEnabled = false
             TabLayoutMediator(
@@ -82,6 +82,25 @@ class ViewPagerBinding {
 
                     2 -> {
                         tab.setIcon(R.drawable.ic_account)
+                    }
+                }
+            }.attach()
+        }
+
+        @BindingAdapter("android:tab_layout", "android:adapter_viewpager")
+        @JvmStatic
+        fun viewpager2(view: ViewPager2, tabLayout: TabLayout, adapter: ViewPageAdapter) {
+            view.adapter = adapter
+            TabLayoutMediator(
+                tabLayout,
+                view
+            ) { tab, pos ->
+                when (pos) {
+                    0 -> {
+                        tab.text = "OnLine"
+                    }
+                    1 -> {
+                        tab.text = "OffLine"
                     }
                 }
             }.attach()
