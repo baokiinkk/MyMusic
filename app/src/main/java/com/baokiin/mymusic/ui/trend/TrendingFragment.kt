@@ -30,7 +30,7 @@ class TrendingFragment : BaseFragment<FragmentTrendingBinding>() {
 
     //-------------------------------- Func ----------------------------------------
     private fun setup() {
-        adapterItem = ItemPlayListAdapter {
+        adapterItem = ItemPlayListAdapter {it,_->
             val url = "http://api.mp3.zing.vn/api/streaming/audio/${it.id}/320"
             it.song = url
             startMediaService(it)
@@ -39,7 +39,7 @@ class TrendingFragment : BaseFragment<FragmentTrendingBinding>() {
             adapter = adapterItem
             viewmodel = viewModel
         }
-        viewModel.getData()
+        viewModel.getData(requireContext())
         viewModel.trending.observe(viewLifecycleOwner,{
             it?.let {
                adapterItem.submitList(it.data?.song)

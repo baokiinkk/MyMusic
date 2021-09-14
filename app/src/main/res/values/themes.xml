@@ -21,6 +21,14 @@
         <item name="android:windowIsFloating">true</item>
     </style>
 
+    <!-- Splash Screen theme. -->
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/ic_google</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
 
         <!--    tablayout-->
     <style name="AppTabLayout" parent="Theme.MaterialComponents.DayNight.NoActionBar">

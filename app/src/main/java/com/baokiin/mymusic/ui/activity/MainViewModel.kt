@@ -1,30 +1,39 @@
 package com.baokiin.mymusic.ui.activity
 
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.baokiin.mymusic.adapter.ViewPageAdapter
-import com.baokiin.mymusic.data.model.EventBusModel
 import com.baokiin.mymusic.data.model.EventBusModel.*
 import com.baokiin.mymusic.data.model.Song
 import com.baokiin.mymusic.data.respository.Repository
+import com.baokiin.mymusic.data.respository.RepositoryLocal
+import com.baokiin.mymusic.utils.Utils.writeResponseBodyToDisk
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import okhttp3.ResponseBody
+import org.greenrobot.eventbus.EventBus
 import java.io.*
-import java.net.HttpURLConnection
-import java.net.URL
+
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(private val repo: Repository) : ViewModel() {
+class MainViewModel @Inject constructor(
+    private val repo: Repository,
+    private val database: RepositoryLocal
+) : ViewModel() {
     var adapter: ViewPageAdapter? = null
     var adapterMusic: ViewPageAdapter? = null
     val songs: MutableLiveData<MutableList<Song>?> = MutableLiveData(null)
     val mediaInfo: MutableLiveData<MediaInfo?> = MutableLiveData(null)
     val lyricFile: MutableLiveData<File?> = MutableLiveData(null)
+    val downloadMusic: MutableLiveData<ResponseBody?> = MutableLiveData(null)
+    val downloadImg: MutableLiveData<String?> = MutableLiveData(null)
     val positonMedia: MutableLiveData<Int?> = MutableLiveData(null)
     val isScroll: MutableLiveData<Boolean?> = MutableLiveData(null)
+    val songFromDatabase: MutableLiveData<MutableList<Boolean>?> = MutableLiveData(null)
+    val downloading:MutableLiveData<Boolean?> = MutableLiveData(null)
     fun getSongs(id: Song) {
         viewModelScope.launch {
             val song = repo.getSongs(id.id).data?.items
@@ -32,49 +41,67 @@ class MainViewModel @Inject constructor(private val repo: Repository) : ViewMode
         }
     }
 
-    fun getLyric(url: String?) {
-        GlobalScope.launch {
-            url?.let {
-                lyricFile.postValue(getFileByUrl(it))
-            }
 
+    fun downloadSong(url: String) {
+        viewModelScope.launch {
+            downloadMusic.postValue(repo.downloadMusic(url))
         }
     }
 
-    private fun getFileByUrl(fileUrl: String): File? {
-        val outStream = ByteArrayOutputStream()
-        var stream: BufferedOutputStream? = null
-        var inputStream: InputStream? = null
-        var file: File? = null
-        try {
-            val imageUrl = URL(fileUrl)
-            val conn: HttpURLConnection = imageUrl.openConnection() as HttpURLConnection
-            conn.setRequestProperty(
-                "User-Agent",
-                "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)"
-            )
-            inputStream = conn.inputStream
-            val buffer = ByteArray(1024)
-            var len: Int
-            while (inputStream.read(buffer).also { len = it } != -1) {
-                outStream.write(buffer, 0, len)
-            }
-            file = File.createTempFile(
-                "file",
-                fileUrl.substring(fileUrl.lastIndexOf("."), fileUrl.length)
-            )
-            val fileOutputStream = FileOutputStream(file)
-            stream = BufferedOutputStream(fileOutputStream)
-            stream.write(outStream.toByteArray())
-        } catch (e: Exception) {
-        } finally {
-            try {
-                inputStream?.close()
-                stream?.close()
-                outStream.close()
-            } catch (e: Exception) {
+    fun downloadImg(url: String, context: Context, song: Song) {
+        viewModelScope.launch {
+            val img = repo.downloadImg(url.replace("w94", "w360"))
+            val path = context.getExternalFilesDir(null)
+                .toString() + File.separator.toString() + song.id + ".jpg"
+            val isDownload = writeResponseBodyToDisk(img, path) {}
+            if (isDownload)
+                downloadImg.postValue(path)
+        }
+    }
+
+    fun getLyric(url: String, context: Context, song: Song) {
+        viewModelScope.launch {
+            if (url.substring(0, 4) != "http") {
+                lyricFile.postValue(File(url))
+            } else {
+                val response = repo.downloadLyric(url)
+                val path = context.getExternalFilesDir(null)
+                    .toString() + File.separator.toString() + song.id + ".lrc"
+                val isDownload = writeResponseBodyToDisk(response, path) {}
+                if (isDownload)
+                    lyricFile.postValue(File(path))
             }
         }
-        return file
     }
+
+    // database
+    fun addSongDownload(song: Song) {
+        viewModelScope.launch {
+            database.insertSong(song)
+            downloading.postValue(true)
+            EventBus.getDefault().post(LoadLocal(true))
+        }
+    }
+    fun addSongLike(song: Song) {
+        viewModelScope.launch {
+            database.insertSongLike(song.toSongLike())
+            EventBus.getDefault().post(LoadLocal(true))
+        }
+    }
+    fun deleteSongLike(song: Song) {
+        viewModelScope.launch {
+            database.deleteSongLikeById(song.toSongLike())
+            EventBus.getDefault().post(LoadLocal(true))
+        }
+    }
+
+    fun getIdSong(song: Song) {
+        viewModelScope.launch {
+            val songDownload = database.getDataSongById(song.id)
+            val songLiked = database.getDataSongLikeById(song.id)
+            val listCheck = mutableListOf(songDownload != null,songLiked != null)
+            songFromDatabase.postValue(listCheck)
+        }
+    }
+
 }

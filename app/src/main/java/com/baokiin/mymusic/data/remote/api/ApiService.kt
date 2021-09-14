@@ -1,11 +1,9 @@
-package com.baokiin.mymusic.data.api
+package com.baokiin.mymusic.data.remote.api
 
 import com.baokiin.mymusic.data.model.DataApi
 import com.baokiin.mymusic.data.model.DataFind
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
-import javax.inject.Named
+import okhttp3.ResponseBody
+import retrofit2.http.*
 
 interface ApiService {
     @GET("chart-realtime?songId=0&videoId=0&albumId=0&chart=song&time=-1")
@@ -22,6 +20,19 @@ interface ApiService {
 
     @GET("recommend?type=audio")
     suspend fun getSongs(@Query("id") id:String):DataApi
+
+
+    @Streaming
+    @GET
+    suspend fun downloadMusic(@Url url:String):ResponseBody
+
+    @Streaming
+    @GET
+    suspend fun downloadLyric(@Url url:String):ResponseBody
+
+    @Streaming
+    @GET
+    suspend fun downloadImg(@Url url:String):ResponseBody
 
 
 }

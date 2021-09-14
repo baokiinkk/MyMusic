@@ -8,14 +8,12 @@ import android.view.MotionEvent
 import android.widget.SeekBar
 import androidx.fragment.app.activityViewModels
 import com.baokiin.mymusic.R
-import com.baokiin.mymusic.data.model.EventBusModel
 import com.baokiin.mymusic.data.model.EventBusModel.*
 import com.baokiin.mymusic.databinding.PlayMusicBinding
-import com.baokiin.mymusic.ui.service.MediaService
+import com.baokiin.mymusic.service.MediaService
 import com.baokiin.mymusic.utils.BaseFragment
 import com.baokiin.mymusic.utils.Utils
-import com.google.android.material.slider.Slider
-import kotlinx.android.synthetic.main.play_music.view.*
+import com.baokiin.mymusic.utils.Utils.startServiceMusic
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -37,6 +35,7 @@ class MotionFragment : BaseFragment<PlayMusicBinding>() {
     fun onMessageEvent(mediaInfo: MediaInfo) {
         baseBinding.btnPlayPauseMainActivity.setBackgroundResource(if (mediaInfo.mediaPlayer.isPlaying) R.drawable.ic_pause else R.drawable.ic_play)
         viewModel.mediaInfo.postValue(mediaInfo)
+        viewModel.getIdSong(mediaInfo.song)
     }
 
     //-------------------------------------- func -----------------------------------------------
@@ -90,8 +89,6 @@ class MotionFragment : BaseFragment<PlayMusicBinding>() {
                     it?.let {
                         val duration = it.mediaPlayer.duration
                         this.max = duration
-
-
                         baseBinding.txtDucation.text = timeToText(duration)
                     }
                 })
@@ -104,13 +101,14 @@ class MotionFragment : BaseFragment<PlayMusicBinding>() {
         }
     }
 
-    private fun timeToText(duration:Int):String{
+    private fun timeToText(duration: Int): String {
         val longSecond: Long = (duration / 1000).toLong()
         return String.format("%02d:%02d", (longSecond % 3600) / 60, longSecond % 60)
     }
+
     private fun sendActionService(action: Int) {
         val intentService = Intent(context, MediaService::class.java)
         intentService.putExtra(Utils.ACTION, action)
-        requireActivity().startForegroundService(intentService)
+        startServiceMusic(requireActivity(), intentService)
     }
 }

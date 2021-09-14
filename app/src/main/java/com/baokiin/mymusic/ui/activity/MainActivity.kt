@@ -13,13 +13,15 @@ import com.baokiin.mymusic.R
 import com.baokiin.mymusic.adapter.ViewPageAdapter
 import com.baokiin.mymusic.data.model.EventBusModel.*
 import com.baokiin.mymusic.databinding.ActivityMainBinding
-import com.baokiin.mymusic.ui.InfoFragment
+import com.baokiin.mymusic.service.DownloadMusicService
 import com.baokiin.mymusic.ui.home.HomeFragment
+import com.baokiin.mymusic.ui.info.InfoFragment
 import com.baokiin.mymusic.ui.lyric.LyricFragment
 import com.baokiin.mymusic.ui.music.MusicFragment
-import com.baokiin.mymusic.ui.service.MediaService
+import com.baokiin.mymusic.service.MediaService
 import com.baokiin.mymusic.ui.trend.TrendingFragment
 import com.baokiin.mymusic.utils.Utils
+import com.baokiin.mymusic.utils.Utils.startServiceMusic
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.play_music.view.*
@@ -34,6 +36,7 @@ import org.greenrobot.eventbus.ThreadMode
 class MainActivity : AppCompatActivity() {
     //--------------------------------- variable --------------------------------------------------
     private val viewModel by viewModels<MainViewModel>()
+    private var indexSong:Int? = null
 
 
     //---------------------------- override lifecycle----------------------------------------------
@@ -54,6 +57,9 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
         val intent = Intent(this, MediaService::class.java)
         stopService(intent)
+
+        val intent2 = Intent(this, DownloadMusicService::class.java)
+        stopService(intent2)
         EventBus.getDefault().unregister(this)
     }
 
@@ -61,13 +67,18 @@ class MainActivity : AppCompatActivity() {
     //-------------------------------------- recive data ------------------------------------------
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    fun onMessageSecond(mp3: DownloadMp3) {
+        viewModel.addSongDownload(mp3.song)
+    }
+
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
     fun onMessageSecond(second: Times) {
         viewModel.positonMedia.postValue(second.time)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onMessageSecond(showFrament: ShowFrament) {
-        containerFramgnet.visibility = if (showFrament.boolean) View.VISIBLE else View.GONE
+    fun onMessageSecond(showFragment: ShowFragment) {
+        containerFramgnet.visibility = if (showFragment.boolean) View.VISIBLE else View.GONE
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -76,10 +87,11 @@ class MainActivity : AppCompatActivity() {
             playMusic.visibility = View.VISIBLE
             val intent = Intent(this, MediaService::class.java)
             intent.putExtra(Utils.SONG, song.song)
-            startForegroundService(intent)
+            startServiceMusic(this,intent)
             if (song.isList == null) {
                 viewModel.getSongs(song.song)
             } else {
+                indexSong = song.index
                 GlobalScope.launch {
                     delay(1000)
                     viewModel.songs.postValue(song.isList)
@@ -115,7 +127,8 @@ class MainActivity : AppCompatActivity() {
             ViewPageAdapter(mutableListOf(MusicFragment(), LyricFragment()), this)
         viewModel.songs.observe(this, {
             it?.let {
-                EventBus.getDefault().post(it)
+                EventBus.getDefault().post(Songs(it,indexSong))
+                indexSong = null
             }
         })
 

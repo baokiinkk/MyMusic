@@ -4,8 +4,11 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="channel_name">MyNotification</string>
     <string name="channel_description">my notification</string>
-
+    <string name="login_google">Login Google</string>
+    <string name="login_facebook">Login Facebook</string>
     <color name="text_color_white">#fff</color>
     <color name="background_color_white">#fff</color>
     <color name="green_color">#53B175</color>
+    <string name="facebook_app_id">839423733379701</string>
+    <string name="fb_login_protocol_scheme">fb839423733379701</string>
 </resources>
