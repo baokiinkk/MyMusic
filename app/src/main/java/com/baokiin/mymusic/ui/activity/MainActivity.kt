@@ -2,6 +2,7 @@ package com.baokiin.mymusic.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
@@ -125,12 +126,12 @@ class MainActivity : AppCompatActivity() {
             ViewPageAdapter(mutableListOf(HomeFragment(), TrendingFragment(), InfoFragment()), this)
         viewModel.adapterMusic =
             ViewPageAdapter(mutableListOf(MusicFragment(), LyricFragment()), this)
-        viewModel.songs.observe(this, {
+        viewModel.songs.observe(this) {
             it?.let {
-                EventBus.getDefault().post(Songs(it,indexSong))
+                EventBus.getDefault().post(Songs(it, indexSong))
                 indexSong = null
             }
-        })
+        }
 
 
     }

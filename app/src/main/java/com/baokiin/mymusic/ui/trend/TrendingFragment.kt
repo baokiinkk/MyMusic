@@ -31,7 +31,7 @@ class TrendingFragment : BaseFragment<FragmentTrendingBinding>() {
     //-------------------------------- Func ----------------------------------------
     private fun setup() {
         adapterItem = ItemPlayListAdapter {it,_->
-            val url = "http://api.mp3.zing.vn/api/streaming/audio/${it.id}/320"
+            val url = "https://api.mp3.zing.vn/api/streaming/audio/${it.id}/320"
             it.song = url
             startMediaService(it)
         }

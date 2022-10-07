@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.viewModels
 import com.baokiin.mymusic.ui.home.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -17,13 +16,13 @@ class SplashActivity: AppCompatActivity() {
 
         viewModel.getData(this)
         viewModel.getDataFromFirestore()
-        viewModel.america.observe(this,{
+        viewModel.america.observe(this) {
             it?.let {
                 // Start home activity
                 startActivity(Intent(this@SplashActivity, MainActivity::class.java))
                 finish()
             }
-        })
+        }
 
     }
 }

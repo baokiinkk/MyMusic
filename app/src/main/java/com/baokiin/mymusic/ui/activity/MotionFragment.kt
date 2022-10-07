@@ -85,18 +85,18 @@ class MotionFragment : BaseFragment<PlayMusicBinding>() {
 
                 })
 
-                viewModel.mediaInfo.observe(viewLifecycleOwner, {
+                viewModel.mediaInfo.observe(viewLifecycleOwner) {
                     it?.let {
                         val duration = it.mediaPlayer.duration
                         this.max = duration
                         baseBinding.txtDucation.text = timeToText(duration)
                     }
-                })
-                viewModel.positonMedia.observe(viewLifecycleOwner, {
+                }
+                viewModel.positonMedia.observe(viewLifecycleOwner) {
                     it?.let {
                         this.progress = it
                     }
-                })
+                }
             }
         }
     }

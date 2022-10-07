@@ -61,7 +61,7 @@ class MainViewModel @Inject constructor(
 
     fun getLyric(url: String, context: Context, song: Song) {
         viewModelScope.launch {
-            if (url.substring(0, 4) != "http") {
+            if (!url.startsWith("https")) {
                 lyricFile.postValue(File(url))
             } else {
                 val response = repo.downloadLyric(url)

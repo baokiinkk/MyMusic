@@ -43,7 +43,7 @@ class MusicFragment : BaseFragment<FragmentMusicBinding>() {
 
         baseBinding.viewmodel = viewModel
         viewModel.apply {
-            mediaInfo.observe(viewLifecycleOwner, {
+            mediaInfo.observe(viewLifecycleOwner) {
                 it?.let {
                     baseBinding.btnLike.visibility = if (it.song.song?.substring(
                             1,
@@ -53,20 +53,20 @@ class MusicFragment : BaseFragment<FragmentMusicBinding>() {
                     it.song.lyric?.let { it1 -> getLyric(it1, requireContext(), it.song) }
                 }
 
-            })
-            songFromDatabase.observe(viewLifecycleOwner, {
+            }
+            songFromDatabase.observe(viewLifecycleOwner) {
                 isDownloaded = it?.get(0)
                 isLiked = it?.get(1)
                 buttonType(baseBinding.btnDown, baseBinding.btnDown.background, it?.get(0))
                 buttonType(baseBinding.btnLike, baseBinding.btnLike.background, it?.get(1))
-            })
-            downloading.observe(viewLifecycleOwner, {
+            }
+            downloading.observe(viewLifecycleOwner) {
                 it?.let {
                     isDownloaded = it
                     buttonType(baseBinding.btnDown, baseBinding.btnDown.background, it)
                 }
-            })
-            downloadMusic.observe(viewLifecycleOwner, { download ->
+            }
+            downloadMusic.observe(viewLifecycleOwner) { download ->
                 download?.let { response ->
                     mediaInfo.value?.song?.let { song ->
                         downloadImg.value?.let {
@@ -81,7 +81,7 @@ class MusicFragment : BaseFragment<FragmentMusicBinding>() {
                         }
                     }
                 }
-            })
+            }
         }
     }
 
@@ -103,7 +103,7 @@ class MusicFragment : BaseFragment<FragmentMusicBinding>() {
                 val intent = Intent(context, DownloadMusicService::class.java)
                 startServiceMusic(requireActivity(), intent)
                 val url =
-                    "http://api.mp3.zing.vn/api/streaming/audio/${viewModel.mediaInfo.value?.song?.id}/320"
+                    "https://api.mp3.zing.vn/api/streaming/audio/${viewModel.mediaInfo.value?.song?.id}/320"
                 viewModel.downloadSong(url)
                 viewModel.mediaInfo.value?.let {
                     it.song.thumbnail?.let { it1 ->

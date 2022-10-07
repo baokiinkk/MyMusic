@@ -8,10 +8,12 @@ import android.graphics.drawable.BitmapDrawable
 import android.media.AudioAttributes
 import android.media.MediaMetadata
 import android.media.MediaPlayer
+import android.media.MediaPlayer.OnPreparedListener
 import android.os.Build
 import android.os.IBinder
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.media.app.NotificationCompat.MediaStyle
@@ -37,6 +39,7 @@ import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.io.IOException
 
 
 class MediaService : Service() {
@@ -68,10 +71,6 @@ class MediaService : Service() {
             mediaPlayer?.stop()
             mediaPlayer = startMedia(msong[indexMedia])
             sendNotification(msong[indexMedia])
-            mediaPlayer?.let { mediaPlayer ->
-                timeSend(mediaPlayer)
-                EventBus.getDefault().post(MediaInfo(msong[indexMedia], mediaPlayer))
-            }
 
         }
 
@@ -187,9 +186,22 @@ class MediaService : Service() {
                     .setUsage(AudioAttributes.USAGE_MEDIA)
                     .build()
             )
-            setDataSource(song.song ?: "http://api.mp3.zing.vn/api/streaming/audio/${song.id}/320")
-            prepare() //
-            start()
+            try {
+                //change with setDataSource(Context,Uri);
+                setDataSource(song.song ?: "https://api.mp3.zing.vn/api/streaming/audio/${song.id}/320")
+                prepareAsync()
+                setOnPreparedListener { //mp.start();
+                    start()
+                    timeSend(this)
+                    EventBus.getDefault().post(MediaInfo(msong[indexMedia], this))
+                }
+            } catch (e: IllegalArgumentException) {
+                e.printStackTrace()
+            } catch (e: IllegalStateException) {
+                e.printStackTrace()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
         }
     }
 

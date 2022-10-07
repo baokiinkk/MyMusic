@@ -44,7 +44,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     override fun onDestroy() {
-        Log.d("quocbao","cccccccccccccccccccc")
         super.onDestroy()
     }
 
@@ -112,22 +111,22 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
     private fun setUpAdapter() {
         itemtrendHomeAdapter = ItemHomeTitleAdapter {
-            val url = "http://api.mp3.zing.vn/api/streaming/audio/${it.id}/320"
+            val url = "https://api.mp3.zing.vn/api/streaming/audio/${it.id}/320"
             it.song = url
             startMediaService(it)
         }
         itemamericaHomeAdapter = ItemHomeAdapter {
-            val url = "http://api.mp3.zing.vn/api/streaming/audio/${it.id}/320"
+            val url = "https://api.mp3.zing.vn/api/streaming/audio/${it.id}/320"
             it.song = url
             startMediaService(it)
         }
         itemkpopHomeAdapter = ItemHomeAdapter {
-            val url = "http://api.mp3.zing.vn/api/streaming/audio/${it.id}/320"
+            val url = "https://api.mp3.zing.vn/api/streaming/audio/${it.id}/320"
             it.song = url
             startMediaService(it)
         }
         itemvpopHomeAdapter = ItemHomeAdapter {
-            val url = "http://api.mp3.zing.vn/api/streaming/audio/${it.id}/320"
+            val url = "https://api.mp3.zing.vn/api/streaming/audio/${it.id}/320"
             it.song = url
             startMediaService(it)
         }
