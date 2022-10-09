@@ -6,16 +6,16 @@ import okhttp3.ResponseBody
 import retrofit2.http.*
 
 interface ApiService {
-    @GET("chart-realtime?songId=0&videoId=0&albumId=0&chart=song&time=-1")
+    @GET("api/song/topSong/vietnam")
     suspend fun getTrending(): DataApi
 
-    @GET("media/get-source?type=album&key=LmJHtkGNBJRmcWiymtDGZGyZhDQxsZQSa")
+    @GET("api/song/topSong/usuk")
     suspend fun getTopAmerica(): DataApi
 
-    @GET("media/get-source?type=album&key=LmxnyZHadxumRncynTDnkmyZgFWcsGCCp")
+    @GET("api/song/topSong/hanquoc")
     suspend fun getTopKpop(): DataApi
 
-    @GET("media/get-source?type=album&key=kncHyLmNdcRmczgtHyDmkGTLhvpcsHALs")
+    @GET("api/song/topSong/vietnam")
     suspend fun getTopVpop(): DataApi
 
     @GET("recommend?type=audio")

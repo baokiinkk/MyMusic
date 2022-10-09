@@ -1,8 +1,5 @@
 package com.baokiin.mymusic.adapter
 
-import android.content.res.Resources
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -10,10 +7,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.baokiin.mymusic.data.model.Song
 import com.baokiin.mymusic.databinding.ItemHomeBinding
-import com.baokiin.mymusic.databinding.ItemTitleHomeBinding
 
 
-class ItemHomeAdapter(private val onClick: (Song) -> Unit) :
+class ItemHomeAdapter(private val onClick: (Int) -> Unit) :
     ListAdapter<Song, ItemHomeAdapter.ViewHolder>(
         TitleDIff()
     ) {
@@ -34,12 +30,12 @@ class ItemHomeAdapter(private val onClick: (Song) -> Unit) :
             }
         }
 
-        fun bind(item: Song, onClick: ((Song) -> Unit)? = null) {
+        fun bind(item: Song, onClick: ((Int) -> Unit)? = null) {
             binding.data = item
             itemView.setOnClickListener {
                 if (onClick != null) {
 
-                    onClick(item)
+                    onClick(adapterPosition)
                 }
             }
             binding.executePendingBindings()
@@ -64,7 +60,7 @@ class TitleDIff : DiffUtil.ItemCallback<Song>() {
         oldItem: Song,
         newItem: Song
     ): Boolean { // cho máy biết 2 item_detail khi nào giống
-        return oldItem.id == newItem.id // dung
+        return oldItem.songId == newItem.songId // dung
     }
 
     override fun areContentsTheSame(

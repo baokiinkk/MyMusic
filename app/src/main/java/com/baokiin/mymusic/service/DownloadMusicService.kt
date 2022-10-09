@@ -50,7 +50,7 @@ class DownloadMusicService : Service() {
         GlobalScope.launch(Dispatchers.IO) {
             idNoti++
             val path =
-                getExternalFilesDir(null).toString() + File.separator.toString() + responseBody.song.id + ".mp3"
+                getExternalFilesDir(null).toString() + File.separator.toString() + responseBody.song.songId + ".mp3"
             val isDownload = writeResponseBodyToDisk(responseBody.reponseBody, path) {
                 map[idNoti - 1] = it
                 notification(idNoti, responseBody.song)
@@ -65,10 +65,10 @@ class DownloadMusicService : Service() {
 
                 songs.apply {
                     val tmpSong = Song(
-                        id,
+                        songId,
                         name,
                         code,
-                        artists_names,
+                        artistName,
                         responseBody.lyric,
                         responseBody.img,
                         thumb,

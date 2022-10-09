@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import java.lang.Integer.MAX_VALUE
 
 
-class ItemHomeTitleAdapter(private val onClick: (Song) -> Unit) :
+class ItemHomeTitleAdapter(private val onClick: (Int) -> Unit) :
     ListAdapter<Song, ItemHomeTitleAdapter.ViewHolder>(
         TitleDIff()
     ) {
@@ -33,11 +33,11 @@ class ItemHomeTitleAdapter(private val onClick: (Song) -> Unit) :
             }
         }
 
-        fun bind(item: Song, onClick: ((Song) -> Unit)? = null) {
+        fun bind(item: Song, onClick: ((Int) -> Unit)? = null) {
             binding.data = item
             itemView.setOnClickListener {
                 if (onClick != null) {
-                    onClick(item)
+                    onClick(adapterPosition)
                 }
             }
 

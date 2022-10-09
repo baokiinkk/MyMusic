@@ -1,13 +1,8 @@
 package com.baokiin.mymusic.ui.search
 
 import android.annotation.SuppressLint
-import android.util.Log
-import android.view.MotionEvent
-import android.view.View
-import android.widget.AdapterView
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.RecyclerView
 import com.baokiin.mymusic.R
 import com.baokiin.mymusic.adapter.ItemPlayListAdapter
 import com.baokiin.mymusic.data.model.EventBusModel
@@ -36,8 +31,8 @@ class SearchFragment :BaseFragment<FragmentSearchBinding>(){
     private fun setup() {
         adapterItem = ItemPlayListAdapter {it,_->
             hideKeyboard()
-            val url = "https://api.mp3.zing.vn/api/streaming/audio/${it.id}/320"
-            it.song = url
+            val url = "https://api.mp3.zing.vn/api/streaming/audio/${it.songId}/320"
+            it.link = url
             startMediaService(it)
         }
         viewModel.trending.observe(viewLifecycleOwner,{

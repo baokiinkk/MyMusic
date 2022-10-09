@@ -37,7 +37,7 @@ class PlayListFragment : BaseFragment<FragmentPlayListBinding>() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageSecond(song: DataApi) {
-        adapterItem.submitList(song.data?.song ?: song.data?.items)
+        adapterItem.submitList(song.data)
 
     }
 
@@ -45,10 +45,8 @@ class PlayListFragment : BaseFragment<FragmentPlayListBinding>() {
     private fun setup() {
         EventBus.getDefault().register(this)
         val category = arguments?.get(CATEGORY)
-        adapterItem = ItemPlayListAdapter {it,_->
-            val url = "https://api.mp3.zing.vn/api/streaming/audio/${it.id}/320"
-            it.song = url
-            startMediaService(it)
+        adapterItem = ItemPlayListAdapter {it,pos->
+            startMediaService(pos)
         }
         baseBinding.apply {
             adapter = adapterItem
@@ -57,30 +55,36 @@ class PlayListFragment : BaseFragment<FragmentPlayListBinding>() {
         viewModel.getData(requireContext())
         when(category){
             VPOP->{
-                viewModel.vpop.observe(viewLifecycleOwner,{
+                viewModel.vpop.observe(viewLifecycleOwner) {
                     getData(it)
-                })
+                }
             }
             KPOP->{
-                viewModel.kpop.observe(viewLifecycleOwner,{
+                viewModel.kpop.observe(viewLifecycleOwner) {
                     getData(it)
-                })
+                }
             }
             else->{
-                viewModel.america.observe(viewLifecycleOwner,{
+                viewModel.america.observe(viewLifecycleOwner) {
                     getData(it)
-                })
+                }
             }
         }
     }
     private fun getData(dataApi: DataApi?){
         dataApi?.let {
-            adapterItem.submitList(it.data?.items)
+            adapterItem.submitList(it.data)
             baseBinding.data = it
         }
     }
-    private fun startMediaService(song: Song) {
-        EventBus.getDefault().post(EventBusModel.SongSingle(song))
+    private fun startMediaService(pos:Int) {
+        EventBus.getDefault().post(
+            EventBusModel.SongSingle(
+                adapterItem.currentList[pos],
+                adapterItem.currentList,
+                pos
+            )
+        )
     }
 
     private fun clickView() {
@@ -88,13 +92,7 @@ class PlayListFragment : BaseFragment<FragmentPlayListBinding>() {
             requireActivity().onBackPressed()
         }
         baseBinding.btnPlay.setOnClickListener {
-            EventBus.getDefault().post(
-                EventBusModel.SongSingle(
-                    adapterItem.currentList[0],
-                    adapterItem.currentList,
-                    0
-                )
-            )
+            startMediaService(0)
         }
 
     }

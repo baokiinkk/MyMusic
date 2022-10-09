@@ -2,33 +2,28 @@ package com.baokiin.mymusic.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import android.view.Window
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
+import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import com.baokiin.mymusic.R
 import com.baokiin.mymusic.adapter.ViewPageAdapter
+import com.baokiin.mymusic.data.model.Data
 import com.baokiin.mymusic.data.model.EventBusModel.*
 import com.baokiin.mymusic.databinding.ActivityMainBinding
 import com.baokiin.mymusic.service.DownloadMusicService
-import com.baokiin.mymusic.ui.home.HomeFragment
-import com.baokiin.mymusic.ui.info.InfoFragment
+import com.baokiin.mymusic.service.MediaService
 import com.baokiin.mymusic.ui.lyric.LyricFragment
 import com.baokiin.mymusic.ui.music.MusicFragment
-import com.baokiin.mymusic.service.MediaService
-import com.baokiin.mymusic.ui.trend.TrendingFragment
 import com.baokiin.mymusic.utils.Utils
 import com.baokiin.mymusic.utils.Utils.startServiceMusic
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.play_music.view.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -37,21 +32,15 @@ import org.greenrobot.eventbus.ThreadMode
 class MainActivity : AppCompatActivity() {
     //--------------------------------- variable --------------------------------------------------
     private val viewModel by viewModels<MainViewModel>()
-    private var indexSong:Int? = null
+    private var indexSong: Int? = null
 
 
     //---------------------------- override lifecycle----------------------------------------------
     override fun onCreate(savedInstanceState: Bundle?) {
+        setFullScreen(ActivityCompat.getColor(this, R.color.transparent))
         super.onCreate(savedInstanceState)
         utilView()
         setUp()
-    }
-
-    override fun onBackPressed() {
-        if (containerFramgnet.isVisible) {
-            containerFramgnet.visibility = View.GONE
-        } else
-            moveTaskToBack(true)
     }
 
     override fun onDestroy() {
@@ -78,26 +67,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onMessageSecond(showFragment: ShowFragment) {
-        containerFramgnet.visibility = if (showFragment.boolean) View.VISIBLE else View.GONE
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(song: SongSingle) {
         try {
             playMusic.visibility = View.VISIBLE
             val intent = Intent(this, MediaService::class.java)
-            intent.putExtra(Utils.SONG, song.song)
-            startServiceMusic(this,intent)
-            if (song.isList == null) {
-                viewModel.getSongs(song.song)
-            } else {
-                indexSong = song.index
-                GlobalScope.launch {
-                    delay(1000)
-                    viewModel.songs.postValue(song.isList)
-                }
-            }
+            val data = Data(song = song.isList)
+            intent.putExtra(Utils.SONG, Gson().toJson(data))
+            startServiceMusic(this, intent)
         } catch (e: Exception) {
             Toast.makeText(this, "Xin thử lại!", Toast.LENGTH_SHORT).show()
         }
@@ -107,10 +83,6 @@ class MainActivity : AppCompatActivity() {
 
     //-------------------------------------- func ------------------------------------------
     private fun setUp() {
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-            WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
-        )
         EventBus.getDefault().register(this)
         val baseBinding: ActivityMainBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_main)
@@ -122,8 +94,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun utilView() {
-        viewModel.adapter =
-            ViewPageAdapter(mutableListOf(HomeFragment(), TrendingFragment(), InfoFragment()), this)
         viewModel.adapterMusic =
             ViewPageAdapter(mutableListOf(MusicFragment(), LyricFragment()), this)
         viewModel.songs.observe(this) {
@@ -136,5 +106,11 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
+    fun setFullScreen(colorStatusBar: Int) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        window.statusBarColor = colorStatusBar
+        window.decorView.systemUiVisibility =
+            View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+    }
 }

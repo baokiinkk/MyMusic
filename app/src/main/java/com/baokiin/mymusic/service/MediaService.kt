@@ -8,12 +8,10 @@ import android.graphics.drawable.BitmapDrawable
 import android.media.AudioAttributes
 import android.media.MediaMetadata
 import android.media.MediaPlayer
-import android.media.MediaPlayer.OnPreparedListener
 import android.os.Build
 import android.os.IBinder
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.media.app.NotificationCompat.MediaStyle
@@ -22,6 +20,7 @@ import coil.request.ImageRequest
 import coil.request.SuccessResult
 import com.baokiin.mymusic.R
 import com.baokiin.mymusic.broadcast.MyBroadcastReceiver
+import com.baokiin.mymusic.data.model.Data
 import com.baokiin.mymusic.data.model.EventBusModel.*
 import com.baokiin.mymusic.data.model.Song
 import com.baokiin.mymusic.utils.Utils.ACTION
@@ -32,6 +31,7 @@ import com.baokiin.mymusic.utils.Utils.ACTION_STOP
 import com.baokiin.mymusic.utils.Utils.CHANNEL_ID
 import com.baokiin.mymusic.utils.Utils.SONG
 import com.baokiin.mymusic.utils.Utils.TAG
+import com.google.gson.Gson
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -58,20 +58,17 @@ class MediaService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        val song = intent?.getSerializableExtra(SONG) as Song?
+        val song = Gson().fromJson(intent?.getStringExtra(SONG), Data::class.java)
         val action = intent?.getIntExtra(ACTION, -1)
         if (action != null && action != -1) {
             handleActionMusic(action)
         }
-        song?.let {
-            msong = mutableListOf(it)
-
+        song?.song?.let {
+            msong = it
             if (indexMedia > msong.size - 1 || indexMedia < 0)
                 indexMedia = 0
             mediaPlayer?.stop()
             mediaPlayer = startMedia(msong[indexMedia])
-            sendNotification(msong[indexMedia])
-
         }
 
         return START_STICKY
@@ -84,16 +81,6 @@ class MediaService : Service() {
             mediaPlayer = null
         }
         EventBus.getDefault().unregister(this)
-    }
-
-    @Subscribe(threadMode = ThreadMode.BACKGROUND)
-    fun onMessageEvent(song: Songs) {
-        song.index?.let {
-            msong = mutableListOf()
-            indexMedia = it
-        }
-        msong.addAll(song.song)
-
     }
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
@@ -148,11 +135,6 @@ class MediaService : Service() {
             indexMedia = 0
         mediaPlayer?.stop()
         mediaPlayer = startMedia(msong[indexMedia])
-        mediaPlayer?.let {
-            sendNotification(msong[indexMedia])
-            timeSend(it)
-            EventBus.getDefault().post(MediaInfo(msong[indexMedia], it))
-        }
 
     }
 
@@ -188,11 +170,12 @@ class MediaService : Service() {
             )
             try {
                 //change with setDataSource(Context,Uri);
-                setDataSource(song.song ?: "https://api.mp3.zing.vn/api/streaming/audio/${song.id}/320")
+                setDataSource(song.link)
                 prepareAsync()
                 setOnPreparedListener { //mp.start();
                     start()
                     timeSend(this)
+                    sendNotification(msong[indexMedia])
                     EventBus.getDefault().post(MediaInfo(msong[indexMedia], this))
                 }
             } catch (e: IllegalArgumentException) {
@@ -217,50 +200,47 @@ class MediaService : Service() {
             val result = (loader.execute(request) as SuccessResult).drawable
             bitmap = (result as BitmapDrawable).bitmap
 
+            val media = setUpMedia()
 
-            mediaPlayer?.let { mediaPlayer ->
-                val media = setUpMedia()
+            val notificationBuilder =
 
-                val notificationBuilder =
+                NotificationCompat.Builder(this@MediaService, CHANNEL_ID)
+                    .setSmallIcon(R.drawable.ic_next)
+                    .setContentTitle(song.name)
+                    .setContentText(song.artistName)
+                    .setLargeIcon(bitmap)
+                    .addAction(
+                        R.drawable.ic_prev, "Previous", getPendingIntent(
+                            this@MediaService,
+                            ACTION_PREV
+                        )
+                    )
+                    .addAction(
+                        if (mediaPlayer?.isPlaying == true) R.drawable.ic_pause else R.drawable.ic_play,
+                        "play",
+                        getPendingIntent(
+                            this@MediaService,
+                            ACTION_PLAY
+                        )
+                    )
+                    .addAction(
+                        R.drawable.ic_next, "Next", getPendingIntent(
+                            this@MediaService,
+                            ACTION_NEXT
+                        )
+                    )
+                    .setStyle(
+                        MediaStyle()
+                            .setShowActionsInCompactView(0, 1, 2)
+                            .setMediaSession(media.sessionToken)
+                    )
+                    .setProgress(mediaPlayer?.duration?:0, mediaPlayer?.currentPosition?:0, false)
 
-                    NotificationCompat.Builder(this@MediaService, CHANNEL_ID)
-                        .setSmallIcon(R.drawable.ic_next)
-                        .setContentTitle(song.name)
-                        .setContentText(song.artists_names)
-                        .setLargeIcon(bitmap)
-                        .addAction(
-                            R.drawable.ic_prev, "Previous", getPendingIntent(
-                                this@MediaService,
-                                ACTION_PREV
-                            )
-                        )
-                        .addAction(
-                            if (mediaPlayer.isPlaying) R.drawable.ic_pause else R.drawable.ic_play,
-                            "play",
-                            getPendingIntent(
-                                this@MediaService,
-                                ACTION_PLAY
-                            )
-                        )
-                        .addAction(
-                            R.drawable.ic_next, "Next", getPendingIntent(
-                                this@MediaService,
-                                ACTION_NEXT
-                            )
-                        )
-                        .setStyle(
-                            MediaStyle()
-                                .setShowActionsInCompactView(0, 1, 2)
-                                .setMediaSession(media.sessionToken)
-                        )
-                        .setProgress(mediaPlayer.duration, mediaPlayer.currentPosition, false)
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    startForeground(123, notificationBuilder.build())
-                } else {
-                    with(NotificationManagerCompat.from(applicationContext)) {
-                        notify(123, notificationBuilder.build())
-                    }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForeground(123, notificationBuilder.build())
+            } else {
+                with(NotificationManagerCompat.from(applicationContext)) {
+                    notify(123, notificationBuilder.build())
                 }
             }
         }

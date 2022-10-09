@@ -140,6 +140,4 @@ abstract class SNSLoginActivity : AppCompatActivity() {
                 }
             }
     }
-
-
 }

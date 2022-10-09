@@ -36,7 +36,7 @@ class MainViewModel @Inject constructor(
     val downloading:MutableLiveData<Boolean?> = MutableLiveData(null)
     fun getSongs(id: Song) {
         viewModelScope.launch {
-            val song = repo.getSongs(id.id).data?.items
+            val song = repo.getSongs(id.songId).data
             songs.postValue(song)
         }
     }
@@ -52,7 +52,7 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             val img = repo.downloadImg(url.replace("w94", "w360"))
             val path = context.getExternalFilesDir(null)
-                .toString() + File.separator.toString() + song.id + ".jpg"
+                .toString() + File.separator.toString() + song.songId + ".jpg"
             val isDownload = writeResponseBodyToDisk(img, path) {}
             if (isDownload)
                 downloadImg.postValue(path)
@@ -66,7 +66,7 @@ class MainViewModel @Inject constructor(
             } else {
                 val response = repo.downloadLyric(url)
                 val path = context.getExternalFilesDir(null)
-                    .toString() + File.separator.toString() + song.id + ".lrc"
+                    .toString() + File.separator.toString() + song.songId + ".lrc"
                 val isDownload = writeResponseBodyToDisk(response, path) {}
                 if (isDownload)
                     lyricFile.postValue(File(path))
@@ -97,8 +97,8 @@ class MainViewModel @Inject constructor(
 
     fun getIdSong(song: Song) {
         viewModelScope.launch {
-            val songDownload = database.getDataSongById(song.id)
-            val songLiked = database.getDataSongLikeById(song.id)
+            val songDownload = database.getDataSongById(song.songId)
+            val songLiked = database.getDataSongLikeById(song.songId)
             val listCheck = mutableListOf(songDownload != null,songLiked != null)
             songFromDatabase.postValue(listCheck)
         }

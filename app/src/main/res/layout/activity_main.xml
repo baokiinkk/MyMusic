@@ -19,39 +19,11 @@
             android:background="@color/background_main_color"
             tools:context=".ui.activity.MainActivity">
 
-
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/viewpager"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:adapter_viewpager2="@{viewmodel.adapter}"
-                android:tab_layout="@{tabLayout}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
-
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tabLayout"
-                style="@style/AppTabLayout"
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tabPaddingTop="20dp">
-
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:icon="@drawable/ic_menu" />
-            </com.google.android.material.tabs.TabLayout>
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/containerFramgnet"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:visibility="gone"
-                android:name="com.baokiin.mymusic.ui.playlist.PlayListFragment"
+                android:name="com.baokiin.mymusic.ui.home.HomeFragment"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"

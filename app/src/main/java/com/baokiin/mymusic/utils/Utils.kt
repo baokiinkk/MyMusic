@@ -58,7 +58,7 @@ object Utils {
 
     fun gotoFragment(activity: FragmentActivity, fragment: Fragment) {
         activity.supportFragmentManager.beginTransaction()
-            .replace(R.id.container, fragment)
+            .add(R.id.containerFramgnet, fragment)
             .commit()
     }
 
@@ -72,7 +72,7 @@ object Utils {
                     android.R.anim.slide_out_right
                 )
         }
-            .replace(R.id.container, fragment)
+            .add(R.id.containerFramgnet, fragment)
             .addToBackStack(null)
             .commit()
     }

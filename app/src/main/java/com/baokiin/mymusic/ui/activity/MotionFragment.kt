@@ -29,7 +29,6 @@ class MotionFragment : BaseFragment<PlayMusicBinding>() {
         setUp()
         click()
     }
-
     //-------------------------------------- recive ---------------------------------------------
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(mediaInfo: MediaInfo) {
@@ -45,7 +44,6 @@ class MotionFragment : BaseFragment<PlayMusicBinding>() {
         baseBinding.viewpagerMusic.adapter = viewModel.adapterMusic
 
     }
-
     @SuppressLint("ClickableViewAccessibility")
     private fun click() {
 

@@ -45,7 +45,7 @@ class MusicFragment : BaseFragment<FragmentMusicBinding>() {
         viewModel.apply {
             mediaInfo.observe(viewLifecycleOwner) {
                 it?.let {
-                    baseBinding.btnLike.visibility = if (it.song.song?.substring(
+                    baseBinding.btnLike.visibility = if (it.song.link?.substring(
                             1,
                             8
                         ) == "storage"
@@ -103,7 +103,7 @@ class MusicFragment : BaseFragment<FragmentMusicBinding>() {
                 val intent = Intent(context, DownloadMusicService::class.java)
                 startServiceMusic(requireActivity(), intent)
                 val url =
-                    "https://api.mp3.zing.vn/api/streaming/audio/${viewModel.mediaInfo.value?.song?.id}/320"
+                    "https://api.mp3.zing.vn/api/streaming/audio/${viewModel.mediaInfo.value?.song?.songId}/320"
                 viewModel.downloadSong(url)
                 viewModel.mediaInfo.value?.let {
                     it.song.thumbnail?.let { it1 ->

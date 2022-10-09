@@ -32,7 +32,6 @@
             android:layout_width="0dp"
             android:layout_height="200dp"
             android:layout_marginTop="20dp"
-            android:loadImageTitleHome="@{data.data.info.thumbnail}"
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

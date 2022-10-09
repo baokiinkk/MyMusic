@@ -16,4 +16,6 @@
     <color name="color_icon">#B2B7BA</color>
     <color name="color_select_icon">@color/selected_tab_color</color>
     <color name="colorTabLayout">#151515</color>
+    <color name="transparent">#00000000</color>
+
 </resources>

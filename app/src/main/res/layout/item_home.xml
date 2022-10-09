@@ -52,7 +52,7 @@
             android:fontFamily="@font/playfairdisplay_medium"
             android:lines="1"
             android:paddingStart="10dp"
-            android:text="@{data.artists_names}"
+            android:text="@{data.artistName}"
             android:textColor="@color/color_icon"
             app:layout_constraintEnd_toEndOf="@+id/txtName"
             app:layout_constraintStart_toStartOf="@+id/txtName"

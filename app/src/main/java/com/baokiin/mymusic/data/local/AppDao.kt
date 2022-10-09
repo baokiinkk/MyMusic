@@ -23,7 +23,7 @@ interface AppDao {
     @Query("DELETE FROM SongLike")
     suspend fun deleteAllSongLike()
 
-    @Query("SELECT * FROM Song WHERE Song.id=:id")
+    @Query("SELECT * FROM Song WHERE Song.songId=:id")
     suspend fun getDataSong(id:String): Song?
 
     @Query("SELECT * FROM SongLike WHERE SongLike.id=:id")

@@ -4,24 +4,23 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.io.Serializable
 
-data class DataApi(val message: String? = null, val data: Data? = null)
+data class DataApi(val message: String? = null, val data: MutableList<Song>? = null)
 data class DataFind(val message: String? = null, val data: MutableList<Data>? = null)
-data class Data(val song: MutableList<Song>, val items: MutableList<Song>, val info: Info? = null)
-data class Info(val name: String, val thumbnail: String)
+data class Data(val song: MutableList<Song>?)
 
 @Entity
 data class Song(
-    @PrimaryKey val id: String,
+    @PrimaryKey val songId: String,
     val name: String,
     val code: String? = null,
-    val artists_names: String?,
+    val artistName: String?,
     var lyric: String?,
     var thumbnail: String?,
     var thumb: String? = null,
-    var song: String?,
+    var link: String?,
 ) : Serializable {
     fun toSongLike(): SongLike {
-        return SongLike(id, name, artists_names, lyric, thumbnail, song)
+        return SongLike(songId, name, artistName, lyric, thumbnail, link)
     }
 }
 
@@ -32,16 +31,16 @@ data class SongLike(
     val artists_names: String?,
     var lyric: String?,
     var thumbnail: String?,
-    var song: String?
+    var link: String?
 ) : Serializable {
     fun toSong(): Song {
         return Song(
             id,
             name,
-            artists_names = artists_names,
+            artistName = artists_names,
             lyric = lyric,
             thumbnail = thumbnail,
-            song = song
+            link = link
         )
     }
 }

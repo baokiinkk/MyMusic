@@ -14,11 +14,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "1050372001477-mq1hm8fopkv5tlc9de916f4hrltqmhnh.apps.googleusercontent.com",
+          "client_id": "1050372001477-ifuo6sopmpm5djal8ovjd0dnbrj0gqgq.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.baokiin.mangatoon",
-            "certificate_hash": "a39520f6c79a6ac11040e760bcee1480bc2d45de"
+            "certificate_hash": "c942c41a78d3ad78bcbdb973cd092510f26e4c54"
           }
         },
         {
@@ -51,11 +51,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "1050372001477-2f28u98t5kf2iracsp6829hl0u7imgpv.apps.googleusercontent.com",
+          "client_id": "1050372001477-4ld37j0r6slqpsco1gepq85mhu61fkos.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.baokiin.mymusic",
-            "certificate_hash": "7ba6af7875bb415f8abc29cfcc41ff0e21fcb807"
+            "certificate_hash": "c942c41a78d3ad78bcbdb973cd092510f26e4c54"
           }
         },
         {
