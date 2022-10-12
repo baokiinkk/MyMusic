@@ -9,6 +9,7 @@
     <color name="text_color_white">#fff</color>
     <color name="background_color_white">#fff</color>
     <color name="green_color">#53B175</color>
-    <string name="facebook_app_id">839423733379701</string>
-    <string name="fb_login_protocol_scheme">fb839423733379701</string>
+    <string name="facebook_app_id">414440554238510</string>
+    <string name="facebook_client_token">58709327c2be46311c1689bd4216408e</string>
+    <string name="fb_login_protocol_scheme">fb414440554238510</string>
 </resources>

@@ -36,14 +36,11 @@ class OnlineFragment : BaseFragment<FragmentSongLocalBinding>() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageSecond(status: EventBusModel.LoadLocal) {
-        viewModel.getSongsIsLiked()
+        viewModel.getSongsLiked()
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onChangeData(status: EventBusModel.DataChange) {
-       when(status.status){
-           STATUS_LOGIN_OK->viewModel.getDataFromFirestore()
-           else -> viewModel.getSongsIsLiked()
-       }
+       viewModel.getSongsLiked()
     }
 
     private fun setup() {
@@ -51,8 +48,8 @@ class OnlineFragment : BaseFragment<FragmentSongLocalBinding>() {
         adapterItem = ItemSongLikeAdapter { song, index ->
             EventBus.getDefault().post(
                 EventBusModel.SongSingle(
-                    song.toSong(),
-                    adapterItem.currentList.map { it.toSong() }.toMutableList(),
+                    song,
+                    adapterItem.currentList,
                     index
                 )
             )
@@ -79,7 +76,7 @@ class OnlineFragment : BaseFragment<FragmentSongLocalBinding>() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.getSongsIsLiked()
+        viewModel.getSongsLiked()
     }
 
 

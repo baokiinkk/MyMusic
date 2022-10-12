@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.baokiin.mymusic.data.model.EventBusModel
 import com.baokiin.mymusic.data.model.Song
 import com.baokiin.mymusic.data.model.SongLike
+import com.baokiin.mymusic.data.respository.Repository
 import com.baokiin.mymusic.data.respository.RepositoryLocal
 import com.baokiin.mymusic.utils.Utils.STATUS_GETDATA
 import com.baokiin.mymusic.utils.Utils.STATUS_UPDATA
@@ -20,11 +21,14 @@ import org.greenrobot.eventbus.EventBus
 import javax.inject.Inject
 
 @HiltViewModel
-class InfoViewModel @Inject constructor(private val database: RepositoryLocal) : ViewModel() {
+class InfoViewModel @Inject constructor(
+    private val repo: Repository,
+    private val database: RepositoryLocal
+) : ViewModel() {
     var auth = MutableLiveData(Firebase.auth)
     val textNull = "Đăng Nhập"
     val songIsDownloaded: MutableLiveData<MutableList<Song>?> = MutableLiveData(null)
-    val songIsLiked: MutableLiveData<MutableList<SongLike>?> = MutableLiveData(null)
+    val songIsLiked: MutableLiveData<MutableList<Song>?> = MutableLiveData(null)
     val db = Firebase.firestore
     fun getSongsIsDownloaded() {
         viewModelScope.launch {
@@ -32,9 +36,11 @@ class InfoViewModel @Inject constructor(private val database: RepositoryLocal) :
             songIsDownloaded.postValue(song)
         }
     }
+
+
     fun upData() {
         viewModelScope.launch {
-            auth.value?.currentUser?.let { user->
+            auth.value?.currentUser?.let { user ->
                 val firebase = db.collection(user.uid)
                 firebase.get()
                     .addOnSuccessListener { doc ->
@@ -52,6 +58,7 @@ class InfoViewModel @Inject constructor(private val database: RepositoryLocal) :
             }
         }
     }
+
     fun getDataFromFirestore() {
         auth.value?.currentUser?.let {
             db.collection(it.uid).get()
@@ -70,9 +77,9 @@ class InfoViewModel @Inject constructor(private val database: RepositoryLocal) :
         }
     }
 
-    fun getSongsIsLiked() {
+    fun getSongsLiked() {
         viewModelScope.launch {
-            val song = database.getSongLiked()
+            val song = repo.getSongsLiked().data
             songIsLiked.postValue(song)
         }
     }

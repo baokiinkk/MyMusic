@@ -127,6 +127,8 @@ class MediaService : Service() {
     }
 
     private fun nextMusic(boolean: Boolean) {
+        if (job?.isActive == true)
+            job?.cancel()
         if (boolean)
             indexMedia++
         else

@@ -12,6 +12,7 @@ import com.baokiin.mymusic.R
 import com.baokiin.mymusic.data.model.EventBusModel
 import com.baokiin.mymusic.databinding.FragmentMusicBinding
 import com.baokiin.mymusic.service.DownloadMusicService
+import com.baokiin.mymusic.sns.AppData
 import com.baokiin.mymusic.ui.activity.LoginActivity
 import com.baokiin.mymusic.ui.activity.MainViewModel
 import com.baokiin.mymusic.utils.BaseFragment
@@ -55,10 +56,8 @@ class MusicFragment : BaseFragment<FragmentMusicBinding>() {
 
             }
             songFromDatabase.observe(viewLifecycleOwner) {
-                isDownloaded = it?.get(0)
-                isLiked = it?.get(1)
-                buttonType(baseBinding.btnDown, baseBinding.btnDown.background, it?.get(0))
-                buttonType(baseBinding.btnLike, baseBinding.btnLike.background, it?.get(1))
+                isDownloaded = it
+                buttonType(baseBinding.btnDown, baseBinding.btnDown.background, it)
             }
             downloading.observe(viewLifecycleOwner) {
                 it?.let {
@@ -125,11 +124,11 @@ class MusicFragment : BaseFragment<FragmentMusicBinding>() {
                     if (isLiked != true) {
                         isLiked = true
                         buttonType(baseBinding.btnLike, baseBinding.btnLike.background, true)
-                        viewModel.addSongLike(it)
+                        viewModel.addSongLike(AppData.g().token,it)
                     } else {
                         isLiked = false
                         buttonType(baseBinding.btnLike, baseBinding.btnLike.background, false)
-                        viewModel.deleteSongLike(it)
+                        viewModel.deleteSongLike(AppData.g().token,it)
                     }
 
 

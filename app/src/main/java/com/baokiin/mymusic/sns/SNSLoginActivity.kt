@@ -2,6 +2,7 @@ package com.baokiin.mymusic.sns
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.baokiin.mymusic.R
@@ -45,7 +46,7 @@ abstract class SNSLoginActivity : AppCompatActivity() {
                 try {
                     // Google Sign In was successful, authenticate with Firebase
                     val account = task.getResult(ApiException::class.java)!!
-                    firebaseAuthWithGoogle(account.idToken!!)
+                    firebaseAuthWithGoogle(account.idToken)
                 } catch (e: ApiException) {
                     // Google Sign In failed, update UI appropriately
                 }
@@ -56,7 +57,7 @@ abstract class SNSLoginActivity : AppCompatActivity() {
 
 
      // method functions
-     abstract fun onSNSUserResult()
+     abstract fun onSNSUserResult(token: String?)
 
     /**
      * return snn user from SNS
@@ -109,14 +110,15 @@ abstract class SNSLoginActivity : AppCompatActivity() {
 
 
 
-    private fun firebaseAuthWithGoogle(idToken: String) {
+    private fun firebaseAuthWithGoogle(idToken: String?) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     val user = auth.currentUser
-                    onSNSUserResult()
+                    onSNSUserResult(idToken)
+
                 } else {
                     // If sign in fails, display a message to the user.
                 }
@@ -130,7 +132,7 @@ abstract class SNSLoginActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     val user = auth.currentUser
-                    onSNSUserResult()
+                    onSNSUserResult(token.token)
                 } else {
                     // If sign in fails, display a message to the user.
                     Toast.makeText(

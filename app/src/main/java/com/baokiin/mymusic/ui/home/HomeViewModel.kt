@@ -27,9 +27,9 @@ class HomeViewModel @Inject constructor(private val repo: Repository,private val
     val kpop: MutableLiveData<DataApi?> = MutableLiveData(null)
     val vpop: MutableLiveData<DataApi?> = MutableLiveData(null)
     val america: MutableLiveData<DataApi?> = MutableLiveData(null)
-    val amedicaName = "TOP 100 USUK"
-    val kpopName = "TOP 100 KPOP"
-    val vpopName = "TOP 100 VPOP"
+    val amedicaName = "Bảng xếp hạng nhạc Âu-Mỹ"
+    val kpopName = "Bảng xếp hạng nhạc Hàn Quốc"
+    val vpopName = "Bảng xếp hạng nhạc Việt"
     val imageMain = R.drawable.background_main
     val imageTrend = R.drawable.trending
     val imageMy = R.drawable.bg_my_like_music

@@ -2,12 +2,16 @@ package com.baokiin.mymusic.ui.activity
 
 import android.os.Bundle
 import android.view.WindowManager
+import androidx.activity.viewModels
 import androidx.lifecycle.viewModelScope
 import com.baokiin.mymusic.R
 import com.baokiin.mymusic.data.model.EventBusModel
 import com.baokiin.mymusic.data.model.SongLike
+import com.baokiin.mymusic.sns.AppData
 import com.baokiin.mymusic.sns.SNSLoginActivity
+import com.baokiin.mymusic.sns.SharedPreferencesUtils
 import com.baokiin.mymusic.utils.Utils
+import com.facebook.AccessToken
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -19,7 +23,7 @@ import org.greenrobot.eventbus.EventBus
 
 class LoginActivity : SNSLoginActivity() {
     private lateinit var auth: FirebaseAuth
-
+    private val viewModel by viewModels<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,13 +36,18 @@ class LoginActivity : SNSLoginActivity() {
 
     }
 
-    override fun onSNSUserResult() {
+    override fun onSNSUserResult(token: String?) {
         EventBus.getDefault().post(EventBusModel.DataChange(Utils.STATUS_LOGIN_OK))
-        finish()
+        viewModel.login(token)
+
     }
 
     //----------------------------
     private fun init() {
+        viewModel.loginLivedata.observe(this){
+            SharedPreferencesUtils.setTokenID(this,"token")
+            AppData.g().idToken = "token"
+        }
         //Instance firebase auth
         auth = Firebase.auth
 

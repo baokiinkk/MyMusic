@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.baokiin.mymusic.adapter.ViewPageAdapter
+import com.baokiin.mymusic.data.model.DataApi
 import com.baokiin.mymusic.data.model.EventBusModel.*
 import com.baokiin.mymusic.data.model.Song
 import com.baokiin.mymusic.data.respository.Repository
@@ -26,22 +27,21 @@ class MainViewModel @Inject constructor(
     var adapter: ViewPageAdapter? = null
     var adapterMusic: ViewPageAdapter? = null
     val songs: MutableLiveData<MutableList<Song>?> = MutableLiveData(null)
+    val loginLivedata: MutableLiveData<DataApi?> = MutableLiveData(null)
     val mediaInfo: MutableLiveData<MediaInfo?> = MutableLiveData(null)
     val lyricFile: MutableLiveData<File?> = MutableLiveData(null)
     val downloadMusic: MutableLiveData<ResponseBody?> = MutableLiveData(null)
     val downloadImg: MutableLiveData<String?> = MutableLiveData(null)
     val positonMedia: MutableLiveData<Int?> = MutableLiveData(null)
     val isScroll: MutableLiveData<Boolean?> = MutableLiveData(null)
-    val songFromDatabase: MutableLiveData<MutableList<Boolean>?> = MutableLiveData(null)
+    val songFromDatabase: MutableLiveData<Boolean?> = MutableLiveData(null)
     val downloading:MutableLiveData<Boolean?> = MutableLiveData(null)
-    fun getSongs(id: Song) {
+
+    fun login(token:String?){
         viewModelScope.launch {
-            val song = repo.getSongs(id.songId).data
-            songs.postValue(song)
+            loginLivedata.postValue(repo.login())
         }
     }
-
-
     fun downloadSong(url: String) {
         viewModelScope.launch {
             downloadMusic.postValue(repo.downloadMusic(url))
@@ -82,15 +82,15 @@ class MainViewModel @Inject constructor(
             EventBus.getDefault().post(LoadLocal(true))
         }
     }
-    fun addSongLike(song: Song) {
+    fun addSongLike(token: String,song: Song) {
         viewModelScope.launch {
-            database.insertSongLike(song.toSongLike())
+            repo.likeSong(token,song.songId)
             EventBus.getDefault().post(LoadLocal(true))
         }
     }
-    fun deleteSongLike(song: Song) {
+    fun deleteSongLike(token:String,song: Song) {
         viewModelScope.launch {
-            database.deleteSongLikeById(song.toSongLike())
+            repo.unLikeSong(token,song.songId)
             EventBus.getDefault().post(LoadLocal(true))
         }
     }
@@ -99,8 +99,7 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             val songDownload = database.getDataSongById(song.songId)
             val songLiked = database.getDataSongLikeById(song.songId)
-            val listCheck = mutableListOf(songDownload != null,songLiked != null)
-            songFromDatabase.postValue(listCheck)
+            songFromDatabase.postValue(songDownload != null)
         }
     }
 

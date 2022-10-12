@@ -17,6 +17,8 @@ import com.baokiin.mymusic.data.model.EventBusModel.*
 import com.baokiin.mymusic.databinding.ActivityMainBinding
 import com.baokiin.mymusic.service.DownloadMusicService
 import com.baokiin.mymusic.service.MediaService
+import com.baokiin.mymusic.sns.AppData
+import com.baokiin.mymusic.sns.SharedPreferencesUtils
 import com.baokiin.mymusic.ui.lyric.LyricFragment
 import com.baokiin.mymusic.ui.music.MusicFragment
 import com.baokiin.mymusic.utils.Utils
@@ -83,6 +85,7 @@ class MainActivity : AppCompatActivity() {
 
     //-------------------------------------- func ------------------------------------------
     private fun setUp() {
+        AppData.g().idToken = SharedPreferencesUtils.getTokenID(this)
         EventBus.getDefault().register(this)
         val baseBinding: ActivityMainBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_main)
@@ -96,14 +99,6 @@ class MainActivity : AppCompatActivity() {
     private fun utilView() {
         viewModel.adapterMusic =
             ViewPageAdapter(mutableListOf(MusicFragment(), LyricFragment()), this)
-        viewModel.songs.observe(this) {
-            it?.let {
-                EventBus.getDefault().post(Songs(it, indexSong))
-                indexSong = null
-            }
-        }
-
-
     }
 
     fun setFullScreen(colorStatusBar: Int) {
