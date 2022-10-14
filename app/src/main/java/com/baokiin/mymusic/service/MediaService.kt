@@ -29,6 +29,7 @@ import com.baokiin.mymusic.utils.Utils.ACTION_PLAY
 import com.baokiin.mymusic.utils.Utils.ACTION_PREV
 import com.baokiin.mymusic.utils.Utils.ACTION_STOP
 import com.baokiin.mymusic.utils.Utils.CHANNEL_ID
+import com.baokiin.mymusic.utils.Utils.INDEX
 import com.baokiin.mymusic.utils.Utils.SONG
 import com.baokiin.mymusic.utils.Utils.TAG
 import com.google.gson.Gson
@@ -59,10 +60,13 @@ class MediaService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val song = Gson().fromJson(intent?.getStringExtra(SONG), Data::class.java)
+        val index = intent?.getIntExtra(INDEX,-1)
         val action = intent?.getIntExtra(ACTION, -1)
         if (action != null && action != -1) {
             handleActionMusic(action)
         }
+        if(index != null && index != -1)
+            indexMedia = index
         song?.song?.let {
             msong = it
             if (indexMedia > msong.size - 1 || indexMedia < 0)

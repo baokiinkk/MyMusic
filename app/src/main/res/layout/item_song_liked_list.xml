@@ -7,7 +7,7 @@
     <data>
         <variable
             name="data"
-            type="com.baokiin.mymusic.data.model.Song" />
+            type="com.baokiin.mymusic.data.model.SongLike" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -50,7 +50,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/playfairdisplay_medium"
-            android:text="@{data.artistName}"
+            android:text="@{data.artists_names}"
             android:textAllCaps="true"
             android:textColor="@color/color_icon"
             android:textSize="12sp"

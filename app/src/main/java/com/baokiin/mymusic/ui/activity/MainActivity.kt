@@ -75,6 +75,7 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, MediaService::class.java)
             val data = Data(song = song.isList)
             intent.putExtra(Utils.SONG, Gson().toJson(data))
+            intent.putExtra(Utils.INDEX, song.index)
             startServiceMusic(this, intent)
         } catch (e: Exception) {
             Toast.makeText(this, "Xin thử lại!", Toast.LENGTH_SHORT).show()
@@ -85,7 +86,7 @@ class MainActivity : AppCompatActivity() {
 
     //-------------------------------------- func ------------------------------------------
     private fun setUp() {
-        AppData.g().idToken = SharedPreferencesUtils.getTokenID(this)
+        AppData.g().token = SharedPreferencesUtils.getTokenID(this)
         EventBus.getDefault().register(this)
         val baseBinding: ActivityMainBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_main)

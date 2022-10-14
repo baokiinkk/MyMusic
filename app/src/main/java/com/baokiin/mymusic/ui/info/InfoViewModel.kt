@@ -77,6 +77,12 @@ class InfoViewModel @Inject constructor(
         }
     }
 
+    fun deleteSongLike(token: String, song: Song) {
+        viewModelScope.launch {
+            repo.unLikeSong(token, song.songId)
+            EventBus.getDefault().post(EventBusModel.LoadLocal(true))
+        }
+    }
     fun getSongsLiked() {
         viewModelScope.launch {
             val song = repo.getSongsLiked().data

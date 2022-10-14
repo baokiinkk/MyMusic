@@ -48,6 +48,7 @@ object Utils {
     const val USUK = "usuk"
     const val TREND = "trend"
     const val CATEGORY = "tagegory"
+    const val INDEX = "INDEX"
     const val GROUP_KEY = "com.baokiin.mymusic.download"
     const val LIKE = "like"
     const val DOWNLOAD = "download"
@@ -100,7 +101,7 @@ object Utils {
     fun callBackSwipe(
         context: View,
         adapter: ItemSongLikeAdapter,
-        action: (MutableList<SongLike>) -> Unit
+        action: (MutableList<SongLike>,SongLike?) -> Unit
     ): ItemTouchHelper.SimpleCallback =
         object : ItemTouchHelper.SimpleCallback(
             ItemTouchHelper.UP or ItemTouchHelper.DOWN,
@@ -134,14 +135,14 @@ object Utils {
                     val positionDelete = viewHolder.adapterPosition
                     val song = listCurrent.removeAt(positionDelete)
                     adapter.submitList(listCurrent)
-                    action(listCurrent)
+                    action(listCurrent,song)
                     Snackbar.make(context, "Đã xóa bài hát", Snackbar.LENGTH_LONG)
                         .setAction("Undo") {
                             val listUndo = mutableListOf<SongLike>()
                             listUndo.addAll(adapter.currentList)
                             listUndo.add(positionDelete, song)
                             adapter.submitList(listUndo)
-                            action(listUndo)
+                            action(listUndo,null)
                         }
                         .show()
                 }

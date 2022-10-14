@@ -18,9 +18,10 @@ data class Song(
     var thumbnail: String?,
     var thumb: String? = null,
     var link: String?,
+    var isLiked: Boolean?,
 ) : Serializable {
     fun toSongLike(): SongLike {
-        return SongLike(songId, name, artistName, lyric, thumbnail, link)
+        return SongLike(songId, name, artistName, lyric, thumbnail, link,isLiked)
     }
 }
 
@@ -31,7 +32,8 @@ data class SongLike(
     val artists_names: String?,
     var lyric: String?,
     var thumbnail: String?,
-    var link: String?
+    var link: String?,
+    var isLiked: Boolean?
 ) : Serializable {
     fun toSong(): Song {
         return Song(
@@ -40,7 +42,8 @@ data class SongLike(
             artistName = artists_names,
             lyric = lyric,
             thumbnail = thumbnail,
-            link = link
+            link = link,
+            isLiked = isLiked
         )
     }
 }

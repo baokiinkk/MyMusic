@@ -117,8 +117,9 @@ abstract class SNSLoginActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     val user = auth.currentUser
-                    onSNSUserResult(idToken)
-
+                    user?.getIdToken(true)?.addOnSuccessListener {
+                        onSNSUserResult(it.token)
+                    }
                 } else {
                     // If sign in fails, display a message to the user.
                 }
@@ -132,7 +133,9 @@ abstract class SNSLoginActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     val user = auth.currentUser
-                    onSNSUserResult(token.token)
+                    user?.getIdToken(true)?.addOnSuccessListener {
+                        onSNSUserResult(it.token)
+                    }
                 } else {
                     // If sign in fails, display a message to the user.
                     Toast.makeText(

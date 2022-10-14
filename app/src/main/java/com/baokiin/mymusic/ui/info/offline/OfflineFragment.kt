@@ -51,8 +51,8 @@ class OfflineFragment : BaseFragment<FragmentSongLocalBinding>() {
                 Utils.callBackSwipe(
                     recycleviewLocal,
                     adapterItem
-                ){
-                    viewModel.updateDataSong(it,false)
+                ){list,_->
+                    viewModel.updateDataSong(list,false)
                 }
             )
             itemTouchHelper.attachToRecyclerView(recycleviewLocal)

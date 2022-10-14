@@ -7,22 +7,21 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.baokiin.mymusic.R
-import com.baokiin.mymusic.data.model.Song
 import com.baokiin.mymusic.data.model.SongLike
 import com.baokiin.mymusic.databinding.ItemSongLikedListBinding
 import kotlinx.android.synthetic.main.item_play_list.view.*
 
 
-class ItemSongLikeAdapter(private val onClick: (Song, Int) -> Unit) :
-    ListAdapter<Song, ItemSongLikeAdapter.ViewHolder>(
+class ItemSongLikeAdapter(private val onClick: (SongLike, Int) -> Unit) :
+    ListAdapter<SongLike, ItemSongLikeAdapter.ViewHolder>(
         SongLikeDIff()
     ) {
-    var tmpItem: Song? = null
+    var tmpItem: SongLike? = null
     inner class ViewHolder(private val binding: ItemSongLikedListBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
 
-        fun bind(item: Song, onClick: ((Song,Int) -> Unit)? = null) {
+        fun bind(item: SongLike, onClick: ((SongLike,Int) -> Unit)? = null) {
             binding.data = item
 
             itemView.apply {
@@ -60,18 +59,18 @@ class ItemSongLikeAdapter(private val onClick: (Song, Int) -> Unit) :
     }
 }
 
-class SongLikeDIff : DiffUtil.ItemCallback<Song>() {
+class SongLikeDIff : DiffUtil.ItemCallback<SongLike>() {
     // cung cấp thông tin về cách xác định phần
     override fun areItemsTheSame(
-        oldItem: Song,
-        newItem: Song
+        oldItem: SongLike,
+        newItem: SongLike
     ): Boolean { // cho máy biết 2 item_detail khi nào giống
-        return oldItem.songId == newItem.songId // dung
+        return oldItem.id == newItem.id // dung
     }
 
     override fun areContentsTheSame(
-        oldItem: Song,
-        newItem: Song
+        oldItem: SongLike,
+        newItem: SongLike
     ): Boolean { // cho biết item_detail khi nào cùng nội dung
         return oldItem == newItem
     }

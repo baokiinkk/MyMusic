@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.baokiin.mymusic.adapter.ViewPageAdapter
-import com.baokiin.mymusic.data.model.DataApi
-import com.baokiin.mymusic.data.model.EventBusModel.*
+import com.baokiin.mymusic.data.model.EventBusModel.LoadLocal
+import com.baokiin.mymusic.data.model.EventBusModel.MediaInfo
 import com.baokiin.mymusic.data.model.Song
 import com.baokiin.mymusic.data.respository.Repository
 import com.baokiin.mymusic.data.respository.RepositoryLocal
@@ -15,8 +15,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
 import org.greenrobot.eventbus.EventBus
-import java.io.*
-
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,7 +26,6 @@ class MainViewModel @Inject constructor(
     var adapter: ViewPageAdapter? = null
     var adapterMusic: ViewPageAdapter? = null
     val songs: MutableLiveData<MutableList<Song>?> = MutableLiveData(null)
-    val loginLivedata: MutableLiveData<DataApi?> = MutableLiveData(null)
     val mediaInfo: MutableLiveData<MediaInfo?> = MutableLiveData(null)
     val lyricFile: MutableLiveData<File?> = MutableLiveData(null)
     val downloadMusic: MutableLiveData<ResponseBody?> = MutableLiveData(null)
@@ -35,13 +33,8 @@ class MainViewModel @Inject constructor(
     val positonMedia: MutableLiveData<Int?> = MutableLiveData(null)
     val isScroll: MutableLiveData<Boolean?> = MutableLiveData(null)
     val songFromDatabase: MutableLiveData<Boolean?> = MutableLiveData(null)
-    val downloading:MutableLiveData<Boolean?> = MutableLiveData(null)
+    val downloading: MutableLiveData<Boolean?> = MutableLiveData(null)
 
-    fun login(token:String?){
-        viewModelScope.launch {
-            loginLivedata.postValue(repo.login())
-        }
-    }
     fun downloadSong(url: String) {
         viewModelScope.launch {
             downloadMusic.postValue(repo.downloadMusic(url))
@@ -82,15 +75,17 @@ class MainViewModel @Inject constructor(
             EventBus.getDefault().post(LoadLocal(true))
         }
     }
-    fun addSongLike(token: String,song: Song) {
+
+    fun addSongLike(token: String, song: Song) {
         viewModelScope.launch {
-            repo.likeSong(token,song.songId)
+            repo.likeSong(token, song.songId)
             EventBus.getDefault().post(LoadLocal(true))
         }
     }
-    fun deleteSongLike(token:String,song: Song) {
+
+    fun deleteSongLike(token: String, song: Song) {
         viewModelScope.launch {
-            repo.unLikeSong(token,song.songId)
+            repo.unLikeSong(token, song.songId)
             EventBus.getDefault().post(LoadLocal(true))
         }
     }

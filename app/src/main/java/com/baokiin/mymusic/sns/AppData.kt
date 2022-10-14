@@ -1,8 +1,7 @@
 package com.baokiin.mymusic.sns
 
 class AppData {
-    var idToken: String? = ""
-    var token: String = ""
+    var token: String? = ""
     var source: String? = null
 
     companion object {

@@ -53,8 +53,8 @@ class DownloadMusicService : Service() {
                 getExternalFilesDir(null).toString() + File.separator.toString() + responseBody.song.songId + ".mp3"
             val isDownload = writeResponseBodyToDisk(responseBody.reponseBody, path) {
                 map[idNoti - 1] = it
-                notification(idNoti, responseBody.song)
             }
+            notification(idNoti, responseBody.song)
             if (isDownload) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     this@DownloadMusicService.stopForeground(true)
@@ -73,6 +73,7 @@ class DownloadMusicService : Service() {
                         responseBody.img,
                         thumb,
                         path,
+                        isLiked
                     )
                     EventBus.getDefault().post(EventBusModel.DownloadMp3(tmpSong))
                 }
@@ -88,14 +89,7 @@ class DownloadMusicService : Service() {
             setProgress(100, map[id - 1] ?: 0, false)
             setGroup(GROUP_KEY)
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForeground(1234, notification.build())
-        } else {
-            with(NotificationManagerCompat.from(this)) {
-                notify(1234, notification.build())
-            }
-        }
-
+        startForeground(1234, notification.build())
     }
 
     private fun notificationBuilder(): NotificationCompat.Builder {

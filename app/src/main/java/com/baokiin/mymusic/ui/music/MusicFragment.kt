@@ -53,6 +53,7 @@ class MusicFragment : BaseFragment<FragmentMusicBinding>() {
                     ) View.INVISIBLE else View.VISIBLE
                     it.song.lyric?.let { it1 -> getLyric(it1, requireContext(), it.song) }
                 }
+                buttonType(baseBinding.btnLike, baseBinding.btnLike.background, it?.song?.isLiked)
 
             }
             songFromDatabase.observe(viewLifecycleOwner) {
@@ -124,11 +125,13 @@ class MusicFragment : BaseFragment<FragmentMusicBinding>() {
                     if (isLiked != true) {
                         isLiked = true
                         buttonType(baseBinding.btnLike, baseBinding.btnLike.background, true)
-                        viewModel.addSongLike(AppData.g().token,it)
+                        it.isLiked = isLiked
+                        viewModel.addSongLike(AppData.g().token?:"",it)
                     } else {
                         isLiked = false
                         buttonType(baseBinding.btnLike, baseBinding.btnLike.background, false)
-                        viewModel.deleteSongLike(AppData.g().token,it)
+                        it.isLiked = isLiked
+                        viewModel.deleteSongLike(AppData.g().token?:"",it)
                     }
 
 

@@ -10,9 +10,6 @@ interface ApiService {
     @GET("api/song/topSong/vietnam")
     suspend fun getTrending(): DataApi
 
-    @GET("api/login")
-    suspend fun login(): DataApi
-
     @GET("api/song/topSong/usuk")
     suspend fun getTopAmerica(): DataApi
 
@@ -29,14 +26,14 @@ interface ApiService {
     @Multipart
     suspend fun likeSong(
         @Header("Authorization") accessToken: String,
-        @Body requestBody: RequestBody
+        @Part("songId") id: RequestBody
     ): DataApi
 
     @DELETE("api/favourite/{id}")
     suspend fun unLikeSong(
         @Header("Authorization") accessToken: String,
         @Path("id") id: String
-    ): DataApi
+    ): ResponseBody
 
 
     @Streaming
