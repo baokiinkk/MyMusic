@@ -5,12 +5,13 @@ import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.net.NetworkInfo
 import android.os.Build
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
@@ -18,9 +19,12 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.baokiin.mymusic.R
+import com.baokiin.mymusic.adapter.ItemPublicPlayListAdapter
 import com.baokiin.mymusic.adapter.ItemSongLikeAdapter
+import com.baokiin.mymusic.data.model.PlayList
 import com.baokiin.mymusic.data.model.SongLike
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import okhttp3.ResponseBody
 import java.io.*
@@ -48,6 +52,10 @@ object Utils {
     const val USUK = "usuk"
     const val TREND = "trend"
     const val CATEGORY = "tagegory"
+    const val PLAYLIST = "PLAYLIST"
+    const val TYPE_PLAYLIST = "TYPE_PLAYLIST"
+    const val PUBLIC_PLAYLIST = "PUBLIC_PLAYLIST"
+    const val PRIVATE_PLAYLIST = "PRIVATE_PLAYLIST"
     const val INDEX = "INDEX"
     const val GROUP_KEY = "com.baokiin.mymusic.download"
     const val LIKE = "like"
@@ -78,17 +86,46 @@ object Utils {
             .commit()
     }
 
-    fun diaLogBottom(
-        context: Context,
-        layoutInflater: LayoutInflater,
-    ): BottomSheetDialog {
+    fun diaLogBottom(context: FragmentActivity,mutableList: MutableList<PlayList>,action:(PlayList, Int) -> Unit): BottomSheetDialog {
         val sheetDialog = BottomSheetDialog(context, R.style.SheetDialog)
-        val viewDialog: View = layoutInflater.inflate(R.layout.fragment_play_list, null)
+        val viewDialog: View = context.layoutInflater.inflate(R.layout.fragment_public, null)
+        (viewDialog.findViewById<FloatingActionButton>(R.id.btnAddPlayList)).visibility = View.GONE
+        val adapter = ItemPublicPlayListAdapter{playList, i ->
+            action(playList,i)
+            sheetDialog.dismiss()
+        }
+        (viewDialog.findViewById<RecyclerView>(R.id.rcvPlayList)).adapter = adapter
 
+        adapter.submitList(mutableList)
         sheetDialog.setContentView(viewDialog)
         return sheetDialog
     }
-
+    fun confirmDialog(
+        context: FragmentActivity,
+        confirm: ((String) -> Unit?)? = null): AlertDialog {
+        val dialogBuilder = AlertDialog.Builder(context, R.style.CustomDialogTheme2)
+        val view = context.layoutInflater.inflate(R.layout.dialog_add_playlist, null)
+        dialogBuilder.setView(view)
+        val dialog = dialogBuilder.create()
+        val name = view.findViewById<TextView>(R.id.playListName)
+        view.findViewById<AppCompatButton>(R.id.buttonRetry).apply {
+            setOnClickListener {
+                dialog.dismiss()
+            }
+        }
+        view.findViewById<AppCompatButton>(R.id.buttonViewSettings).apply {
+            setOnClickListener {
+                if (confirm != null) {
+                    confirm(name.text.toString())
+                    dialog.dismiss()
+                }
+            }
+        }
+        if (!context.isFinishing) {
+            dialog.show()
+        }
+        return dialog
+    }
     fun setProgresMotion(motionLayout: MotionLayout, progress: Float) {
         if (ViewCompat.isLaidOut(motionLayout)) {
             motionLayout.progress = progress

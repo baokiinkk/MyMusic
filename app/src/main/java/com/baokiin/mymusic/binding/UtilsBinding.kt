@@ -3,6 +3,7 @@ package com.baokiin.mymusic.binding
 import android.net.Uri
 import android.widget.ImageView
 import android.widget.SearchView
+import androidx.constraintlayout.utils.widget.ImageFilterView
 import androidx.core.widget.doOnTextChanged
 
 import androidx.databinding.BindingAdapter
@@ -42,6 +43,7 @@ class UtilsBinding {
                 )
             }
         }
+        
 
         @BindingAdapter("android:loadImagePlayMusic")
         @JvmStatic

@@ -105,7 +105,7 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="30dp"
                         android:fontFamily="@font/playfairdisplay_medium"
-                        android:text="For a Better Day"
+                        android:text="Thưởng thức âm nhạc"
                         android:textColor="@color/color_icon"
                         android:textSize="26sp" />
                     <androidx.viewpager2.widget.ViewPager2
@@ -131,6 +131,7 @@
                         android:textSize="20sp" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/btnPlayList"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="20dp"
@@ -153,7 +154,7 @@
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="16dp"
                             android:fontFamily="@font/playfairdisplay_bold"
-                            android:text="GỢI Ý DÀNH CHO BẠN"
+                            android:text="PLAYLIST"
                             android:textColor="@color/white"
                             android:textSize="16sp"
                             app:layout_constraintStart_toStartOf="parent"
@@ -182,61 +183,6 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="20dp"
-                        android:layout_marginTop="10dp"
-                        >
-
-
-                        <View
-                            android:id="@+id/view"
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:background="#99000000"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/textView5"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginTop="16dp"
-                            android:fontFamily="@font/playfairdisplay_bold"
-                            android:text="BẢNG XẾP HẠNG VIỆT NAM"
-                            android:textColor="@color/white"
-                            android:textSize="16sp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/textView4"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/playfairdisplay_medium"
-                            android:paddingBottom="16dp"
-                            android:text="Thưởng thức những ca khúc hay nhất thời điểm hiện tại"
-                            android:textColor="@color/white"
-                            android:textSize="14sp"
-                            app:layout_constraintEnd_toStartOf="@+id/btnplayChart"
-                            app:layout_constraintStart_toStartOf="@+id/textView5"
-                            app:layout_constraintTop_toBottomOf="@+id/textView5" />
-
-                        <androidx.appcompat.widget.AppCompatButton
-                            android:id="@+id/btnplayChart"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_marginEnd="5dp"
-                            android:background="@drawable/ic_play"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

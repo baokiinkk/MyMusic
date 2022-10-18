@@ -2,6 +2,7 @@ package com.baokiin.mymusic.data.respository
 
 import com.baokiin.mymusic.data.model.DataApi
 import com.baokiin.mymusic.data.model.DataFind
+import com.baokiin.mymusic.data.model.DataPlayListApi
 import com.baokiin.mymusic.data.remote.api.ApiService
 import com.baokiin.mymusic.data.remote.api.FindMusicService
 import com.baokiin.mymusic.sns.AppData
@@ -68,6 +69,48 @@ class RepositoryImpl @Inject constructor(
             apiService.likeSong("Bearer $token", request)
         } catch (cause: HttpException) {
             DataApi(message = "lấy thông tin lỗi!!!")
+        }
+    override suspend fun createPlayList(token: String?, name: String): DataApi =
+            try {
+                val nameRequest =  RequestBody.create(
+                    MediaType.parse("text/plain"),
+                    name
+                )
+                val isPublicRequest =  RequestBody.create(
+                    MediaType.parse("text/plain"),
+                    "false"
+                )
+                apiService.createPlayList("Bearer $token", nameRequest,isPublicRequest)
+            } catch (cause: HttpException) {
+                DataApi(message = "lấy thông tin lỗi!!!")
+            }
+    override suspend fun addSongPlayList(playlistId: String,songId:String): DataApi =
+            try {
+                val playlistIdRequest =  RequestBody.create(
+                    MediaType.parse("text/plain"),
+                    playlistId
+                )
+                val songIdRequest =  RequestBody.create(
+                    MediaType.parse("text/plain"),
+                    songId
+                )
+                apiService.addSongPlayList("Bearer ${AppData.g().token}", playlistIdRequest,songIdRequest)
+            } catch (cause: HttpException) {
+                DataApi(message = "Bài hát đã được thêm vào danh sách!")
+            }
+
+    override suspend fun getPublicPlayList(): DataPlayListApi =
+        try {
+            apiService.getPublicPlayList()
+        } catch (cause: HttpException) {
+            DataPlayListApi(message = "lấy thông tin lỗi!!!")
+        }
+
+    override suspend fun getPrivatePlayList(): DataPlayListApi =
+        try {
+            apiService.getMyPlayList("Bearer ${AppData.g().token}")
+        } catch (cause: HttpException) {
+            DataPlayListApi(message = "lấy thông tin lỗi!!!")
         }
 
     override suspend fun unLikeSong(token: String, idSong: String): ResponseBody =

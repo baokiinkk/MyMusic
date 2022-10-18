@@ -2,6 +2,7 @@ package com.baokiin.mymusic.data.remote.api
 
 import com.baokiin.mymusic.data.model.DataApi
 import com.baokiin.mymusic.data.model.DataFind
+import com.baokiin.mymusic.data.model.DataPlayListApi
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.http.*
@@ -22,11 +23,32 @@ interface ApiService {
     @GET("api/favourite")
     suspend fun getSongsLiked(@Header("Authorization") accessToken: String): DataApi
 
+    @GET("api/playlist/public")
+    suspend fun getPublicPlayList(): DataPlayListApi
+
+    @GET("api/playlist/myPlaylist")
+    suspend fun getMyPlayList(@Header("Authorization") accessToken: String): DataPlayListApi
+
     @POST("api/favourite")
     @Multipart
     suspend fun likeSong(
         @Header("Authorization") accessToken: String,
         @Part("songId") id: RequestBody
+    ): DataApi
+
+    @POST("api/playlist")
+    @Multipart
+    suspend fun createPlayList(
+        @Header("Authorization") accessToken: String,
+        @Part("name") name: RequestBody,
+        @Part("isPublic") isPublic: RequestBody
+    ): DataApi
+    @POST("api/playlist/addSong")
+    @Multipart
+    suspend fun addSongPlayList(
+        @Header("Authorization") accessToken: String,
+        @Part("playlistId") playlistId: RequestBody,
+        @Part("listSongId[]") songId: RequestBody
     ): DataApi
 
     @DELETE("api/favourite/{id}")

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.baokiin.mymusic.adapter.ItemHomeAdapter
 import com.baokiin.mymusic.adapter.ItemPlayListAdapter
+import com.baokiin.mymusic.adapter.ItemPublicPlayListAdapter
 import com.baokiin.mymusic.adapter.ItemSongLikeAdapter
 import com.baokiin.mymusic.data.model.EventBusModel
 import com.baokiin.mymusic.utils.Utils
@@ -41,6 +42,14 @@ class RecycleViewBinding {
         @BindingAdapter("android:adapter")
         @JvmStatic
         fun recycleViews(view: RecyclerView, adapter: ItemSongLikeAdapter) {
+            view.apply {
+                this.adapter = adapter
+                layoutManager = LinearLayoutManager(view.context)
+            }
+        }
+        @BindingAdapter("android:adapter")
+        @JvmStatic
+        fun recycleViews(view: RecyclerView, adapter: ItemPublicPlayListAdapter) {
             view.apply {
                 this.adapter = adapter
                 layoutManager = LinearLayoutManager(view.context)

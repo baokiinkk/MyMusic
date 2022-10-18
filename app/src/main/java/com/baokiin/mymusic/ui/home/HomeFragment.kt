@@ -6,11 +6,11 @@ import androidx.fragment.app.activityViewModels
 import com.baokiin.mymusic.R
 import com.baokiin.mymusic.adapter.ItemHomeAdapter
 import com.baokiin.mymusic.adapter.ItemHomeTitleAdapter
-import com.baokiin.mymusic.data.model.EventBusModel
 import com.baokiin.mymusic.data.model.EventBusModel.*
 import com.baokiin.mymusic.data.model.Song
 import com.baokiin.mymusic.databinding.FragmentHomeBinding
 import com.baokiin.mymusic.ui.info.InfoFragment
+import com.baokiin.mymusic.ui.playlist.DetailPlayListFragment
 import com.baokiin.mymusic.ui.playlist.PlayListFragment
 import com.baokiin.mymusic.ui.search.SearchFragment
 import com.baokiin.mymusic.utils.BaseFragment
@@ -81,25 +81,30 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun clickView() {
-        baseBinding.vpopLayout.btnMore.setOnClickListener {
-            gotoPlayList(VPOP)
-        }
-        baseBinding.kpopLayout.btnMore.setOnClickListener {
-            gotoPlayList(KPOP)
-        }
-        baseBinding.amedicaLayout.btnMore.setOnClickListener {
-            gotoPlayList(USUK)
-        }
-        baseBinding.btnSearch.setOnClickListener {
-            gotoSearch()
-        }
-        baseBinding.profile.setOnClickListener {
-            gotoFragment(requireActivity(),InfoFragment(),true)
+        baseBinding.apply {
+            vpopLayout.btnMore.setOnClickListener {
+                gotoPlayList(VPOP)
+            }
+            kpopLayout.btnMore.setOnClickListener {
+                gotoPlayList(KPOP)
+            }
+            amedicaLayout.btnMore.setOnClickListener {
+                gotoPlayList(USUK)
+            }
+            btnSearch.setOnClickListener {
+                gotoSearch()
+            }
+            profile.setOnClickListener {
+                gotoFragment(requireActivity(),InfoFragment(),true)
+            }
+            btnPlayList.setOnClickListener {
+                gotoFragment(requireActivity(), PlayListFragment(),true)
+            }
         }
     }
     private fun gotoPlayList(song:String){
         val bundle = Bundle().apply { putString(CATEGORY,song) }
-        val frament = PlayListFragment().apply { arguments = bundle }
+        val frament = DetailPlayListFragment().apply { arguments = bundle }
         gotoFragment(requireActivity(),frament,true)
     }
     private fun gotoSearch(){

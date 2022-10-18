@@ -15,7 +15,10 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowLightStatusBar" tools:targetApi="23">false</item>
     </style>
-
+    <style name="CustomDialogTheme2" parent="android:Theme.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
     <style name="SheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="android:windowCloseOnTouchOutside">false</item>
         <item name="android:colorBackground">     @android:color/transparent</item>

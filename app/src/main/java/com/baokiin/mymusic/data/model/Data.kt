@@ -5,9 +5,17 @@ import androidx.room.PrimaryKey
 import java.io.Serializable
 
 data class DataApi(val message: String? = null, val data: MutableList<Song>? = null)
+data class DataPlayListApi(val message: String? = null, val data: MutableList<PlayList>? = null)
 data class DataFind(val message: String? = null, val data: MutableList<Data>? = null)
 data class Data(val song: MutableList<Song>?)
 
+
+data class PlayList(
+    val playlistId:Int,
+    val name:String,
+    val songResponses:MutableList<Song>?,
+    val thumbnail:String
+)
 @Entity
 data class Song(
     @PrimaryKey val songId: String,

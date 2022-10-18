@@ -3,16 +3,18 @@ package com.baokiin.mymusic.ui.activity
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.Resources
-import android.util.Log
 import android.view.MotionEvent
 import android.widget.SeekBar
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import com.baokiin.mymusic.R
-import com.baokiin.mymusic.data.model.EventBusModel.*
+import com.baokiin.mymusic.data.model.EventBusModel.MediaInfo
+import com.baokiin.mymusic.data.model.EventBusModel.TimesLong
 import com.baokiin.mymusic.databinding.PlayMusicBinding
 import com.baokiin.mymusic.service.MediaService
 import com.baokiin.mymusic.utils.BaseFragment
 import com.baokiin.mymusic.utils.Utils
+import com.baokiin.mymusic.utils.Utils.diaLogBottom
 import com.baokiin.mymusic.utils.Utils.startServiceMusic
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -29,6 +31,7 @@ class MotionFragment : BaseFragment<PlayMusicBinding>() {
         setUp()
         click()
     }
+
     //-------------------------------------- recive ---------------------------------------------
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(mediaInfo: MediaInfo) {
@@ -44,6 +47,7 @@ class MotionFragment : BaseFragment<PlayMusicBinding>() {
         baseBinding.viewpagerMusic.adapter = viewModel.adapterMusic
 
     }
+
     @SuppressLint("ClickableViewAccessibility")
     private fun click() {
 
@@ -51,6 +55,9 @@ class MotionFragment : BaseFragment<PlayMusicBinding>() {
             btnPlay.setOnClickListener { sendActionService(Utils.ACTION_PLAY) }
             btnNext.setOnClickListener { sendActionService(Utils.ACTION_NEXT) }
             btnPrev.setOnClickListener { sendActionService(Utils.ACTION_PREV) }
+            btnShuffleMusic.setOnClickListener {
+                viewModel.getPlayList(requireContext())
+            }
             btncloseMusic.setOnTouchListener { _, event ->
                 val heightDevice = Resources.getSystem().displayMetrics.heightPixels
                 var progress = event.rawY / heightDevice
@@ -93,6 +100,20 @@ class MotionFragment : BaseFragment<PlayMusicBinding>() {
                 viewModel.positonMedia.observe(viewLifecycleOwner) {
                     it?.let {
                         this.progress = it
+                    }
+                }
+                viewModel.playListliveData.observe(viewLifecycleOwner) {
+                    it?.let {
+                        diaLogBottom(requireActivity(), it) { playList, i ->
+                            viewModel.addSongPlayList(requireContext(), playList)
+                        }.show()
+                    }
+                }
+                viewModel.addSongliveData.observe(viewLifecycleOwner) {
+                    it?.let {
+                        val mess =
+                            if (it.message.isNullOrBlank()) "Bạn đã thêm thành công" else it.message
+                        Toast.makeText(context, mess, Toast.LENGTH_SHORT).show()
                     }
                 }
             }

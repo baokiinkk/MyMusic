@@ -1,17 +1,22 @@
 package com.baokiin.mymusic.ui.activity
 
 import android.content.Context
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.baokiin.mymusic.adapter.ViewPageAdapter
+import com.baokiin.mymusic.data.model.DataApi
 import com.baokiin.mymusic.data.model.EventBusModel.LoadLocal
 import com.baokiin.mymusic.data.model.EventBusModel.MediaInfo
+import com.baokiin.mymusic.data.model.PlayList
 import com.baokiin.mymusic.data.model.Song
 import com.baokiin.mymusic.data.respository.Repository
 import com.baokiin.mymusic.data.respository.RepositoryLocal
+import com.baokiin.mymusic.utils.Utils
 import com.baokiin.mymusic.utils.Utils.writeResponseBodyToDisk
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
 import org.greenrobot.eventbus.EventBus
@@ -34,10 +39,43 @@ class MainViewModel @Inject constructor(
     val isScroll: MutableLiveData<Boolean?> = MutableLiveData(null)
     val songFromDatabase: MutableLiveData<Boolean?> = MutableLiveData(null)
     val downloading: MutableLiveData<Boolean?> = MutableLiveData(null)
+    val playListliveData: MutableLiveData<MutableList<PlayList>?> = MutableLiveData(null)
+    val addSongliveData: MutableLiveData<DataApi?> = MutableLiveData(null)
 
     fun downloadSong(url: String) {
         viewModelScope.launch {
             downloadMusic.postValue(repo.downloadMusic(url))
+        }
+    }
+
+    fun getPlayList(context: Context) {
+        viewModelScope.launch(Dispatchers.IO) {
+            if (Utils.isInternetPing(context)) {
+                playListliveData.postValue(repo.getPrivatePlayList().data)
+            } else
+                Toast.makeText(
+                    context,
+                    "Thiết bị kết nối mạng bị gián đoạn, sẽ hiện thị theo offline!!",
+                    Toast.LENGTH_SHORT
+                ).show()
+        }
+    }
+
+    fun addSongPlayList(context: Context, playList: PlayList) {
+        viewModelScope.launch(Dispatchers.IO) {
+            if (Utils.isInternetPing(context)) {
+                addSongliveData.postValue(
+                    repo.addSongPlayList(
+                        playList.playlistId.toString(),
+                        mediaInfo.value?.song?.songId ?: ""
+                    )
+                )
+            } else
+                Toast.makeText(
+                    context,
+                    "Thiết bị kết nối mạng bị gián đoạn, sẽ hiện thị theo offline!!",
+                    Toast.LENGTH_SHORT
+                ).show()
         }
     }
 

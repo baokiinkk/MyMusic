@@ -106,5 +106,24 @@ class ViewPagerBinding {
             }.attach()
         }
 
+        @BindingAdapter("android:tab_layout", "android:adapter_viewpager3")
+        @JvmStatic
+        fun viewpager3(view: ViewPager2, tabLayout: TabLayout, adapter: ViewPageAdapter) {
+            view.adapter = adapter
+            TabLayoutMediator(
+                tabLayout,
+                view
+            ) { tab, pos ->
+                when (pos) {
+                    0 -> {
+                        tab.text = "Cộng đồng"
+                    }
+                    1 -> {
+                        tab.text = "Cá nhân"
+                    }
+                }
+            }.attach()
+        }
+
     }
 }

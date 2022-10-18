@@ -30,6 +30,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
+            <View
+                android:id="@+id/viewTmp"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="#80000000"
+                app:layout_constraintBottom_toBottomOf="@id/image"
+                app:layout_constraintEnd_toEndOf="@id/image"
+                app:layout_constraintStart_toStartOf="@id/image"
+                app:layout_constraintTop_toTopOf="parent" />
         </FrameLayout>
 
         <ImageView
@@ -41,16 +50,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <View
-            android:id="@+id/viewTmp"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="#80000000"
-            app:layout_constraintBottom_toBottomOf="@id/image"
-            app:layout_constraintEnd_toEndOf="@id/image"
-            app:layout_constraintStart_toStartOf="@id/image"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.viewpager2.widget.ViewPager2
@@ -186,7 +185,7 @@
             android:layout_height="20dp"
             android:layout_gravity="center"
             android:layout_marginEnd="30dp"
-            android:background="@drawable/ic_shuffle"
+            android:background="@drawable/ic_playlist_add"
             android:backgroundTint="@color/color_icon"
             app:layout_constraintBottom_toBottomOf="@+id/btnPlay"
             app:layout_constraintEnd_toEndOf="parent"
