@@ -33,12 +33,12 @@ class OnlineFragment : BaseFragment<FragmentSongLocalBinding>() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageSecond(status: EventBusModel.LoadLocal) {
-        viewModel.getSongsLiked()
+        viewModel.getSongsLiked(requireContext())
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onChangeData(status: EventBusModel.DataChange) {
-        viewModel.getSongsLiked()
+        viewModel.getSongsLiked(requireContext())
     }
 
     private fun setup() {
@@ -61,7 +61,7 @@ class OnlineFragment : BaseFragment<FragmentSongLocalBinding>() {
                     adapterItem
                 ) {list,song->
                     if(song != null)
-                        viewModel.deleteSongLike(AppData.g().token?:"",song.toSong())
+                        viewModel.deleteSongLike(requireContext(),AppData.g().token?:"",song.toSong())
                 }
             )
             itemTouchHelper.attachToRecyclerView(recycleviewLocal)
@@ -78,7 +78,7 @@ class OnlineFragment : BaseFragment<FragmentSongLocalBinding>() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.getSongsLiked()
+        viewModel.getSongsLiked(requireContext())
     }
 
 

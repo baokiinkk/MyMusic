@@ -1,5 +1,7 @@
 package com.baokiin.mymusic.ui.info
 
+import android.content.Context
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,6 +10,7 @@ import com.baokiin.mymusic.data.model.Song
 import com.baokiin.mymusic.data.model.SongLike
 import com.baokiin.mymusic.data.respository.Repository
 import com.baokiin.mymusic.data.respository.RepositoryLocal
+import com.baokiin.mymusic.utils.Utils
 import com.baokiin.mymusic.utils.Utils.STATUS_GETDATA
 import com.baokiin.mymusic.utils.Utils.STATUS_UPDATA
 import com.google.firebase.auth.ktx.auth
@@ -17,6 +20,7 @@ import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.greenrobot.eventbus.EventBus
 import javax.inject.Inject
 
@@ -40,6 +44,7 @@ class InfoViewModel @Inject constructor(
 
     fun upData() {
         viewModelScope.launch {
+
             auth.value?.currentUser?.let { user ->
                 val firebase = db.collection(user.uid)
                 firebase.get()
@@ -77,16 +82,35 @@ class InfoViewModel @Inject constructor(
         }
     }
 
-    fun deleteSongLike(token: String, song: Song) {
+    fun deleteSongLike(context:Context,token: String, song: Song) {
         viewModelScope.launch {
-            repo.unLikeSong(token, song.songId)
-            EventBus.getDefault().post(EventBusModel.LoadLocal(true))
+            if (Utils.isInternetPing(context)) {
+                repo.unLikeSong(token, song.songId)
+                EventBus.getDefault().post(EventBusModel.LoadLocal(true))
+            }else{
+                withContext(Dispatchers.Main){
+                    Toast.makeText(
+                        context,
+                        "Thiết bị kết nối mạng bị gián đoạn, sẽ hiện thị theo offline!!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
         }
     }
-    fun getSongsLiked() {
+    fun getSongsLiked(context: Context) {
         viewModelScope.launch {
-            val song = repo.getSongsLiked().data
-            songIsLiked.postValue(song)
+            try {
+                val song = repo.getSongsLiked().data
+                songIsLiked.postValue(song)
+            }
+            catch (e:Exception){
+                Toast.makeText(
+                    context,
+                    "Thiết bị kết nối mạng bị gián đoạn, sẽ hiện thị theo offline!!",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 

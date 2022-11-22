@@ -8,6 +8,7 @@ import android.widget.SeekBar
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import com.baokiin.mymusic.R
+import com.baokiin.mymusic.data.model.EventBusModel
 import com.baokiin.mymusic.data.model.EventBusModel.MediaInfo
 import com.baokiin.mymusic.data.model.EventBusModel.TimesLong
 import com.baokiin.mymusic.databinding.PlayMusicBinding
@@ -40,6 +41,11 @@ class MotionFragment : BaseFragment<PlayMusicBinding>() {
         viewModel.getIdSong(mediaInfo.song)
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onBackEvent(onBack: EventBusModel.OnBackEvent) {
+        Utils.setProgresMotion(baseBinding.motionLayout, 1f)
+    }
+
     //-------------------------------------- func -----------------------------------------------
     private fun setUp() {
         EventBus.getDefault().register(this)
@@ -59,14 +65,18 @@ class MotionFragment : BaseFragment<PlayMusicBinding>() {
                 viewModel.getPlayList(requireContext())
             }
             btncloseMusic.setOnTouchListener { _, event ->
+                val process = motionLayout.progress
+
                 val heightDevice = Resources.getSystem().displayMetrics.heightPixels
                 var progress = event.rawY / heightDevice
+
                 when (event.action) {
                     MotionEvent.ACTION_UP -> {
                         progress = if (progress >= 0.6) 1f else 0f
                     }
                 }
                 Utils.setProgresMotion(motionLayout, progress)
+
                 true
             }
 

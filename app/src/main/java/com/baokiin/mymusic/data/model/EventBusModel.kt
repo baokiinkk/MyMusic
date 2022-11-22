@@ -13,4 +13,6 @@ class EventBusModel {
     data class Response(val reponseBody: ResponseBody, val song:Song, val lyric:String, val img:String)
     data class LoadLocal(val boolean: Boolean)
     data class DataChange(val status:String)
+    data class OnBackEvent(val status:Boolean)
+    data class ProcessDownload(val status:Int)
 }

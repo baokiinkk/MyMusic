@@ -1,5 +1,6 @@
 package com.baokiin.mymusic.service
 
+import android.app.NotificationManager
 import android.app.Service
 import android.content.Intent
 import android.os.Build
@@ -18,7 +19,7 @@ import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import java.io.*
+import java.io.File
 
 class DownloadMusicService : Service() {
     override fun onBind(intent: Intent?): IBinder? {
@@ -49,12 +50,14 @@ class DownloadMusicService : Service() {
     fun onDownloadMusicFileMp3(responseBody: EventBusModel.Response) {
         GlobalScope.launch(Dispatchers.IO) {
             idNoti++
+            notification(0, responseBody.song)
             val path =
                 getExternalFilesDir(null).toString() + File.separator.toString() + responseBody.song.songId + ".mp3"
             val isDownload = writeResponseBodyToDisk(responseBody.reponseBody, path) {
                 map[idNoti - 1] = it
+                notification(it, responseBody.song)
+                EventBus.getDefault().post(EventBusModel.ProcessDownload(it))
             }
-            notification(idNoti, responseBody.song)
             if (isDownload) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     this@DownloadMusicService.stopForeground(true)
@@ -83,19 +86,32 @@ class DownloadMusicService : Service() {
         }
     }
 
-    private fun notification(id: Int, song: Song) {
+    private fun notification(pos: Int?, song: Song) {
         val notification = notificationBuilder().apply {
-            setContentText(song.name + "  " + map[id - 1] + "%")
-            setProgress(100, map[id - 1] ?: 0, false)
-            setGroup(GROUP_KEY)
+            setContentText(song.name + "  " + pos + "%")
+            setProgress(100, pos ?: 0, false)
+            //setGroup(GROUP_KEY)
+
         }
-        startForeground(1234, notification.build())
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForeground(1234567, notification.build())
+        } else {
+            with(NotificationManagerCompat.from(applicationContext)) {
+                notify(1234567, notification.build())
+            }
+        }
+
     }
 
     private fun notificationBuilder(): NotificationCompat.Builder {
         return NotificationCompat.Builder(this, Utils.CHANNEL_DOWNLOAD)
             .setSmallIcon(R.drawable.ic_next)
             .setContentTitle("Downloading")
+            .setContentText("Downloading")
+            .setColor(1000)
+            .setSound(null)
+            .setPriority(NotificationCompat.PRIORITY_MAX)
+            .setAutoCancel(true)
     }
 
 }

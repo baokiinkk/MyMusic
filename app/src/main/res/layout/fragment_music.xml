@@ -63,6 +63,21 @@
                 android:scaleType="centerCrop" />
         </androidx.cardview.widget.CardView>
 
+        <ProgressBar
+            android:id="@+id/processDownload"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:max="100"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:progress="50"
+            android:indeterminate="false"
+            android:visibility="gone"
+            android:progressDrawable="@drawable/layer_process"
+            android:background="@drawable/circle_shape"
+            app:layout_constraintBottom_toBottomOf="@+id/btnDown"
+            app:layout_constraintEnd_toEndOf="@+id/btnDown"
+            app:layout_constraintStart_toStartOf="@+id/btnDown"
+            app:layout_constraintTop_toTopOf="@+id/btnDown" />
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnDown"
             android:layout_width="60dp"

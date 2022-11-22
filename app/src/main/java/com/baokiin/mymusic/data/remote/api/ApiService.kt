@@ -60,7 +60,7 @@ interface ApiService {
 
     @Streaming
     @GET
-    suspend fun downloadMusic(@Url url: String): ResponseBody
+    suspend fun downloadMusic(@Url url: String?): ResponseBody
 
     @Streaming
     @GET

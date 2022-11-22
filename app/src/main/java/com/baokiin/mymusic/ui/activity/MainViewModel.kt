@@ -42,7 +42,7 @@ class MainViewModel @Inject constructor(
     val playListliveData: MutableLiveData<MutableList<PlayList>?> = MutableLiveData(null)
     val addSongliveData: MutableLiveData<DataApi?> = MutableLiveData(null)
 
-    fun downloadSong(url: String) {
+    fun downloadSong(url: String?) {
         viewModelScope.launch {
             downloadMusic.postValue(repo.downloadMusic(url))
         }

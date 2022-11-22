@@ -6,7 +6,6 @@ import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
-import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
@@ -45,7 +44,7 @@ object Utils {
     const val ACTION_NEXT = 4
     const val ACTION_PREV = 3
     const val CHANNEL_ID = "123456"
-    const val CHANNEL_DOWNLOAD = "12345"
+    const val CHANNEL_DOWNLOAD = "Download_channel"
     const val SONG = "Song"
     const val VPOP = "vpop"
     const val KPOP = "kpop"
@@ -86,12 +85,16 @@ object Utils {
             .commit()
     }
 
-    fun diaLogBottom(context: FragmentActivity,mutableList: MutableList<PlayList>,action:(PlayList, Int) -> Unit): BottomSheetDialog {
+    fun diaLogBottom(
+        context: FragmentActivity,
+        mutableList: MutableList<PlayList>,
+        action: (PlayList, Int) -> Unit
+    ): BottomSheetDialog {
         val sheetDialog = BottomSheetDialog(context, R.style.SheetDialog)
         val viewDialog: View = context.layoutInflater.inflate(R.layout.fragment_public, null)
         (viewDialog.findViewById<FloatingActionButton>(R.id.btnAddPlayList)).visibility = View.GONE
-        val adapter = ItemPublicPlayListAdapter{playList, i ->
-            action(playList,i)
+        val adapter = ItemPublicPlayListAdapter { playList, i ->
+            action(playList, i)
             sheetDialog.dismiss()
         }
         (viewDialog.findViewById<RecyclerView>(R.id.rcvPlayList)).adapter = adapter
@@ -100,9 +103,11 @@ object Utils {
         sheetDialog.setContentView(viewDialog)
         return sheetDialog
     }
+
     fun confirmDialog(
         context: FragmentActivity,
-        confirm: ((String) -> Unit?)? = null): AlertDialog {
+        confirm: ((String) -> Unit?)? = null
+    ): AlertDialog {
         val dialogBuilder = AlertDialog.Builder(context, R.style.CustomDialogTheme2)
         val view = context.layoutInflater.inflate(R.layout.dialog_add_playlist, null)
         dialogBuilder.setView(view)
@@ -126,6 +131,7 @@ object Utils {
         }
         return dialog
     }
+
     fun setProgresMotion(motionLayout: MotionLayout, progress: Float) {
         if (ViewCompat.isLaidOut(motionLayout)) {
             motionLayout.progress = progress
@@ -138,7 +144,7 @@ object Utils {
     fun callBackSwipe(
         context: View,
         adapter: ItemSongLikeAdapter,
-        action: (MutableList<SongLike>,SongLike?) -> Unit
+        action: (MutableList<SongLike>, SongLike?) -> Unit
     ): ItemTouchHelper.SimpleCallback =
         object : ItemTouchHelper.SimpleCallback(
             ItemTouchHelper.UP or ItemTouchHelper.DOWN,
@@ -157,8 +163,7 @@ object Utils {
                     Collections.swap(list, from, to)
                     adapter.submitList(list)
                     adapter.notifyItemMoved(from, to)
-                }
-                catch (e:Exception){
+                } catch (e: Exception) {
 
                 }
 
@@ -172,14 +177,14 @@ object Utils {
                     val positionDelete = viewHolder.adapterPosition
                     val song = listCurrent.removeAt(positionDelete)
                     adapter.submitList(listCurrent)
-                    action(listCurrent,song)
+                    action(listCurrent, song)
                     Snackbar.make(context, "Đã xóa bài hát", Snackbar.LENGTH_LONG)
                         .setAction("Undo") {
                             val listUndo = mutableListOf<SongLike>()
                             listUndo.addAll(adapter.currentList)
                             listUndo.add(positionDelete, song)
                             adapter.submitList(listUndo)
-                            action(listUndo,null)
+                            action(listUndo, null)
                         }
                         .show()
                 }
@@ -215,47 +220,43 @@ object Utils {
         path: String,
         action: (Int) -> Unit
     ): Boolean {
+        var inputStream: InputStream? = null
+        var outputStream: OutputStream? = null
+        val body = responseBody
+        val futureStudioIconFile =
+            File(path)
+        val fileReader = ByteArray(7 * 1024)
+        var fileSizeDownloaded: Long = 0
         return try {
-            val body = responseBody
-            val futureStudioIconFile =
-                File(path)
-            var inputStream: InputStream? = null
-            var outputStream: OutputStream? = null
-            try {
-                val fileReader = ByteArray(7 * 1024)
-                val fileSize = body.contentLength()
-                var fileSizeDownloaded: Long = 0
-                inputStream = body.byteStream()
-                outputStream = FileOutputStream(futureStudioIconFile)
-                while (true) {
-                    val read: Int = inputStream.read(fileReader)
-                    if (read == -1) {
-                        break
-                    }
-                    outputStream.write(fileReader, 0, read)
-                    fileSizeDownloaded += read.toLong()
-                    action(((fileSizeDownloaded / fileSize.toDouble()) * 100).toInt())
+            val fileSize = body.contentLength()
+            inputStream = body.byteStream()
+            outputStream = FileOutputStream(futureStudioIconFile)
+            while (true) {
+                val read: Int = inputStream.read(fileReader)
+                if (read == -1) {
+                    break
                 }
-                outputStream.flush()
-                true
-            } catch (e: IOException) {
-                false
-            } finally {
-                inputStream?.close()
-                outputStream?.close()
+                outputStream.write(fileReader, 0, read)
+                fileSizeDownloaded += read.toLong()
+                action(((fileSizeDownloaded / fileSize.toDouble()) * 100).toInt())
             }
+            outputStream.flush()
+
+            true
         } catch (e: IOException) {
             false
+        } finally {
+            inputStream?.close()
+            outputStream?.close()
         }
     }
 
     fun isInternetPing(context: Context): Boolean {
         return try {
-            if(isInternetAvailable(context)){
+            if (isInternetAvailable(context)) {
                 val ipAddr: InetAddress = InetAddress.getByName("www.google.com")
                 !ipAddr.equals("")
-            }
-            else
+            } else
                 false
 
         } catch (e: Exception) {
@@ -264,7 +265,7 @@ object Utils {
     }
 
     private fun isInternetAvailable(context: Context): Boolean {
-        val result:Boolean
+        val result: Boolean
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val networkCapabilities = connectivityManager.activeNetwork ?: return false

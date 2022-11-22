@@ -48,6 +48,7 @@ abstract class SNSLoginActivity : AppCompatActivity() {
                     val account = task.getResult(ApiException::class.java)!!
                     firebaseAuthWithGoogle(account.idToken)
                 } catch (e: ApiException) {
+                    Log.d("quocbao",e.message.toString())
                     // Google Sign In failed, update UI appropriately
                 }
             }

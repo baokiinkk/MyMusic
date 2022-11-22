@@ -18,6 +18,7 @@ import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -84,11 +85,14 @@ class HomeViewModel @Inject constructor(private val repo: Repository,private val
                         america.postValue(it)
                 }
             } else
-                Toast.makeText(
-                    context,
-                    "Thiết bị kết nối mạng bị gián đoạn, sẽ hiện thị theo offline!!",
-                    Toast.LENGTH_SHORT
-                ).show()
+                withContext(Dispatchers.Main){
+                    Toast.makeText(
+                        context,
+                        "Thiết bị kết nối mạng bị gián đoạn, sẽ hiện thị theo offline!!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
         }
     }
 }

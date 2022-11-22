@@ -117,7 +117,7 @@ class RepositoryImpl @Inject constructor(
             apiService.unLikeSong("Bearer $token", idSong)
 
     //download file
-    override suspend fun downloadMusic(url: String): ResponseBody = apiService.downloadMusic(url)
+    override suspend fun downloadMusic(url: String?): ResponseBody = apiService.downloadMusic(url)
     override suspend fun downloadLyric(url: String): ResponseBody = apiService.downloadLyric(url)
     override suspend fun downloadImg(url: String): ResponseBody = apiService.downloadImg(url)
 }

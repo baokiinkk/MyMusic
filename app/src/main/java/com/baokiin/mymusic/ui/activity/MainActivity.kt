@@ -9,10 +9,12 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import com.baokiin.mymusic.R
 import com.baokiin.mymusic.adapter.ViewPageAdapter
 import com.baokiin.mymusic.data.model.Data
+import com.baokiin.mymusic.data.model.EventBusModel
 import com.baokiin.mymusic.data.model.EventBusModel.*
 import com.baokiin.mymusic.databinding.ActivityMainBinding
 import com.baokiin.mymusic.service.DownloadMusicService
@@ -25,7 +27,6 @@ import com.baokiin.mymusic.utils.Utils
 import com.baokiin.mymusic.utils.Utils.startServiceMusic
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_main.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -35,7 +36,7 @@ class MainActivity : AppCompatActivity() {
     //--------------------------------- variable --------------------------------------------------
     private val viewModel by viewModels<MainViewModel>()
     private var indexSong: Int? = null
-
+    private lateinit var baseBinding: ActivityMainBinding
 
     //---------------------------- override lifecycle----------------------------------------------
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,7 +72,7 @@ class MainActivity : AppCompatActivity() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(song: SongSingle) {
         try {
-            playMusic.visibility = View.VISIBLE
+            baseBinding.playMusic.visibility = View.VISIBLE
             val intent = Intent(this, MediaService::class.java)
             val data = Data(song = song.isList)
             intent.putExtra(Utils.SONG, Gson().toJson(data))
@@ -88,7 +89,7 @@ class MainActivity : AppCompatActivity() {
     private fun setUp() {
         AppData.g().token = SharedPreferencesUtils.getTokenID(this)
         EventBus.getDefault().register(this)
-        val baseBinding: ActivityMainBinding =
+        baseBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_main)
         baseBinding.apply {
             lifecycleOwner = this@MainActivity
@@ -108,5 +109,12 @@ class MainActivity : AppCompatActivity() {
         window.statusBarColor = colorStatusBar
         window.decorView.systemUiVisibility =
             View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+    }
+
+    override fun onBackPressed() {
+        if (baseBinding.playMusic.isVisible) {
+            EventBus.getDefault().post(EventBusModel.OnBackEvent(true))
+        } else
+            super.onBackPressed()
     }
 }

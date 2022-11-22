@@ -35,15 +35,9 @@ class SplashActivity: AppCompatActivity() {
         catch ( e: NoSuchAlgorithmException) {
 
         }
-        viewModel.getData(this)
         viewModel.getDataFromFirestore()
-        viewModel.america.observe(this) {
-            it?.let {
-                // Start home activity
-                startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-                finish()
-            }
-        }
+        startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+        finish()
 
     }
 }

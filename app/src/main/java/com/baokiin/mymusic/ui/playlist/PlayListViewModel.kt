@@ -13,6 +13,7 @@ import com.baokiin.mymusic.utils.Utils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -32,11 +33,13 @@ class PlayListViewModel @Inject constructor(private val repo: Repository) : View
                     }
                 )
             } else
-                Toast.makeText(
-                    context,
-                    "Thiết bị kết nối mạng bị gián đoạn, sẽ hiện thị theo offline!!",
-                    Toast.LENGTH_SHORT
-                ).show()
+                withContext(Dispatchers.Main){
+                    Toast.makeText(
+                        context,
+                        "Thiết bị kết nối mạng bị gián đoạn, sẽ hiện thị theo offline!!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
         }
     }
 
@@ -51,24 +54,29 @@ class PlayListViewModel @Inject constructor(private val repo: Repository) : View
                     else repo.getPublicPlayList().data
                 )
             } else
-                Toast.makeText(
-                    context,
-                    "Thiết bị kết nối mạng bị gián đoạn, sẽ hiện thị theo offline!!",
-                    Toast.LENGTH_SHORT
-                ).show()
+                withContext(Dispatchers.Main){
+                    Toast.makeText(
+                        context,
+                        "Thiết bị kết nối mạng bị gián đoạn, sẽ hiện thị theo offline!!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
         }
     }
 
-    fun createPlayList(context: Context,name:String) {
+    fun createPlayList(context: Context, name: String) {
         viewModelScope.launch(Dispatchers.IO) {
             if (Utils.isInternetPing(context)) {
-                createPlayListliveData.postValue(repo.createPlayList(AppData.g().token,name))
+                createPlayListliveData.postValue(repo.createPlayList(AppData.g().token, name))
             } else
-                Toast.makeText(
-                    context,
-                    "Thiết bị kết nối mạng bị gián đoạn, sẽ hiện thị theo offline!!",
-                    Toast.LENGTH_SHORT
-                ).show()
+                withContext(Dispatchers.Main){
+                    Toast.makeText(
+                        context,
+                        "Thiết bị kết nối mạng bị gián đoạn, sẽ hiện thị theo offline!!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
         }
     }
 }

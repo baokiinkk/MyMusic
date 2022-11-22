@@ -21,6 +21,8 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 
 @AndroidEntryPoint
@@ -37,9 +39,22 @@ class MusicFragment : BaseFragment<FragmentMusicBinding>() {
 
         setUp()
         onViewCLick()
+        EventBus.getDefault().register(this)
 
     }
 
+    override fun onDestroy() {
+        EventBus.getDefault().unregister(this)
+        super.onDestroy()
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageSecond(process: EventBusModel.ProcessDownload) {
+        baseBinding.processDownload.visibility = View.VISIBLE
+        if(process.status<100){
+            baseBinding.processDownload.progress = process.status
+        }else
+            baseBinding.processDownload.visibility = View.GONE
+    }
     private fun setUp() {
 
         baseBinding.viewmodel = viewModel
@@ -102,8 +117,7 @@ class MusicFragment : BaseFragment<FragmentMusicBinding>() {
             else {
                 val intent = Intent(context, DownloadMusicService::class.java)
                 startServiceMusic(requireActivity(), intent)
-                val url =
-                    "https://api.mp3.zing.vn/api/streaming/audio/${viewModel.mediaInfo.value?.song?.songId}/320"
+                val url =viewModel.mediaInfo.value?.song?.link
                 viewModel.downloadSong(url)
                 viewModel.mediaInfo.value?.let {
                     it.song.thumbnail?.let { it1 ->

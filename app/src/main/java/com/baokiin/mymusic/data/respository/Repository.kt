@@ -21,7 +21,7 @@ interface Repository {
     suspend fun getPublicPlayList(): DataPlayListApi
     suspend fun getPrivatePlayList(): DataPlayListApi
     suspend fun unLikeSong(token: String, idSong: String): ResponseBody
-    suspend fun downloadMusic(url: String): ResponseBody
+    suspend fun downloadMusic(url: String?): ResponseBody
     suspend fun downloadLyric(url: String): ResponseBody
     suspend fun downloadImg(url: String): ResponseBody
 }

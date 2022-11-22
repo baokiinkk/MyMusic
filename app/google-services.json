@@ -59,6 +59,14 @@
           }
         },
         {
+          "client_id": "1050372001477-f2cd245kr0rjgb1um34bt6tncjm835dr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.baokiin.mymusic",
+            "certificate_hash": "bbb4d8d4c22ef46d8312e027707578604ef2f07a"
+          }
+        },
+        {
           "client_id": "1050372001477-m8m6tt2plrug2pv350o2jssu55dkvshq.apps.googleusercontent.com",
           "client_type": 3
         }

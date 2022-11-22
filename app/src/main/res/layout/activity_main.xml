@@ -34,6 +34,7 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:visibility="gone"
+                android:tag="MOTION_LAYOUT"
                 android:name="com.baokiin.mymusic.ui.activity.MotionFragment"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
