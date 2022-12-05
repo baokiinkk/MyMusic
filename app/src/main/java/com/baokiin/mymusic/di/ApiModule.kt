@@ -45,7 +45,7 @@ object ApiModule {
     @Singleton
     fun provideRetrofit(factory: Gson, client: OkHttpClient): ApiService {
         return Retrofit.Builder()
-            .baseUrl("http://178.128.85.205/")
+            .baseUrl("http://146.190.100.201/")
             .addConverterFactory(GsonConverterFactory.create(factory))
             .client(client)
             .build()

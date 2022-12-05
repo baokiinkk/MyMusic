@@ -3,6 +3,7 @@ package com.baokiin.mymusic.data.respository
 import com.baokiin.mymusic.data.model.DataApi
 import com.baokiin.mymusic.data.model.DataFind
 import com.baokiin.mymusic.data.model.DataPlayListApi
+import com.baokiin.mymusic.data.model.UserStatus
 import okhttp3.ResponseBody
 import javax.inject.Singleton
 
@@ -24,4 +25,5 @@ interface Repository {
     suspend fun downloadMusic(url: String?): ResponseBody
     suspend fun downloadLyric(url: String): ResponseBody
     suspend fun downloadImg(url: String): ResponseBody
+    suspend fun checkUser(token: String): UserStatus
 }

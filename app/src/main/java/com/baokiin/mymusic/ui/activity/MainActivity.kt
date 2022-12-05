@@ -87,7 +87,6 @@ class MainActivity : AppCompatActivity() {
 
     //-------------------------------------- func ------------------------------------------
     private fun setUp() {
-        AppData.g().token = SharedPreferencesUtils.getTokenID(this)
         EventBus.getDefault().register(this)
         baseBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_main)

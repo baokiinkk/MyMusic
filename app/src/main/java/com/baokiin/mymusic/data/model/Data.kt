@@ -8,6 +8,7 @@ data class DataApi(val message: String? = null, val data: MutableList<Song>? = n
 data class DataPlayListApi(val message: String? = null, val data: MutableList<PlayList>? = null)
 data class DataFind(val message: String? = null, val data: MutableList<Data>? = null)
 data class Data(val song: MutableList<Song>?)
+data class UserStatus(val status: String?)
 
 
 data class PlayList(

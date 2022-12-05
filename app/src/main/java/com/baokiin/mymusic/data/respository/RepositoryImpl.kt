@@ -3,6 +3,7 @@ package com.baokiin.mymusic.data.respository
 import com.baokiin.mymusic.data.model.DataApi
 import com.baokiin.mymusic.data.model.DataFind
 import com.baokiin.mymusic.data.model.DataPlayListApi
+import com.baokiin.mymusic.data.model.UserStatus
 import com.baokiin.mymusic.data.remote.api.ApiService
 import com.baokiin.mymusic.data.remote.api.FindMusicService
 import com.baokiin.mymusic.sns.AppData
@@ -104,6 +105,13 @@ class RepositoryImpl @Inject constructor(
             apiService.getPublicPlayList()
         } catch (cause: HttpException) {
             DataPlayListApi(message = "lấy thông tin lỗi!!!")
+        }
+
+    override suspend fun checkUser(token: String): UserStatus =
+        try {
+            apiService.checkUser("Bearer $token")
+        } catch (cause: HttpException) {
+            UserStatus(status = "lấy thông tin lỗi!!!")
         }
 
     override suspend fun getPrivatePlayList(): DataPlayListApi =

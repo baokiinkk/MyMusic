@@ -3,6 +3,7 @@ package com.baokiin.mymusic.data.remote.api
 import com.baokiin.mymusic.data.model.DataApi
 import com.baokiin.mymusic.data.model.DataFind
 import com.baokiin.mymusic.data.model.DataPlayListApi
+import com.baokiin.mymusic.data.model.UserStatus
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.http.*
@@ -25,6 +26,9 @@ interface ApiService {
 
     @GET("api/playlist/public")
     suspend fun getPublicPlayList(): DataPlayListApi
+
+    @GET("api/user/check-user")
+    suspend fun checkUser(@Header("Authorization") accessToken: String): UserStatus
 
     @GET("api/playlist/myPlaylist")
     suspend fun getMyPlayList(@Header("Authorization") accessToken: String): DataPlayListApi
