@@ -3,10 +3,11 @@ package com.baokiin.mymusic.sns
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 
 object SharedPreferencesUtils {
     const val TOKEN_ID: String = "TokenID"
-    fun setTokenID(context: AppCompatActivity, token: String?) {
+    fun setTokenID(context: FragmentActivity, token: String?) {
         val sharedPreference: SharedPreferences = context.getSharedPreferences(
             TOKEN_ID, Context.MODE_PRIVATE
         )

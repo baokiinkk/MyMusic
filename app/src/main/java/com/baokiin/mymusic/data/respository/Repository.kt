@@ -15,7 +15,7 @@ interface Repository {
     suspend fun getTopKpop(): DataApi
     suspend fun getTopVpop(): DataApi
     suspend fun getSongsLiked(): DataApi
-    suspend fun search(id: String): DataFind
+    suspend fun search(id: String): DataApi
     suspend fun likeSong(token: String, idSong: String): DataApi
     suspend fun createPlayList(token: String?, name: String): DataApi
     suspend fun addSongPlayList(playlistId: String,songId:String): DataApi

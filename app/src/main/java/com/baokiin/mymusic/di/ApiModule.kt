@@ -1,7 +1,6 @@
 package com.baokiin.mymusic.di
 
 import com.baokiin.mymusic.data.remote.api.ApiService
-import com.baokiin.mymusic.data.remote.api.FindMusicService
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -51,15 +50,4 @@ object ApiModule {
             .build()
             .create(ApiService::class.java)
     }
-    @Provides
-    @Singleton
-    fun provideRetrofit2(factory: Gson, client: OkHttpClient): FindMusicService {
-        return Retrofit.Builder()
-            .baseUrl("https://ac.mp3.zing.vn/")
-            .addConverterFactory(GsonConverterFactory.create(factory))
-            .client(client)
-            .build()
-            .create(FindMusicService::class.java)
-    }
-
 }

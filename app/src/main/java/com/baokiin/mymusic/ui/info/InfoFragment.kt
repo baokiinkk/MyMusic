@@ -6,6 +6,8 @@ import androidx.fragment.app.viewModels
 import com.baokiin.mymusic.R
 import com.baokiin.mymusic.adapter.ViewPageAdapter
 import com.baokiin.mymusic.databinding.FragmentInfoBinding
+import com.baokiin.mymusic.sns.AppData
+import com.baokiin.mymusic.sns.SharedPreferencesUtils
 import com.baokiin.mymusic.ui.activity.LoginActivity
 import com.baokiin.mymusic.ui.info.offline.OfflineFragment
 import com.baokiin.mymusic.ui.info.online.OnlineFragment

@@ -12,13 +12,12 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-
-class SearchViewModel@Inject constructor(private val repo: Repository): ViewModel() {
+class SearchViewModel @Inject constructor(private val repo: Repository): ViewModel() {
     val trending: MutableLiveData<MutableList<Song>?> = MutableLiveData(null)
     fun getData(text:String){
         viewModelScope.launch(Dispatchers.IO){
             try {
-                trending.postValue(repo.search(text).data?.get(0)?.song)
+                trending.postValue(repo.search(text).data)
             }
             catch (e:Exception){}
         }

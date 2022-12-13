@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.baokiin.mymusic.sns.AppData
 import com.baokiin.mymusic.sns.SharedPreferencesUtils
 import com.baokiin.mymusic.ui.home.HomeViewModel
+import com.baokiin.mymusic.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
@@ -23,7 +24,7 @@ class SplashActivity: AppCompatActivity() {
         val viewModel by viewModels<HomeViewModel>()
         super.onCreate(savedInstanceState)
         AppData.g().token = SharedPreferencesUtils.getTokenID(this)
-        if(!AppData.g().token.isNullOrBlank()){
+        if(!AppData.g().token.isNullOrBlank() && Utils.isInternetPing(this) ){
             viewModel.checkUser(AppData.g().token,this)
         }else{
             startActivity(Intent(this@SplashActivity, MainActivity::class.java))

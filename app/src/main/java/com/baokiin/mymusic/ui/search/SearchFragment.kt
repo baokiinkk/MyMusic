@@ -31,20 +31,13 @@ class SearchFragment :BaseFragment<FragmentSearchBinding>(){
     private fun setup() {
         adapterItem = ItemPlayListAdapter {it,_->
             hideKeyboard()
-            val url = "https://api.mp3.zing.vn/api/streaming/audio/${it.songId}/320"
-            it.link = url
             startMediaService(it)
         }
-        viewModel.trending.observe(viewLifecycleOwner,{
+        viewModel.trending.observe(viewLifecycleOwner) {
             it?.let {
-                val a = it.map {
-                    val tmp = it
-                    tmp.thumbnail = "https://photo-resize-zmp3.zadn.vn/w94_r1x1_jpeg/"+ it.thumb
-                    tmp
-                }.toMutableList()
-                adapterItem.submitList(a)
+                adapterItem.submitList(it)
             }
-        })
+        }
         baseBinding.apply {
             adapter = adapterItem
             viewmodel = viewModel

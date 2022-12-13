@@ -1,14 +1,11 @@
 package com.baokiin.mymusic.data.respository
 
 import com.baokiin.mymusic.data.model.DataApi
-import com.baokiin.mymusic.data.model.DataFind
 import com.baokiin.mymusic.data.model.DataPlayListApi
 import com.baokiin.mymusic.data.model.UserStatus
 import com.baokiin.mymusic.data.remote.api.ApiService
-import com.baokiin.mymusic.data.remote.api.FindMusicService
 import com.baokiin.mymusic.sns.AppData
 import okhttp3.MediaType
-import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.HttpException
@@ -16,7 +13,6 @@ import javax.inject.Inject
 
 class RepositoryImpl @Inject constructor(
     private val apiService: ApiService,
-    private val findMusicService: FindMusicService
 ) : Repository {
     override suspend fun getTrending(): DataApi =
         try {
@@ -49,21 +45,21 @@ class RepositoryImpl @Inject constructor(
 
     override suspend fun getSongsLiked(): DataApi =
         try {
-            apiService.getSongsLiked("Bearer ${AppData.g().token?:""}")
+            apiService.getSongsLiked("Bearer ${AppData.g().token ?: ""}")
         } catch (cause: HttpException) {
             DataApi(message = "lấy thông tin lỗi!!!")
         }
 
-    override suspend fun search(id: String): DataFind =
+    override suspend fun search(id: String): DataApi =
         try {
-            findMusicService.getSong(id)
+            apiService.search(id)
         } catch (cause: HttpException) {
-            DataFind(message = "lấy thông tin lỗi!!!")
+            DataApi(message = "lấy thông tin lỗi!!!")
         }
 
     override suspend fun likeSong(token: String, idSong: String): DataApi =
         try {
-            val request =  RequestBody.create(
+            val request = RequestBody.create(
                 MediaType.parse("text/plain"),
                 idSong
             )
@@ -71,34 +67,40 @@ class RepositoryImpl @Inject constructor(
         } catch (cause: HttpException) {
             DataApi(message = "lấy thông tin lỗi!!!")
         }
+
     override suspend fun createPlayList(token: String?, name: String): DataApi =
-            try {
-                val nameRequest =  RequestBody.create(
-                    MediaType.parse("text/plain"),
-                    name
-                )
-                val isPublicRequest =  RequestBody.create(
-                    MediaType.parse("text/plain"),
-                    "false"
-                )
-                apiService.createPlayList("Bearer $token", nameRequest,isPublicRequest)
-            } catch (cause: HttpException) {
-                DataApi(message = "lấy thông tin lỗi!!!")
-            }
-    override suspend fun addSongPlayList(playlistId: String,songId:String): DataApi =
-            try {
-                val playlistIdRequest =  RequestBody.create(
-                    MediaType.parse("text/plain"),
-                    playlistId
-                )
-                val songIdRequest =  RequestBody.create(
-                    MediaType.parse("text/plain"),
-                    songId
-                )
-                apiService.addSongPlayList("Bearer ${AppData.g().token}", playlistIdRequest,songIdRequest)
-            } catch (cause: HttpException) {
-                DataApi(message = "Bài hát đã được thêm vào danh sách!")
-            }
+        try {
+            val nameRequest = RequestBody.create(
+                MediaType.parse("text/plain"),
+                name
+            )
+            val isPublicRequest = RequestBody.create(
+                MediaType.parse("text/plain"),
+                "false"
+            )
+            apiService.createPlayList("Bearer $token", nameRequest, isPublicRequest)
+        } catch (cause: HttpException) {
+            DataApi(message = "lấy thông tin lỗi!!!")
+        }
+
+    override suspend fun addSongPlayList(playlistId: String, songId: String): DataApi =
+        try {
+            val playlistIdRequest = RequestBody.create(
+                MediaType.parse("text/plain"),
+                playlistId
+            )
+            val songIdRequest = RequestBody.create(
+                MediaType.parse("text/plain"),
+                songId
+            )
+            apiService.addSongPlayList(
+                "Bearer ${AppData.g().token}",
+                playlistIdRequest,
+                songIdRequest
+            )
+        } catch (cause: HttpException) {
+            DataApi(message = "Bài hát đã được thêm vào danh sách!")
+        }
 
     override suspend fun getPublicPlayList(): DataPlayListApi =
         try {
@@ -122,7 +124,7 @@ class RepositoryImpl @Inject constructor(
         }
 
     override suspend fun unLikeSong(token: String, idSong: String): ResponseBody =
-            apiService.unLikeSong("Bearer $token", idSong)
+        apiService.unLikeSong("Bearer $token", idSong)
 
     //download file
     override suspend fun downloadMusic(url: String?): ResponseBody = apiService.downloadMusic(url)

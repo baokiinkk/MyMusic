@@ -21,6 +21,9 @@ interface ApiService {
     @GET("api/song/topSong/vietnam")
     suspend fun getTopVpop(): DataApi
 
+    @GET("api/song/search")
+    suspend fun search(@Query("keyword")key:String): DataApi
+
     @GET("api/favourite")
     suspend fun getSongsLiked(@Header("Authorization") accessToken: String): DataApi
 
@@ -74,11 +77,5 @@ interface ApiService {
     @GET
     suspend fun downloadImg(@Url url: String): ResponseBody
 
-
-}
-
-interface FindMusicService {
-    @GET("complete?type=artist,song,key,code&num=50")
-    suspend fun getSong(@Query("query") id: String): DataFind
 
 }

@@ -84,25 +84,17 @@ class InfoViewModel @Inject constructor(
 
     fun deleteSongLike(context:Context,token: String, song: Song) {
         viewModelScope.launch {
-            if (Utils.isInternetPing(context)) {
-                repo.unLikeSong(token, song.songId)
-                EventBus.getDefault().post(EventBusModel.LoadLocal(true))
-            }else{
-                withContext(Dispatchers.Main){
-                    Toast.makeText(
-                        context,
-                        "Thiết bị kết nối mạng bị gián đoạn, sẽ hiện thị theo offline!!",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
+            repo.unLikeSong(token, song.songId)
+            EventBus.getDefault().post(EventBusModel.LoadLocal(true))
         }
     }
     fun getSongsLiked(context: Context) {
         viewModelScope.launch {
             try {
-                val song = repo.getSongsLiked().data
-                songIsLiked.postValue(song)
+                if(Firebase.auth.currentUser != null) {
+                    val song = repo.getSongsLiked().data
+                    songIsLiked.postValue(song)
+                }
             }
             catch (e:Exception){
                 Toast.makeText(

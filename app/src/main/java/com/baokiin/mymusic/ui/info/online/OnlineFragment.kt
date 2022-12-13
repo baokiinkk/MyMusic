@@ -68,10 +68,13 @@ class OnlineFragment : BaseFragment<FragmentSongLocalBinding>() {
         }
         viewModel.songIsLiked.observe(viewLifecycleOwner) {
             it?.let {
-                if(it.isNotEmpty())
-                adapterItem.submitList(it.map {
-                    it.toSongLike()
-                })
+                adapterItem.submitList(mutableListOf())
+                adapterItem.notifyDataSetChanged()
+                if(it.isNotEmpty()) {
+                    adapterItem.submitList(it.map {
+                        it.toSongLike()
+                    })
+                }
             }
         }
     }
