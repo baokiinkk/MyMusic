@@ -36,6 +36,7 @@ class MainActivity : AppCompatActivity() {
     //--------------------------------- variable --------------------------------------------------
     private val viewModel by viewModels<MainViewModel>()
     private var indexSong: Int? = null
+    private var isBackFromPlayMusic = false
     private lateinit var baseBinding: ActivityMainBinding
 
     //---------------------------- override lifecycle----------------------------------------------
@@ -67,6 +68,11 @@ class MainActivity : AppCompatActivity() {
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     fun onMessageSecond(second: Times) {
         viewModel.positonMedia.postValue(second.time)
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onBackPlayMusicEvent(second: OnBackPlayMusicEvent) {
+        isBackFromPlayMusic = true
+        onBackPressed()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -111,9 +117,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (baseBinding.playMusic.isVisible) {
+        if (baseBinding.playMusic.isVisible && !isBackFromPlayMusic) {
             EventBus.getDefault().post(EventBusModel.OnBackEvent(true))
-        } else
+        } else {
+            isBackFromPlayMusic = false
             super.onBackPressed()
+        }
     }
 }

@@ -43,7 +43,10 @@ class MotionFragment : BaseFragment<PlayMusicBinding>() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onBackEvent(onBack: EventBusModel.OnBackEvent) {
-        Utils.setProgresMotion(baseBinding.motionLayout, 1f)
+        if (baseBinding.motionLayout.progress == 1f) {
+            EventBus.getDefault().post(EventBusModel.OnBackPlayMusicEvent(true))
+        } else
+            Utils.setProgresMotion(baseBinding.motionLayout, 1f)
     }
 
     //-------------------------------------- func -----------------------------------------------

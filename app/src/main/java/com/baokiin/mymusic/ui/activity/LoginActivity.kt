@@ -1,8 +1,10 @@
 package com.baokiin.mymusic.ui.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.viewModelScope
 import com.baokiin.mymusic.R
@@ -11,6 +13,7 @@ import com.baokiin.mymusic.data.model.SongLike
 import com.baokiin.mymusic.sns.AppData
 import com.baokiin.mymusic.sns.SNSLoginActivity
 import com.baokiin.mymusic.sns.SharedPreferencesUtils
+import com.baokiin.mymusic.ui.home.HomeViewModel
 import com.baokiin.mymusic.utils.Utils
 import com.facebook.AccessToken
 import com.google.firebase.auth.FirebaseAuth
@@ -26,8 +29,8 @@ import org.greenrobot.eventbus.EventBus
 @AndroidEntryPoint
 class LoginActivity : SNSLoginActivity() {
     private lateinit var auth: FirebaseAuth
-    private val viewModel by viewModels<MainViewModel>()
-
+    private val viewModel by viewModels<HomeViewModel>()
+    private var tmpToken:String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -40,11 +43,8 @@ class LoginActivity : SNSLoginActivity() {
     }
 
     override fun onSNSUserResult(token: String?) {
-        EventBus.getDefault().post(EventBusModel.DataChange(Utils.STATUS_LOGIN_OK))
-        SharedPreferencesUtils.setTokenID(this,token)
-        AppData.g().token = token
-        finish()
-
+        tmpToken = token
+        viewModel.checkUser(AppData.g().token,this)
     }
 
     //---------\
@@ -61,6 +61,26 @@ class LoginActivity : SNSLoginActivity() {
         }
         btnClose.setOnClickListener {
             finish()
+        }
+        viewModel.checkUser.observe(this){
+            it?.let {
+                when(it.status){
+                    "DELETED"->{
+                        Toast.makeText(this,"Tài khoản đã bị xóa!!!!", Toast.LENGTH_SHORT).show()
+                        viewModel.auth.signOut()
+                    }
+                    "EXPIRED"->{
+                        Toast.makeText(this,"Tài khoản đã hết hạn!!!!", Toast.LENGTH_SHORT).show()
+                        viewModel.auth.signOut()
+                    }
+                    else ->{
+                        EventBus.getDefault().post(EventBusModel.DataChange(Utils.STATUS_LOGIN_OK))
+                        SharedPreferencesUtils.setTokenID(this,tmpToken)
+                        AppData.g().token = tmpToken
+                    }
+                }
+                finish()
+            }
         }
 
     }

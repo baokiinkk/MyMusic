@@ -45,7 +45,13 @@ class SearchFragment :BaseFragment<FragmentSearchBinding>(){
         }
     }
     private fun startMediaService(song: Song) {
-        EventBus.getDefault().post(EventBusModel.SongSingle(song))
+        EventBus.getDefault().post(
+            EventBusModel.SongSingle(
+                song,
+                adapterItem.currentList.subList(0,1),
+                0
+            )
+        )
     }
     @SuppressLint("ClickableViewAccessibility")
     private fun clickView(){

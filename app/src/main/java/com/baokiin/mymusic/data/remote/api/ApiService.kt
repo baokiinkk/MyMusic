@@ -21,7 +21,7 @@ interface ApiService {
     @GET("api/song/topSong/vietnam")
     suspend fun getTopVpop(): DataApi
 
-    @GET("api/song/search")
+    @POST("api/song/search")
     suspend fun search(@Query("keyword")key:String): DataApi
 
     @GET("api/favourite")
