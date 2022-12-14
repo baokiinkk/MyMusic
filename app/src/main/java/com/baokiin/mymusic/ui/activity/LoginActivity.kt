@@ -16,6 +16,9 @@ import com.baokiin.mymusic.sns.SharedPreferencesUtils
 import com.baokiin.mymusic.ui.home.HomeViewModel
 import com.baokiin.mymusic.utils.Utils
 import com.facebook.AccessToken
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -31,9 +34,12 @@ class LoginActivity : SNSLoginActivity() {
     private lateinit var auth: FirebaseAuth
     private val viewModel by viewModels<HomeViewModel>()
     private var tmpToken:String? = null
+    private lateinit var googleSignInClient: GoogleSignInClient
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+        instanceGoogleSignIn()
         window.setFlags(
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
@@ -44,7 +50,7 @@ class LoginActivity : SNSLoginActivity() {
 
     override fun onSNSUserResult(token: String?) {
         tmpToken = token
-        viewModel.checkUser(AppData.g().token,this)
+        viewModel.checkUser(token,this)
     }
 
     //---------\
@@ -67,10 +73,12 @@ class LoginActivity : SNSLoginActivity() {
                 when(it.status){
                     "DELETED"->{
                         Toast.makeText(this,"Tài khoản đã bị xóa!!!!", Toast.LENGTH_SHORT).show()
+                        googleSignInClient.signOut()
                         viewModel.auth.signOut()
                     }
                     "EXPIRED"->{
                         Toast.makeText(this,"Tài khoản đã hết hạn!!!!", Toast.LENGTH_SHORT).show()
+                        googleSignInClient.signOut()
                         viewModel.auth.signOut()
                     }
                     else ->{
@@ -84,5 +92,13 @@ class LoginActivity : SNSLoginActivity() {
         }
 
     }
+    private fun instanceGoogleSignIn() {
+        // Configure Google Sign In
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
 
+        googleSignInClient = GoogleSignIn.getClient(this, gso)
+    }
 }
